@@ -32,6 +32,12 @@ Player::Player(int8_t numPlayers, Player* nextPlayer)
 
 Player::~Player() {
 
+    //delete attached cards
+    for (Vector<Card*>::iterator it = cards.begin(); it != cards.end(); it++) {
+        delete (*it);
+    }
+    cards.clear();
+
     //delete all player objects
     if (prevPlayer != 0 && prevPlayer != this) {
         prevPlayer->nextPlayer = 0;
@@ -61,6 +67,8 @@ void Player::loop() {
         for (Vector<Card*>::iterator it = cardsOld.begin(); it != cardsOld.end(); it++) {
             if ( !(*it)->canBeRemoved ) {
                 cards.push_back(*it);
+            } else {
+                delete (*it);
             }
         }
     }

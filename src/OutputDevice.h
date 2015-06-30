@@ -6,12 +6,23 @@
 class OutputDevice
 {
 public:
-    OutputDevice();
+    OutputDevice(uint8_t PIN_MOTOR, uint8_t PIN_VALVE);
     virtual ~OutputDevice();
 
     virtual void setup();
 
-    virtual void apply(int8_t value);
+    void apply(int8_t value);
+
+    void reset();
+
+protected:
+    virtual void applyPositive(uint8_t value);
+    virtual void applyNegative(uint8_t value);
+
+public:
+    const uint8_t PIN_MOTOR;
+    const uint8_t PIN_VALVE;
+    int volume;
 };
 
 #endif // OUTPUTDEVICE_H

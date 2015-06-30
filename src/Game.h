@@ -24,7 +24,10 @@ public:
     void loop();
 
 private:
+    const int MAX_VOLUME;
+
     bool started;
+    bool gameEnded;
     int8_t numPlayers;
     Player* currentPlayer;
     CodeDetector* codeDetector;

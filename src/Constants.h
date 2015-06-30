@@ -1,6 +1,7 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+#define PIN_0 0
 #define PIN_1 1
 #define PIN_2 2
 #define PIN_3 3

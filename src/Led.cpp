@@ -3,13 +3,13 @@
 
 //-----------------------------------------------------------------------------
 
-Led::Led(uint8_t pin) : pin(pin), on(false) {
+Led::Led(uint8_t pin) : PIN(pin), on(false) {
 }
 
 //-----------------------------------------------------------------------------
 
 void Led::setup() {
-    pinMode(pin, OUTPUT);
+    pinMode(PIN, OUTPUT);
     setOn(on);
 }
 
@@ -17,7 +17,7 @@ void Led::setup() {
 
 void Led::setOn(bool on) {
     this->on = on;
-    digitalWrite(pin, on ? HIGH : LOW);
+    digitalWrite(PIN, on ? HIGH : LOW);
 }
 
 //-----------------------------------------------------------------------------
@@ -27,9 +27,9 @@ void Led::blink(uint8_t times, int delayMs, bool onAfterwards) {
     times = (onAfterwards != on) ? times -1 : times;
 
     for (int i=0; i < times; i++) {
-        digitalWrite(pin, on ? LOW : HIGH);
+        digitalWrite(PIN, on ? LOW : HIGH);
         delay(delayMs);
-        digitalWrite(pin, on ? HIGH : LOW);
+        digitalWrite(PIN, on ? HIGH : LOW);
         delay(delayMs);
     }
 

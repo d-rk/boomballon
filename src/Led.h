@@ -6,7 +6,7 @@
 class Led {
 
 public:
-    Led(uint8_t pin);
+    Led(uint8_t PIN);
 
     void setup();
 
@@ -15,7 +15,7 @@ public:
     void blink(uint8_t times, int delayMs, bool onAfterwards);
 
 private:
-    const uint8_t pin;
+    const uint8_t PIN;
     bool on;
 };
 

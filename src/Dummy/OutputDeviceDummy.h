@@ -11,7 +11,9 @@ public:
 
     virtual void setup();
 
-    virtual void apply(int8_t value);
+protected:
+    virtual void applyPositive(uint8_t value);
+    virtual void applyNegative(uint8_t value);
 
 private:
     LedBar barGreen;
