@@ -5,6 +5,9 @@
 @REM ---
 @REM This script runs the upload, and redirects the output to stderr/stdout depending on the return code.
 
+@REM close putty so that serial port is open
+taskkill /F /IM putty.exe
+
 @REM Run command and pipe all output to tmp file
 mingw32-make upload > tmp 2>&1
 set errCode=%errorlevel%

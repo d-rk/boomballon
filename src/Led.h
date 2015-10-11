@@ -3,6 +3,11 @@
 
 #include <stdint.h>
 
+/**
+ * @brief The Led class
+ * Simple class for a status LED.
+ *
+ */
 class Led {
 
 public:

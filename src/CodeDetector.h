@@ -3,6 +3,12 @@
 
 #include <stdint.h>
 
+/**
+ * @brief The CodeDetector class.
+ *
+ * Class to interpret values applied to a number of analog pins as an integer code.
+ *
+ */
 class CodeDetector
 {
 public:
@@ -10,8 +16,10 @@ public:
 
     virtual void setup();
 
-    bool codeChanged(bool ignoreBorderCode = false);
+    bool codeChanged(bool ignoreAllNoneCode = false);
     uint8_t getActiveCode();
+
+    void setActiveCode(uint8_t code);
 
 protected:
     virtual uint8_t readCode();
@@ -27,9 +35,12 @@ protected:
     // minimum time that needs to pass so that a codeChange is valid
     const unsigned long TIME_WAIT_MS;
 
-    // variables used internally
+    // code that is seen as active from outside
     uint8_t activeCode;
-    uint8_t activeCodeMirror;
+    uint8_t activeCodeMirrored;
+
+    // the code that actually is found currently
+    // currentCode has to be on for a certain time until it is adopted by activeCode
     uint8_t currentCode;
     uint64_t timeLastCodeChange;
 

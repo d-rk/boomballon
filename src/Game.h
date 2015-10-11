@@ -9,6 +9,12 @@
 class Player;
 class OutputDevice;
 
+/**
+ * @brief The Game class
+ *
+ * Class representing a game with a defined number of players.
+ *
+ */
 class Game
 {
 public:
@@ -24,8 +30,6 @@ public:
     void loop();
 
 private:
-    const int MAX_VOLUME;
-
     bool started;
     bool gameEnded;
     int8_t numPlayers;

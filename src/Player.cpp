@@ -6,6 +6,12 @@
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Player::Player Constructor.
+ * @param numPlayers number of players in the game.
+ * @param nextPlayer player which comes right after this one.
+ * @note this constructor recursivly creates all players and links them together.
+ */
 Player::Player(int8_t numPlayers, Player* nextPlayer)
 {
     //create 'numPlayers' player objects and link them together
@@ -30,6 +36,10 @@ Player::Player(int8_t numPlayers, Player* nextPlayer)
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Player::~Player Destructor.
+ * Delete all players and the attached cards.
+ */
 Player::~Player() {
 
     //delete attached cards
@@ -51,21 +61,27 @@ Player::~Player() {
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Player::loop function to let player participate in game loop.
+ */
 void Player::loop() {
 
     bool removalNeeded = false;
 
     for (Vector<Card*>::iterator it = cards.begin(); it != cards.end(); it++) {
-        (*it)->play();
-        removalNeeded |= (*it)->canBeRemoved;
+        if ( !(*it)->discard ) {
+            (*it)->play();
+        }
+        removalNeeded |= (*it)->discard;
     }
 
     if (removalNeeded) {
+        //at least 1 card has to be removed from player.
         Vector<Card*> cardsOld = cards;
         cards.clear();
 
         for (Vector<Card*>::iterator it = cardsOld.begin(); it != cardsOld.end(); it++) {
-            if ( !(*it)->canBeRemoved ) {
+            if ( !(*it)->discard ) {
                 cards.push_back(*it);
             } else {
                 delete (*it);
@@ -75,3 +91,23 @@ void Player::loop() {
 }
 
 //-----------------------------------------------------------------------------
+
+/**
+ * @brief Player::changeDirection Recursively change neighborhood so that
+ * next becomes previous and vice versa.
+ */
+void Player::changeDirection() {
+
+    bool nextPlayerChanged = (nextPlayer->prevPlayer != this);
+
+    //switch next and previous
+    Player* tmp = nextPlayer;
+    nextPlayer = prevPlayer;
+    prevPlayer = tmp;
+    printf("Player %d - prev: %d next: %d\n", id, prevPlayer->id, nextPlayer->id);
+
+    if (!nextPlayerChanged) {
+        //do it recursive for all players.
+        prevPlayer->changeDirection();
+    }
+}

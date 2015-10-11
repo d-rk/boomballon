@@ -4,6 +4,14 @@
 #include <Led.h>
 #include <CodeDetector.h>
 
+/**
+ * @brief The PlayerChooser class.
+ *
+ * Class to detect and visualize the number of players that will
+ * participate in the game.
+ * The PlayerChooser is used at the start of each game.
+ *
+ */
 class PlayerChooser
 {
 public:
@@ -14,6 +22,8 @@ public:
     bool detectNumPlayers();
 
     int8_t getNumPlayers();
+
+    void setNumPlayers(int8_t numPlayers);
 
 private:
     const uint8_t CODES[4];

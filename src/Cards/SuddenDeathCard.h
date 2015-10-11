@@ -12,6 +12,8 @@ public:
 
     virtual void attach(Player* currentPlayer);
 
+    virtual const char* cardName() const {return "SUDDEN_DEATH";}
+
 private:
     uint64_t startTime;
 };

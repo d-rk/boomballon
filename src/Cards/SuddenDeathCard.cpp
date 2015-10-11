@@ -11,7 +11,7 @@ SuddenDeathCard::SuddenDeathCard() {
 //-----------------------------------------------------------------------------
 
 void SuddenDeathCard::play() {
-    canBeRemoved = false;
+    discard = false;
 
     const int LOOP_MS = 2000;
     const int FILL_DURATION_MS = 500;
@@ -38,12 +38,9 @@ void SuddenDeathCard::attach(Player* currentPlayer) {
     }
 
     startTime = millis();
-    otherPlayer->cards.push_back(this);
 
-    Serial.print("Attached SuddenDeath from Player ");
-    Serial.print(currentPlayer->id);
-    Serial.print(" to Player ");
-    Serial.println(otherPlayer->id);
+    Card::attach(otherPlayer);
+    printf("Attached SuddenDeath from Player %1d to %1d.\n", currentPlayer->id, otherPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

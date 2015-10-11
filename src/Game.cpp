@@ -9,9 +9,11 @@
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::Game Constructor.
+ */
 Game::Game()
-    : MAX_VOLUME(500),
-      started(false),
+    : started(false),
       gameEnded(false),
       numPlayers(-1),
       currentPlayer(0),
@@ -19,11 +21,13 @@ Game::Game()
       redLed(0),
       greenLed(0)
 {
-
 }
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::~Game Destructor.
+ */
 Game::~Game()
 {
     if (currentPlayer != 0) {
@@ -33,6 +37,13 @@ Game::~Game()
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::setup Setup the component.
+ * @param codeDetector object used for code detection.
+ * @param outputDevice device to apply played cards to.
+ * @param redLed red status led.
+ * @param greenLed green status led.
+ */
 void Game::setup(CodeDetector* codeDetector, OutputDevice* outputDevice, Led* redLed, Led* greenLed) {
     this->codeDetector = codeDetector;
     this->redLed = redLed;
@@ -42,12 +53,20 @@ void Game::setup(CodeDetector* codeDetector, OutputDevice* outputDevice, Led* re
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::isStarted Check if game is started.
+ * @return is it started?
+ */
 bool Game::isStarted() {
     return started;
 }
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::start Start the game.
+ * @param numPlayers number of players that participate.
+ */
 void Game::start(int8_t numPlayers) {
     this->started = true;
     this->gameEnded = false;
@@ -60,8 +79,7 @@ void Game::start(int8_t numPlayers) {
 
     currentPlayer = new Player(numPlayers); //last player
     currentPlayer = currentPlayer->nextPlayer; //first player
-    Serial.print("--Turn Changed to: Player ");
-    Serial.println(currentPlayer->id);
+    printf("=== Turn changed to player %1d ===\n", currentPlayer->id);
 
     redLed->setOn(false);
     greenLed->setOn(true);
@@ -69,13 +87,17 @@ void Game::start(int8_t numPlayers) {
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::loop the game loop.
+ * Everything that happens during the game is handled here.
+ */
 void Game::loop() {
 
     bool codeChanged = codeDetector->codeChanged(true);
 
     if (gameEnded) {
-        if (codeDetector->getActiveCode() == CODE_NONE) {
-            Serial.println("- RESTART -");
+        if (codeDetector->getActiveCode() == CODE_ALL) {
+            printf("=== RESTART ===\n");
             start(numPlayers);
         }
         return;
@@ -89,12 +111,10 @@ void Game::loop() {
 
     currentPlayer->loop();
 
-    if (Card::output->volume > MAX_VOLUME) {
+    if (Card::output->volume > 100.0f) {
         Card::output->reset();
         gameEnded = true;
-        Serial.print("--Player ");
-        Serial.print(currentPlayer->id);
-        Serial.println(" lost the game!");
+        printf("==  Player %1d lost the game!\n", currentPlayer->id);
         redLed->blink(5, 600, true);
         return;
     }
@@ -104,10 +124,9 @@ void Game::loop() {
         redLed->setOn(false);
         greenLed->setOn(true);
         Card::output->apply(0);
-        Serial.print("New Volume: ");
+        printf("New volume is ");
         Serial.println(Card::output->volume);
-        Serial.print("--Turn Changed to: Player ");
-        Serial.println(currentPlayer->id);
+        printf("=== Turn changed to player %1d ===\n", currentPlayer->id);
     }
 }
 

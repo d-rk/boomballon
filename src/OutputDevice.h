@@ -11,18 +11,39 @@ public:
 
     virtual void setup();
 
-    void apply(int8_t value);
+    void apply(int8_t volumeChangePercent, uint8_t intensity);
+
+    void apply(int8_t value, uint16_t durationMs = 0);
 
     void reset();
 
 protected:
-    virtual void applyPositive(uint8_t value);
-    virtual void applyNegative(uint8_t value);
+    void applyIntensities(uint8_t positiveIntensity, uint8_t negativeIntensity, uint16_t durationMs);
+
+    virtual void applyPositive(uint8_t intensity, uint16_t durationMs);
+    virtual void applyNegative(uint8_t intensity, uint16_t durationMs);
+
+    virtual float getVolumeIncrement(uint8_t intensity, uint16_t durationMs);
+    virtual float getVolumeDecrement(uint8_t intensity, uint16_t durationMs);
+
+    virtual uint16_t getTimeForVolumeChange(int8_t volumeChangePercent, uint8_t intensity);
+
+    float getDeflateTime(uint8_t deflateCycleMs);
 
 public:
     const uint8_t PIN_MOTOR;
     const uint8_t PIN_VALVE;
-    int volume;
+
+    const uint16_t FILL_TIME_MIN;
+    const uint16_t FILL_TIME_MAX;
+    const uint8_t  MOTOR_MIN;
+
+    const uint16_t DEFLATE_TIME;
+    const uint8_t  DEFLATE_CYCLE_MAX;
+
+    uint64_t lastValueChange;
+    int8_t currentValue;
+    float volume;
 };
 
 #endif // OUTPUTDEVICE_H

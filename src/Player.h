@@ -6,6 +6,11 @@
 
 class Card;
 
+/**
+ * @brief The Player class
+ *
+ * Defines a player in the game.
+ */
 class Player
 {
 public:
@@ -13,6 +18,8 @@ public:
     ~Player();
 
     void loop();
+
+    void changeDirection();
 
 public:
     Player* prevPlayer;
