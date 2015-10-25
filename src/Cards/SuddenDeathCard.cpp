@@ -1,16 +1,21 @@
 #include "SuddenDeathCard.h"
 
 #include <Arduino.h>
+#include <Devices/SevenSegmentDisplay.h>
 
 //-----------------------------------------------------------------------------
 
-SuddenDeathCard::SuddenDeathCard() {
+const uint8_t SuddenDeathCard::type = 3;
+
+//-----------------------------------------------------------------------------
+
+SuddenDeathCard::SuddenDeathCard() : Card(type) {
 
 }
 
 //-----------------------------------------------------------------------------
 
-void SuddenDeathCard::play() {
+void SuddenDeathCard::play(bool codeChanged) {
     discard = false;
 
     const int LOOP_MS = 2000;
@@ -19,9 +24,9 @@ void SuddenDeathCard::play() {
     uint64_t elapsed = (millis() - startTime) % LOOP_MS;
 
     if (elapsed < FILL_DURATION_MS) {
-        Card::output->apply(127);
-    } else {
-        Card::output->apply(0);
+        SevenSegmentDisplay::instance->setAnimation(animation, 100, true, false);
+        OutputDevice::instance->applyIntensities(255, 0, FILL_DURATION_MS, false);
+        SevenSegmentDisplay::instance->stopAnimation();
     }
 }
 
@@ -29,12 +34,39 @@ void SuddenDeathCard::play() {
 
 void SuddenDeathCard::attach(Player* currentPlayer) {
 
-    Player* otherPlayer = currentPlayer;
+    Vector<Player*> opponents;
 
-    while (otherPlayer == currentPlayer) {
-        for (int i=0; i < random(5); i++) {
-            otherPlayer = otherPlayer->nextPlayer;
+    Player* otherPlayer = currentPlayer->nextPlayer;
+
+    while (otherPlayer != currentPlayer) {
+        bool hasSuddenDeathCard = false;
+        for (Vector<Card*>::iterator it = otherPlayer->cards.begin(); it != otherPlayer->cards.end(); it++) {
+            if ((*it)->cardType == SuddenDeathCard::type) {
+                hasSuddenDeathCard = true;
+                break;
+            }
         }
+
+        if (!hasSuddenDeathCard) {
+            opponents.push_back(otherPlayer);
+        }
+        otherPlayer = otherPlayer->nextPlayer;
+    }
+
+    if (opponents.empty()) {
+        printf("Cannot attach SuddenDeathCard. No opponents left.");
+        return;
+    }
+
+    otherPlayer = opponents[random(opponents.size())];
+
+    switch(otherPlayer->id) {
+        case 1: animation = ANIM_P1_FLOATING; break;
+        case 2: animation = ANIM_P2_FLOATING; break;
+        case 3: animation = ANIM_P3_FLOATING; break;
+        case 4: animation = ANIM_P4_FLOATING; break;
+        case 5: animation = ANIM_P5_FLOATING; break;
+        default: animation = ANIM_ERROR;
     }
 
     startTime = millis();

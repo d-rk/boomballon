@@ -5,6 +5,10 @@
 
 //-----------------------------------------------------------------------------
 
+CodeDetector* CodeDetector::instance = NULL;
+
+//-----------------------------------------------------------------------------
+
 /**
  * @brief CodeDetector::CodeDetector Constructor.
  * @param pin1 first pin for the code detection.

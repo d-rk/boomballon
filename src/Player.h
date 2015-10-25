@@ -17,7 +17,7 @@ public:
     Player(int8_t numPlayers, Player* nextPlayer = 0);
     ~Player();
 
-    void loop();
+    void loop(bool codeChanged);
 
     void changeDirection();
 

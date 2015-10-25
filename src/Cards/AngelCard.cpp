@@ -11,15 +11,15 @@ AngelCard::AngelCard(int8_t volumeChangePercent, uint8_t intensity)
 
 //-----------------------------------------------------------------------------
 
-void AngelCard::play() {
+void AngelCard::play(bool codeChanged) {
 
-    if (attachedPlayer != NULL) {
+    if (codeChanged && attachedPlayer != NULL) {
         Card* lastCard = NULL;
         for (Vector<Card*>::iterator it = attachedPlayer->cards.begin(); it != attachedPlayer->cards.end(); it++) {
             if (lastCard == this) {
                 //ok we have a card which comes after this card
                 //we can assume that it is the next round now and apply this card
-                VolumeCard::play();
+                VolumeCard::play(codeChanged);
             } else {
                 lastCard = *it;
             }

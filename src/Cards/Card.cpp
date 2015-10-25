@@ -14,12 +14,9 @@
 
 //-----------------------------------------------------------------------------
 
-OutputDevice* Card::output = 0;
-
-//-----------------------------------------------------------------------------
-
-Card::Card()
+Card::Card(uint8_t cardType)
     : discard(false),
+      cardType(cardType),
       attachedPlayer(0)
 {
 }
@@ -32,18 +29,19 @@ void Card::playCard(uint8_t code, Player* currentPlayer) {
 
     switch (code) {
         case CODE_5:  card = new MissRoundCard(); break;
-        case CODE_6:  card = new ChangeDirectionCard(20, 200); break;
-        case CODE_19: card = new FiftyFiftyCard(100); break;
-        case CODE_21: card = new VolumeCard(20, 200); break;
-        case CODE_9:  card = new VolumeCard(100, 255); break;
-        case CODE_10: card = new PushToLimitCard(255); break;
-        case CODE_11: card = new UpDownCard(15, 200, true); break;
-        case CODE_12: card = new SuddenDeathCard(); break;
-        case CODE_13: card = new SuddenDeathCard(); break;
-        case CODE_14: card = new SuddenDeathCard(); break;
-        case CODE_15: card = new SuddenDeathCard(); break;
-        case CODE_17: card = new AngelCard(15, 50); break;
-        case CODE_23: card = new DevilCard(-15, 50); break;
+        case CODE_6:  card = new ChangeDirectionCard( 30, 200); break;
+        case CODE_7:  card = new ChangeDirectionCard(-30, 200); break;
+        case CODE_9:  card = new FiftyFiftyCard(100); break;
+        case CODE_10: card = new VolumeCard( 20, 200); break;
+        case CODE_11: card = new VolumeCard( 40, 200); break;
+        case CODE_13: card = new VolumeCard(-20, 200); break;
+        case CODE_14: card = new VolumeCard(-30, 200); break;
+        case CODE_15: card = new PushToLimitCard(255); break;
+        case CODE_17: card = new UpDownCard( 35, 200, true); break;
+        case CODE_19: card = new UpDownCard(-35, 200, true); break;
+        case CODE_21: card = new AngelCard(-30, 50); break;
+        case CODE_23: card = new DevilCard( 30, 50); break;
+        case CODE_27: card = new SuddenDeathCard(); break;
 
         default: break;
     }

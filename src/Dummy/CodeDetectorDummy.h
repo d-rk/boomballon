@@ -1,7 +1,7 @@
 #ifndef CODEDETECTORDUMMY_H
 #define CODEDETECTORDUMMY_H
 
-#include <CodeDetector.h>
+#include <Devices/CodeDetector.h>
 
 class CodeDetectorDummy : public CodeDetector
 {

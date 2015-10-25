@@ -9,10 +9,12 @@ PushToLimitCard::PushToLimitCard(uint8_t intensity)
 
 //-----------------------------------------------------------------------------
 
-void PushToLimitCard::play() {
-    // push the volume to 99%
-    volumeChangePercent = (int8_t)(100.0f - Card::output->volume - 1.0f);
-    VolumeCard::play();
+void PushToLimitCard::play(bool codeChanged) {
+    if (codeChanged) {
+        // push the volume to 99%
+        volumeChangePercent = (int8_t)(100.0f - OutputDevice::instance->volume - 1.0f);
+        VolumeCard::play(codeChanged);
+    }
 }
 
 //-----------------------------------------------------------------------------

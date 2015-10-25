@@ -64,13 +64,13 @@ Player::~Player() {
 /**
  * @brief Player::loop function to let player participate in game loop.
  */
-void Player::loop() {
+void Player::loop(bool codeChanged) {
 
     bool removalNeeded = false;
 
     for (Vector<Card*>::iterator it = cards.begin(); it != cards.end(); it++) {
         if ( !(*it)->discard ) {
-            (*it)->play();
+            (*it)->play(codeChanged);
         }
         removalNeeded |= (*it)->discard;
     }
@@ -97,6 +97,11 @@ void Player::loop() {
  * next becomes previous and vice versa.
  */
 void Player::changeDirection() {
+
+    if (nextPlayer == prevPlayer) {
+        // two player game...nothing to do.
+        return;
+    }
 
     bool nextPlayerChanged = (nextPlayer->prevPlayer != this);
 

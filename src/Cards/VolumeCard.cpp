@@ -1,13 +1,19 @@
 #include "VolumeCard.h"
 
 #include <Player.h>
+#include <Devices/SevenSegmentDisplay.h>
 
 #include <Arduino.h>
 
 //-----------------------------------------------------------------------------
 
+const uint8_t VolumeCard::type = 1;
+
+//-----------------------------------------------------------------------------
+
 VolumeCard::VolumeCard(int8_t volumeChangePercent, uint8_t intensity)
-    : volumeChangePercent(volumeChangePercent),
+    : Card(type),
+      volumeChangePercent(volumeChangePercent),
       intensity(intensity)
 {
 
@@ -15,12 +21,17 @@ VolumeCard::VolumeCard(int8_t volumeChangePercent, uint8_t intensity)
 
 //-----------------------------------------------------------------------------
 
-void VolumeCard::play() {
+void VolumeCard::play(bool codeChanged) {
 
-    Card::output->apply(volumeChangePercent, intensity);
+    if (codeChanged) {
 
-    printf("%s: applied volume change of %d%% with intensity %d\n", cardName(), volumeChangePercent, intensity);
-    discard = true;
+        SevenSegmentDisplay::instance->setAnimation(ANIM_FILL, 100, true, volumeChangePercent < 0, 0);
+        OutputDevice::instance->apply(volumeChangePercent, intensity);
+        SevenSegmentDisplay::instance->stopAnimation();
+
+        printf("%s: applied volume change of %d%% with intensity %d\n", cardName(), volumeChangePercent, intensity);
+        discard = true;
+    }
 }
 
 //-----------------------------------------------------------------------------

@@ -2,8 +2,11 @@
 
 #include <Constants.h>
 #include <Player.h>
-#include <OutputDevice.h>
+#include <Devices/OutputDevice.h>
+#include <Devices/PiezoBuzzer.h>
+#include <Devices/SevenSegmentDisplay.h>
 #include <Cards/Card.h>
+#include <Tasks/TaskScheduler.h>
 
 #include <Arduino.h>
 
@@ -15,11 +18,9 @@
 Game::Game()
     : started(false),
       gameEnded(false),
+      waitCardRemoved(false),
       numPlayers(-1),
-      currentPlayer(0),
-      codeDetector(0),
-      redLed(0),
-      greenLed(0)
+      currentPlayer(0)
 {
 }
 
@@ -33,22 +34,6 @@ Game::~Game()
     if (currentPlayer != 0) {
         delete currentPlayer;
     }
-}
-
-//-----------------------------------------------------------------------------
-
-/**
- * @brief Game::setup Setup the component.
- * @param codeDetector object used for code detection.
- * @param outputDevice device to apply played cards to.
- * @param redLed red status led.
- * @param greenLed green status led.
- */
-void Game::setup(CodeDetector* codeDetector, OutputDevice* outputDevice, Led* redLed, Led* greenLed) {
-    this->codeDetector = codeDetector;
-    this->redLed = redLed;
-    this->greenLed = greenLed;
-    Card::output = outputDevice;
 }
 
 //-----------------------------------------------------------------------------
@@ -68,6 +53,7 @@ bool Game::isStarted() {
  * @param numPlayers number of players that participate.
  */
 void Game::start(int8_t numPlayers) {
+    printf("=== Start Game ===\n");
     this->started = true;
     this->gameEnded = false;
     this->numPlayers = numPlayers;
@@ -77,12 +63,28 @@ void Game::start(int8_t numPlayers) {
         delete currentPlayer;
     }
 
-    currentPlayer = new Player(numPlayers); //last player
+    currentPlayer = new Player(numPlayers); //last player is current afterwards
+
+    PiezoBuzzer::instance->setMelody(PiezoBuzzer::M_BEVERLY_HILLS, PiezoBuzzer::R_BEVERLY_HILLS);
+    SevenSegmentDisplay::instance->setAnimation(ANIM_CIRCLE2, 75, false, false, 12);
+    TaskScheduler::instance->loop();
+
+    changePlayer();
+}
+
+//-----------------------------------------------------------------------------
+
+void Game::changePlayer() {
     currentPlayer = currentPlayer->nextPlayer; //first player
     printf("=== Turn changed to player %1d ===\n", currentPlayer->id);
 
-    redLed->setOn(false);
-    greenLed->setOn(true);
+    SevenSegmentDisplay::instance->setCharacter(0);
+    delay(500);
+    SevenSegmentDisplay::instance->setCharacter(CHAR_P);
+    PiezoBuzzer::instance->playTone(NOTE_C1, 8, 1, 2);
+    TaskScheduler::instance->loop();
+
+    SevenSegmentDisplay::instance->setNumber(currentPlayer->id);
 }
 
 //-----------------------------------------------------------------------------
@@ -93,10 +95,10 @@ void Game::start(int8_t numPlayers) {
  */
 void Game::loop() {
 
-    bool codeChanged = codeDetector->codeChanged(true);
+    bool codeChanged = CodeDetector::instance->codeChanged(true);
 
     if (gameEnded) {
-        if (codeDetector->getActiveCode() == CODE_ALL) {
+        if (CodeDetector::instance->getActiveCode() == CODE_ALL) {
             printf("=== RESTART ===\n");
             start(numPlayers);
         }
@@ -104,28 +106,30 @@ void Game::loop() {
     }
 
     if (codeChanged) {
-        redLed->setOn(true);
-        greenLed->setOn(false);
-        Card::playCard(codeDetector->getActiveCode(), currentPlayer);
+        PiezoBuzzer::instance->playTone(NOTE_D6, 64, 1, 16);
+        TaskScheduler::instance->loop();
+        Card::playCard(CodeDetector::instance->getActiveCode(), currentPlayer);
+        waitCardRemoved = true;
     }
 
-    currentPlayer->loop();
+    if (!waitCardRemoved) {
+        currentPlayer->loop(codeChanged);
+        SevenSegmentDisplay::instance->setNumber(currentPlayer->id);
+    }
 
-    if (Card::output->volume > 100.0f) {
-        Card::output->reset();
+    if (OutputDevice::instance->volume > 100.0f) {
+        OutputDevice::instance->reset();
         gameEnded = true;
         printf("==  Player %1d lost the game!\n", currentPlayer->id);
-        redLed->blink(5, 600, true);
+//        redLed->blink(5, 600, true);
         return;
     }
 
-    if (codeChanged) {
-        currentPlayer = currentPlayer->nextPlayer;
-        redLed->setOn(false);
-        greenLed->setOn(true);
-        Card::output->apply(0);
+    if (waitCardRemoved && CodeDetector::instance->getActiveCode() == CODE_ALL) {
+        waitCardRemoved = false;
+        changePlayer();
         printf("New volume is ");
-        Serial.println(Card::output->volume);
+        Serial.println(OutputDevice::instance->volume);
         printf("=== Turn changed to player %1d ===\n", currentPlayer->id);
     }
 }

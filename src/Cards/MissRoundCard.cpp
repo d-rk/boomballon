@@ -1,13 +1,22 @@
 #include "MissRoundCard.h"
 #include <Player.h>
 #include <Arduino.h>
+#include <Devices/PiezoBuzzer.h>
+#include <Devices/SevenSegmentDisplay.h>
+#include <Tasks/TaskScheduler.h>
+
+#include <Constants.h>
+
+//-----------------------------------------------------------------------------
+
+const uint8_t MissRoundCard::type = 2;
 
 //-----------------------------------------------------------------------------
 
 /**
  * @brief MissRoundCard::MissRoundCard Constructor.
  */
-MissRoundCard::MissRoundCard()
+MissRoundCard::MissRoundCard() : Card(type)
 {
 }
 
@@ -17,9 +26,9 @@ MissRoundCard::MissRoundCard()
  * @brief MissRoundCard::play The card is played from opponents stack of cards.
  * Invalidate the next card following this one.
  */
-void MissRoundCard::play() {
+void MissRoundCard::play(bool codeChanged) {
 
-    if (attachedPlayer != NULL) {
+    if (codeChanged && attachedPlayer != NULL) {
         Card* lastCard = NULL;
         for (Vector<Card*>::iterator it = attachedPlayer->cards.begin(); it != attachedPlayer->cards.end(); it++) {
             if (lastCard == this) {
@@ -27,12 +36,19 @@ void MissRoundCard::play() {
                 printf("%s discarded card %s.\n", cardName(), (*it)->cardName());
                 (*it)->discard = true;
                 discard = true;
+                //show it to the user
+                delay(500);
+                PiezoBuzzer::instance->playTone(PLAY_ERROR, 4);
+                SevenSegmentDisplay::instance->setCharacter(CHAR_MINUS);
+                TaskScheduler::instance->loop();
+                return;
             } else {
                 lastCard = *it;
             }
         }
     }
     discard = false;
+    byte bb = B10010;
 }
 
 //-----------------------------------------------------------------------------

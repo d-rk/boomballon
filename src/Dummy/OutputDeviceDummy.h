@@ -2,7 +2,7 @@
 #define OUTPUTDEVICEDUMMY_H
 
 #include <Dummy/LedBar.h>
-#include <OutputDevice.h>
+#include <Devices/OutputDevice.h>
 
 class OutputDeviceDummy : public OutputDevice
 {

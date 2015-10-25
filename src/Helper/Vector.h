@@ -38,8 +38,6 @@ private:
     T * buffer;
 };
 
-#include "Vector.h"
-
 template<class T>
 Vector<T>::Vector()
 {
@@ -149,9 +147,15 @@ void Vector<T>::reserve(unsigned int capacity)
 }
 
 template<class T>
-unsigned int Vector<T>::size()const//
+unsigned int Vector<T>::size() const
 {
     return my_size;
+}
+
+template<class T>
+bool Vector<T>::empty() const
+{
+    return my_size == 0;
 }
 
 template<class T>

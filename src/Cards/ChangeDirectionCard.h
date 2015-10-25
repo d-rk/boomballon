@@ -15,7 +15,7 @@ class ChangeDirectionCard : public VolumeCard
 public:
     ChangeDirectionCard(int8_t volumeChangePercent, uint8_t intensity);
 
-    virtual void play();
+    virtual void play(bool codeChanged);
 
     virtual const char* cardName() const {return "DIRECTION";}
 };

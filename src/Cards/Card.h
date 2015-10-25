@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include <Player.h>
-#include <OutputDevice.h>
+#include <Devices/OutputDevice.h>
 
 /**
  * @brief The Card class
@@ -15,20 +15,20 @@
 class Card {
 
 public:
-    Card();
+    Card(uint8_t cardType);
 
-    virtual void play() = 0;
+    //todo: remove codeChanged
+    virtual void play(bool codeChanged) = 0;
 
     virtual void attach(Player* currentPlayer);
 
     static void playCard(uint8_t code, Player* currentPlayer);
 
-    static OutputDevice* output;
-
     virtual const char* cardName() const = 0;
 
 public:
     bool discard;
+    uint8_t cardType;
 protected:
     Player* attachedPlayer;
 };

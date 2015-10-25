@@ -8,7 +8,7 @@ class VolumeCard : public Card
 public:
     VolumeCard(int8_t volumeChangePercent, uint8_t intensity);
 
-    virtual void play();
+    virtual void play(bool codeChanged);
 
     virtual void attach(Player* currentPlayer);
 
@@ -17,6 +17,8 @@ public:
 protected:
     int8_t volumeChangePercent;
     uint8_t intensity;
+public:
+    static const uint8_t type;
 };
 
 #endif // VOLUMECARD_H

@@ -47,6 +47,9 @@ protected:
     #ifdef DEBUG
     uint8_t rawValue[] = {0, 0, 0, 0, 0};
     #endif
+
+public:
+    static CodeDetector* instance;
 };
 
 #endif // CODEDETECTOR_H

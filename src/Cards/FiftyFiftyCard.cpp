@@ -10,14 +10,16 @@ FiftyFiftyCard::FiftyFiftyCard(uint8_t intensity)
 
 //-----------------------------------------------------------------------------
 
-void FiftyFiftyCard::play() {
+void FiftyFiftyCard::play(bool codeChanged) {
 
-    //sign is 1 or -1 randomly
-    int8_t sign = random(2)*2 - 1;
+    if (codeChanged) {
+        //sign is 1 or -1 randomly
+        int8_t sign = random(2)*2 - 1;
 
-    // 50% of the current volume plus or minus randomly
-    volumeChangePercent = (int8_t)(Card::output->volume * 0.5f * sign);
-    VolumeCard::play();
+        // 50% of the current volume plus or minus randomly
+        volumeChangePercent = (int8_t)(OutputDevice::instance->volume * 0.5f * sign);
+        VolumeCard::play(codeChanged);
+    }
 }
 
 //-----------------------------------------------------------------------------

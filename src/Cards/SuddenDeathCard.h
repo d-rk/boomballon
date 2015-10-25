@@ -2,13 +2,14 @@
 #define SUDDENDEATHCARD_H
 
 #include <Cards/Card.h>
+#include <Devices/SevenSegmentDisplay.h>
 
 class SuddenDeathCard : public Card
 {
 public:
     SuddenDeathCard();
 
-    virtual void play();
+    virtual void play(bool codeChanged);
 
     virtual void attach(Player* currentPlayer);
 
@@ -16,6 +17,10 @@ public:
 
 private:
     uint64_t startTime;
+    DisplayAnimation animation;
+
+public:
+    static const uint8_t type;
 };
 
 #endif // SUDDENDEATHCARD_H

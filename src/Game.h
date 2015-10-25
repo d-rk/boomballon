@@ -3,11 +3,12 @@
 
 #include <stdint.h>
 
-#include <Led.h>
-#include <CodeDetector.h>
+#include <Devices/CodeDetector.h>
 
 class Player;
 class OutputDevice;
+class PiezoBuzzer;
+class SevenSegmentDisplay;
 
 /**
  * @brief The Game class
@@ -21,8 +22,6 @@ public:
     Game();
     ~Game();
 
-    void setup(CodeDetector* codeDetector, OutputDevice* outputDevice, Led* redLed, Led* greenLed);
-
     bool isStarted();
 
     void start(int8_t numPlayers);
@@ -30,13 +29,14 @@ public:
     void loop();
 
 private:
+    void changePlayer();
+
+private:
     bool started;
     bool gameEnded;
+    bool waitCardRemoved;
     int8_t numPlayers;
     Player* currentPlayer;
-    CodeDetector* codeDetector;
-    Led* redLed;
-    Led* greenLed;
 };
 
 #endif // GAME_H

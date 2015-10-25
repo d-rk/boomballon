@@ -8,7 +8,7 @@ class AngelCard : public VolumeCard
 public:
     AngelCard(int8_t volumeChangePercent, uint8_t intensity);
 
-    virtual void play();
+    virtual void play(bool codeChanged);
 
     virtual const char* cardName() const {return "ANGEL";}
 };

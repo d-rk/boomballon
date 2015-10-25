@@ -11,14 +11,13 @@ public:
 
     virtual void setup();
 
-    void apply(int8_t volumeChangePercent, uint8_t intensity);
+    void apply(int8_t volumeChangePercent, uint8_t intensity, bool force = false);
 
-    void apply(int8_t value, uint16_t durationMs = 0);
+    void applyIntensities(uint8_t positiveIntensity, uint8_t negativeIntensity, uint16_t durationMs, bool force);
 
     void reset();
 
 protected:
-    void applyIntensities(uint8_t positiveIntensity, uint8_t negativeIntensity, uint16_t durationMs);
 
     virtual void applyPositive(uint8_t intensity, uint16_t durationMs);
     virtual void applyNegative(uint8_t intensity, uint16_t durationMs);
@@ -44,6 +43,8 @@ public:
     uint64_t lastValueChange;
     int8_t currentValue;
     float volume;
+
+    static OutputDevice* instance;
 };
 
 #endif // OUTPUTDEVICE_H

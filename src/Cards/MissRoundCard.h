@@ -16,11 +16,14 @@ class MissRoundCard : public Card
 public:
     MissRoundCard();
 
-    virtual void play();
+    virtual void play(bool codeChanged);
 
     virtual void attach(Player* currentPlayer);
 
     virtual const char* cardName() const {return "MISS_ROUND";}
+
+public:
+    static const uint8_t type;
 };
 
 #endif // MISSROUNDCARD_H

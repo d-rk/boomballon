@@ -1,7 +1,12 @@
 #include "OutputDevice.h"
 
+#include <Tasks/TaskScheduler.h>
 #include <Constants.h>
 #include <Arduino.h>
+
+//-----------------------------------------------------------------------------
+
+OutputDevice* OutputDevice::instance = NULL;
 
 //-----------------------------------------------------------------------------
 
@@ -39,8 +44,9 @@ void OutputDevice::setup() {
  * @brief apply apply volume change with given intensity.
  * @param volumeChangePercent volume change in percent i.e. in range [-100, 100]
  * @param intensity intensity with which the change is performed. (range [1, 255])
+ * @param force force volume change even if the model reaches 100%.
  */
-void OutputDevice::apply(int8_t volumeChangePercent, uint8_t intensity) {
+void OutputDevice::apply(int8_t volumeChangePercent, uint8_t intensity, bool force) {
 
     //intensity has to be at least 1
     intensity = (intensity > 0) ? intensity : 1;
@@ -48,54 +54,19 @@ void OutputDevice::apply(int8_t volumeChangePercent, uint8_t intensity) {
     uint16_t durationMs = getTimeForVolumeChange(volumeChangePercent, intensity);
 
     if (volumeChangePercent > 0) {
-        applyIntensities(intensity, 0, durationMs);
+        applyIntensities(intensity, 0, durationMs, force);
     } else {
-        applyIntensities(0, intensity, durationMs);
+        applyIntensities(0, intensity, durationMs, force);
     }
 }
 
 //-----------------------------------------------------------------------------
 
-void OutputDevice::apply(int8_t value, uint16_t durationMs) {
-
-//    if (value == currentValue) {
-//        return;
-//    }
-
-//    if (lastValueChange > 0 && currentValue != 0) {
-//        //sum up the volume change from the old value
-//        volume += getVolume(currentValue, millis() - lastValueChange);
-//    }
-
-//    if (value < 0) {
-//        applyPositive(0, durationMs);
-//        applyNegative(-2 * value, durationMs);
-//    } else if (value > 0) {
-//        applyPositive(2 * value, durationMs);
-//        applyNegative(0, durationMs);
-//    } else {
-//        applyPositive(0, 0);
-//        applyNegative(0, 0);
-//        delay(durationMs);
-//    }
-
-//    currentValue = value;
-}
-
-//-----------------------------------------------------------------------------
-
 void OutputDevice::reset() {
-//    for (int i=0; i < 100; i++) {
-//        applyPositive(255);
-//        delay(50);
-//    }
-//    applyPositive(0);
 
-//    for (int i=0; i < 100; i++) {
-//        applyNegative(255);
-//        delay(50);
-//    }
-//    applyNegative(0);
+    apply(20, 255, true);
+    apply(-100, 255, true);
+    apply(-60, 255, true);
 
     volume = 0.0f;
 }
@@ -103,7 +74,7 @@ void OutputDevice::reset() {
 //-----------------------------------------------------------------------------
 
 
-void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeIntensity, uint16_t durationMs)
+void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeIntensity, uint16_t durationMs, bool force)
 {
     uint8_t stepMs = 5;
 
@@ -147,11 +118,13 @@ void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeI
         volume += volumeIncrementPerMs;
         volume -= volumeDecrementPerMs;
 
-        if (volume > 100.0f) {
+        if (!force && volume > 100.0f) {
             break;
         } else if (volume < 0.0f) {
             volume = 0.0f;
         }
+
+        TaskScheduler::instance->iterate();
     }
 
     //make sure everything is off afterwards
