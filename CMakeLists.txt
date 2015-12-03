@@ -21,5 +21,5 @@ generate_arduino_firmware(BoomBallon
     SRCS ${SRC_FILES}
     HDRS ${HDR_FILES}
     INCLUDE_DIRS ${SRC_ABSOLUTE}
-    PORT  com4
-    BOARD uno)
+    PORT  com6
+    BOARD micro)

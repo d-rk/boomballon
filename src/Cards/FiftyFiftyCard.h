@@ -8,7 +8,7 @@ class FiftyFiftyCard : public VolumeCard
 public:
     FiftyFiftyCard(uint8_t intensity);
 
-    virtual void play(bool codeChanged);
+    virtual void play(bool newCardInserted, bool waitCardRemoved);
 
     virtual const char* cardName() const {return "FIFTY_FIFTY";}
 };

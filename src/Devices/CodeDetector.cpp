@@ -136,7 +136,7 @@ void CodeDetector::setActiveCode(uint8_t code) {
         activeCodeMirrored = code;
     }
 
-    printf("Set active Code: %2d (%2d)\n", activeCode, activeCodeMirrored);
+    printf("\tActive Code: %2d (%2d)\n", activeCode, activeCodeMirrored);
 }
 
 

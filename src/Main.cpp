@@ -10,6 +10,8 @@
 
 #include <Constants.h>
 
+#include <Dummy/CodeDetectorSerial.h>
+
 //-----------------------------------------------------------------------------
 
 PlayerChooser playerChooser(CODE_2, CODE_3, CODE_4, CODE_5);
@@ -21,21 +23,32 @@ Game game;
  * @brief setup setup everything needed for the program to run.
  */
 void setup() {
+
+    delay(1000);
+
     Log::setup();
     randomSeed(analogRead(PIN_A0)); //PIN 0 needs to be unconnected
 
     TaskScheduler::instance = new TaskScheduler();
-    OutputDevice::instance = new OutputDevice(PIN_9, PIN_4);
+    OutputDevice::instance = new OutputDevice(PIN_3, PIN_4);
+
     CodeDetector::instance = new CodeDetector(PIN_A1, PIN_A2, PIN_A3, PIN_A4, PIN_A5);
-    PiezoBuzzer::instance  = new PiezoBuzzer(PIN_8);
-    SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_7, PIN_6, PIN_5);
+    PiezoBuzzer::instance  = new PiezoBuzzer(PIN_6);
+    SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_8, PIN_9, PIN_7);
 
     OutputDevice::instance->setup();
     CodeDetector::instance->setup();
     PiezoBuzzer::instance->setup();
+
     SevenSegmentDisplay::instance->setup();
 
     SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
+
+    printf("=================================\n");
+    printf("=== Select number of players  ===\n");
+    printf("=================================\n");
+
+    //game.start(2, false);
 }
 
 //-----------------------------------------------------------------------------
@@ -47,7 +60,6 @@ void loop() {
 
     if (!game.isStarted()) {
         if (playerChooser.detectNumPlayers() && CodeDetector::instance->getActiveCode() == CODE_ALL) {
-            printf("\nStarting game with %1d players.\n", playerChooser.getNumPlayers());
             game.start(playerChooser.getNumPlayers());
         }
     } else {

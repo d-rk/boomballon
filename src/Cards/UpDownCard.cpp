@@ -10,14 +10,14 @@ UpDownCard::UpDownCard(int8_t volumeChangePercent, uint8_t intensity, bool start
 
 //-----------------------------------------------------------------------------
 
-void UpDownCard::play(bool codeChanged) {
+void UpDownCard::play(bool newCardInserted, bool waitCardRemoved) {
 
-    if (codeChanged) {
+    if (newCardInserted) {
         if (!startUp) volumeChangePercent *= -1;
 
         // alternate between fill and deflate
         for (uint8_t i = 0; i < 4; i++) {
-            VolumeCard::play(codeChanged);
+            VolumeCard::play(newCardInserted, waitCardRemoved);
             volumeChangePercent *= -1;
         }
     }

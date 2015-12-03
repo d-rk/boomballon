@@ -9,7 +9,7 @@ class SuddenDeathCard : public Card
 public:
     SuddenDeathCard();
 
-    virtual void play(bool codeChanged);
+    virtual void play(bool newCardInserted, bool waitCardRemoved);
 
     virtual void attach(Player* currentPlayer);
 

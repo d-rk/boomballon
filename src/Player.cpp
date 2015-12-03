@@ -64,13 +64,13 @@ Player::~Player() {
 /**
  * @brief Player::loop function to let player participate in game loop.
  */
-void Player::loop(bool codeChanged) {
+void Player::loop(bool codeChanged, bool waitCardRemoved) {
 
     bool removalNeeded = false;
 
     for (Vector<Card*>::iterator it = cards.begin(); it != cards.end(); it++) {
         if ( !(*it)->discard ) {
-            (*it)->play(codeChanged);
+            (*it)->play(codeChanged, waitCardRemoved);
         }
         removalNeeded |= (*it)->discard;
     }

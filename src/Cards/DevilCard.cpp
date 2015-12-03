@@ -21,7 +21,7 @@ void DevilCard::attach(Player* currentPlayer) {
     }
 
     Card::attach(otherPlayer);
-    printf("Attached %s from Player %1d to %1d.\n", cardName(), currentPlayer->id, otherPlayer->id);
+    printf("\tAttached %s from Player %1d to %1d.\n", cardName(), currentPlayer->id, otherPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

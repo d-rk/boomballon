@@ -16,7 +16,7 @@ class MissRoundCard : public Card
 public:
     MissRoundCard();
 
-    virtual void play(bool codeChanged);
+    virtual void play(bool newCardInserted, bool waitCardRemoved);
 
     virtual void attach(Player* currentPlayer);
 

@@ -26,14 +26,14 @@ MissRoundCard::MissRoundCard() : Card(type)
  * @brief MissRoundCard::play The card is played from opponents stack of cards.
  * Invalidate the next card following this one.
  */
-void MissRoundCard::play(bool codeChanged) {
+void MissRoundCard::play(bool newCardInserted, bool waitCardRemoved) {
 
-    if (codeChanged && attachedPlayer != NULL) {
+    if (newCardInserted && attachedPlayer != NULL) {
         Card* lastCard = NULL;
         for (Vector<Card*>::iterator it = attachedPlayer->cards.begin(); it != attachedPlayer->cards.end(); it++) {
             if (lastCard == this) {
                 //ok we found the card which should be played after this one
-                printf("%s discarded card %s.\n", cardName(), (*it)->cardName());
+                printf("\t%s discarded card %s.\n", cardName(), (*it)->cardName());
                 (*it)->discard = true;
                 discard = true;
                 //show it to the user
@@ -68,7 +68,7 @@ void MissRoundCard::attach(Player* currentPlayer) {
     }
 
     Card::attach(otherPlayer);
-    printf("Attached %s from Player %1d to %1d.\n", cardName(), currentPlayer->id, otherPlayer->id);
+    printf("\tAttached %s from Player %1d to %1d.\n", cardName(), currentPlayer->id, otherPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

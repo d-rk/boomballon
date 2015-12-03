@@ -8,7 +8,7 @@ class PushToLimitCard : public VolumeCard
 public:
     PushToLimitCard(uint8_t intensity);
 
-    virtual void play(bool codeChanged);
+    virtual void play(bool newCardInserted, bool waitCardRemoved);
 
     virtual const char* cardName() const {return "PUSH_LIMIT";}
 };

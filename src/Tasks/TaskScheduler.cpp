@@ -34,8 +34,8 @@ void TaskScheduler::removeTask(Task* task) {
 void TaskScheduler::loop() {
     bool activeTasks = !tasks.empty();
 
-    Serial.print("tasks in loop: ");
-    Serial.println(tasks.size());
+//    Serial.print("\ttasks in loop: ");
+//    Serial.println(tasks.size());
 
     while(activeTasks) {
         activeTasks = false;

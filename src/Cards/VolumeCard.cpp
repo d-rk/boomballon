@@ -21,15 +21,15 @@ VolumeCard::VolumeCard(int8_t volumeChangePercent, uint8_t intensity)
 
 //-----------------------------------------------------------------------------
 
-void VolumeCard::play(bool codeChanged) {
+void VolumeCard::play(bool newCardInserted, bool waitCardRemoved) {
 
-    if (codeChanged) {
+    if (newCardInserted) {
 
         SevenSegmentDisplay::instance->setAnimation(ANIM_FILL, 100, true, volumeChangePercent < 0, 0);
         OutputDevice::instance->apply(volumeChangePercent, intensity);
         SevenSegmentDisplay::instance->stopAnimation();
 
-        printf("%s: applied volume change of %d%% with intensity %d\n", cardName(), volumeChangePercent, intensity);
+        printf("\t%s: applied volume change of %d%% with intensity %d\n", cardName(), volumeChangePercent, intensity);
         discard = true;
     }
 }
@@ -38,7 +38,7 @@ void VolumeCard::play(bool codeChanged) {
 
 void VolumeCard::attach(Player* currentPlayer) {
     Card::attach(currentPlayer);
-    printf("Attached %s(%d) to player %d.\n", cardName(), volumeChangePercent, currentPlayer->id);
+    printf("\tAttached %s(%d) to player %d.\n", cardName(), volumeChangePercent, currentPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

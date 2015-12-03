@@ -18,10 +18,6 @@ public:
     void reset();
 
 protected:
-
-    virtual void applyPositive(uint8_t intensity, uint16_t durationMs);
-    virtual void applyNegative(uint8_t intensity, uint16_t durationMs);
-
     virtual float getVolumeIncrement(uint8_t intensity, uint16_t durationMs);
     virtual float getVolumeDecrement(uint8_t intensity, uint16_t durationMs);
 

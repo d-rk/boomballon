@@ -18,7 +18,7 @@ public:
     Card(uint8_t cardType);
 
     //todo: remove codeChanged
-    virtual void play(bool codeChanged) = 0;
+    virtual void play(bool newCardInserted, bool waitCardRemoved) = 0;
 
     virtual void attach(Player* currentPlayer);
 

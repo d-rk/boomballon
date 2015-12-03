@@ -24,7 +24,7 @@ public:
 
     bool isStarted();
 
-    void start(int8_t numPlayers);
+    void start(int8_t numPlayers, bool playJingle = true);
 
     void loop();
 
@@ -34,6 +34,7 @@ private:
 private:
     bool started;
     bool gameEnded;
+    bool playJingle;
     bool waitCardRemoved;
     int8_t numPlayers;
     Player* currentPlayer;

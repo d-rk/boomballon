@@ -8,7 +8,7 @@ class UpDownCard : public VolumeCard
 public:
     UpDownCard(int8_t volumeChangePercent, uint8_t intensity, bool startUp);
 
-    virtual void play(bool codeChanged);
+    virtual void play(bool newCardInserted, bool waitCardRemoved);
 
     virtual const char* cardName() const {return "UP_DOWN";}
 
