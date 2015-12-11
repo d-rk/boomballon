@@ -5,6 +5,7 @@
 
 #include <Devices/CodeDetector.h>
 
+class Card;
 class Player;
 class OutputDevice;
 class PiezoBuzzer;
@@ -31,6 +32,11 @@ public:
 private:
     void changePlayer();
 
+    Player* getPlayer(uint8_t playerId);
+
+    void acceptedFeedback();
+    void errorFeedback();
+
 private:
     bool started;
     bool gameEnded;
@@ -38,6 +44,7 @@ private:
     bool waitCardRemoved;
     int8_t numPlayers;
     Player* currentPlayer;
+    Card* currentCard;
 };
 
 #endif // GAME_H

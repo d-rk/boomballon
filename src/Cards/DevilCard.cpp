@@ -10,18 +10,9 @@ DevilCard::DevilCard(int8_t volumeChangePercent, uint8_t intensity)
 
 //-----------------------------------------------------------------------------
 
-void DevilCard::attach(Player* currentPlayer) {
-
-    Player* otherPlayer = currentPlayer;
-
-    while (otherPlayer == currentPlayer) {
-        for (int i=0; i < random(5); i++) {
-            otherPlayer = otherPlayer->nextPlayer;
-        }
-    }
-
-    Card::attach(otherPlayer);
-    printf("\tAttached %s from Player %1d to %1d.\n", cardName(), currentPlayer->id, otherPlayer->id);
+void DevilCard::attach(Player* targetPlayer) {
+    Card::attach(targetPlayer);
+    printf("\tAttached %s to %1d.\n", cardName(), targetPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

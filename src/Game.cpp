@@ -8,6 +8,7 @@
 #include <Cards/Card.h>
 #include <Tasks/TaskScheduler.h>
 #include <Helper/Diagnostic.h>
+#include <PlayerChooser.h>
 
 #include <Arduino.h>
 
@@ -22,7 +23,8 @@ Game::Game()
       playJingle(true),
       waitCardRemoved(false),
       numPlayers(-1),
-      currentPlayer(0)
+      currentPlayer(0),
+      currentCard(0)
 {
 }
 
@@ -35,6 +37,10 @@ Game::~Game()
 {
     if (currentPlayer != 0) {
         delete currentPlayer;
+    }
+
+    if (currentCard != 0) {
+        delete currentCard;
     }
 }
 
@@ -68,6 +74,11 @@ void Game::start(int8_t numPlayers, bool playJingle) {
     //create player objects
     if (currentPlayer != 0) {
         delete currentPlayer;
+    }
+
+    if (currentCard != 0) {
+        delete currentCard;
+        currentCard = 0;
     }
 
     currentPlayer = new Player(numPlayers); //last player is current afterwards
@@ -115,14 +126,63 @@ void Game::loop() {
         return;
     }
 
+    bool newCardInserted = false;
+
     if (codeChanged) {
-        PiezoBuzzer::instance->playTone(NOTE_D6, 64, 1, 16);
-        TaskScheduler::instance->loop();
-        Card::playCard(CodeDetector::instance->getActiveCode(), currentPlayer);
-        waitCardRemoved = true;
+
+        uint8_t code = CodeDetector::instance->getActiveCode();
+
+        if (currentCard == 0) {
+            //waiting for a card to be played
+            currentCard = Card::playCard(code);
+
+            if (currentCard != 0) {
+                //a valid card was inserted
+                acceptedFeedback();
+
+                if (!currentCard->needsPlayerSelection()) {
+                    //directly play card
+                    currentCard->attach(currentPlayer);
+                    newCardInserted = true;
+                    waitCardRemoved = true;
+                    currentCard = 0;
+                } else {
+                    printf("\tWaiting for a player-card to attach %s...\n", currentCard->cardName());
+                }
+            } else {
+                //wrong card inserted
+                errorFeedback();
+                printf("\tError: not a valid game card.\n");
+            }
+        } else {
+            //waiting for a player card
+            if (PlayerChooser::instance->isPlayerCode(code)) {
+                //player card was inserted
+                PiezoBuzzer::instance->playTone(NOTE_D6, 64, 1, 16);
+                TaskScheduler::instance->loop();
+
+                Player* targetPlayer = getPlayer(PlayerChooser::instance->playerId(code));
+
+                if (targetPlayer != 0) {
+                    //play current card on target player
+                    acceptedFeedback();
+                    currentCard->attach(targetPlayer);
+                    newCardInserted = true;
+                    waitCardRemoved = true;
+                    currentCard = 0;
+                } else {
+                    errorFeedback();
+                    printf("\tError: target player not found.\n");
+                }
+            } else {
+                //wrong card inserted
+                errorFeedback();
+                printf("\tError: not a valid player card.\n");
+            }
+        }
     }
 
-    currentPlayer->loop(codeChanged, waitCardRemoved);
+    currentPlayer->loop(newCardInserted, waitCardRemoved);
     SevenSegmentDisplay::instance->setNumber(currentPlayer->id);
 
     if (OutputDevice::instance->volume > 100.0f) {
@@ -145,4 +205,41 @@ void Game::loop() {
 
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Game::getPlayer get player with given id.
+ * @param playerId id of player.
+ * @return player or null.
+ */
+Player* Game::getPlayer(uint8_t playerId) {
+
+    Player* current = currentPlayer;
+
+    do {
+        if (current->id == playerId) {
+            return current;
+        }
+        current = current->nextPlayer;
+    } while (current != currentPlayer);
+
+    return 0;
+}
+
+//-----------------------------------------------------------------------------
+
+void Game::acceptedFeedback() {
+    //play a nice sound :)
+    PiezoBuzzer::instance->playTone(NOTE_D6, 64, 1, 16);
+    TaskScheduler::instance->loop();
+}
+
+//-----------------------------------------------------------------------------
+
+void Game::errorFeedback() {
+    //play sound and display error
+    PiezoBuzzer::instance->playTone(PLAY_ERROR, 4);
+    SevenSegmentDisplay::instance->setCharacter(CHAR_MINUS);
+    TaskScheduler::instance->loop();
+}
+
+//-----------------------------------------------------------------------------
 

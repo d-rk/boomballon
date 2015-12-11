@@ -17,7 +17,7 @@ public:
     Player(int8_t numPlayers, Player* nextPlayer = 0);
     ~Player();
 
-    void loop(bool codeChanged, bool waitCardRemoved);
+    void loop(bool newCardInserted, bool waitCardRemoved);
 
     void changeDirection();
 

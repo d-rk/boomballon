@@ -54,21 +54,12 @@ void MissRoundCard::play(bool newCardInserted, bool waitCardRemoved) {
 //-----------------------------------------------------------------------------
 
 /**
- * @brief MissRoundCard::attach Attach the card to a random opponent of current player.
- * @param currentPlayer player who played the card.
+ * @brief MissRoundCard::attach Attach the card to player.
+ * @param targetPlayer player to attach the card to.
  */
-void MissRoundCard::attach(Player* currentPlayer) {
-
-    Player* otherPlayer = currentPlayer;
-
-    while (otherPlayer == currentPlayer) {
-        for (int i=0; i < random(5); i++) {
-            otherPlayer = otherPlayer->nextPlayer;
-        }
-    }
-
-    Card::attach(otherPlayer);
-    printf("\tAttached %s from Player %1d to %1d.\n", cardName(), currentPlayer->id, otherPlayer->id);
+void MissRoundCard::attach(Player* targetPlayer) {
+    Card::attach(targetPlayer);
+    printf("\tAttached %s to %1d.\n", cardName(), targetPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

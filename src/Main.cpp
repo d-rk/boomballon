@@ -14,7 +14,6 @@
 
 //-----------------------------------------------------------------------------
 
-PlayerChooser playerChooser(CODE_2, CODE_3, CODE_4, CODE_5);
 Game game;
 
 //-----------------------------------------------------------------------------
@@ -28,6 +27,8 @@ void setup() {
 
     Log::setup();
     randomSeed(analogRead(PIN_A0)); //PIN 0 needs to be unconnected
+
+    PlayerChooser::instance = new PlayerChooser(CODE_15, CODE_17, CODE_19, CODE_21, CODE_23);
 
     TaskScheduler::instance = new TaskScheduler();
     OutputDevice::instance = new OutputDevice(PIN_3, PIN_4);
@@ -59,8 +60,8 @@ void setup() {
 void loop() {
 
     if (!game.isStarted()) {
-        if (playerChooser.detectNumPlayers() && CodeDetector::instance->getActiveCode() == CODE_ALL) {
-            game.start(playerChooser.getNumPlayers());
+        if (PlayerChooser::instance->detectNumPlayers() && CodeDetector::instance->getActiveCode() == CODE_ALL) {
+            game.start(PlayerChooser::instance->getNumPlayers());
         }
     } else {
         //game running

@@ -11,7 +11,9 @@ public:
 
     virtual void play(bool newCardInserted, bool waitCardRemoved);
 
-    virtual void attach(Player* currentPlayer);
+    virtual void attach(Player* targetPlayer);
+
+    virtual bool needsPlayerSelection() {return true;}
 
     virtual const char* cardName() const {return "SUDDEN_DEATH";}
 

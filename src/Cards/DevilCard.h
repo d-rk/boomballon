@@ -10,7 +10,9 @@ public:
 
     virtual const char* cardName() const {return "DEVIL";}
 
-    virtual void attach(Player* currentPlayer);
+    virtual bool needsPlayerSelection() {return true;}
+
+    virtual void attach(Player* targetPlayer);
 };
 
 #endif // DEVILCARD_H

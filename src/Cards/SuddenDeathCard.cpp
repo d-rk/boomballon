@@ -35,35 +35,23 @@ void SuddenDeathCard::play(bool newCardInserted, bool waitCardRemoved) {
 
 //-----------------------------------------------------------------------------
 
-void SuddenDeathCard::attach(Player* currentPlayer) {
+void SuddenDeathCard::attach(Player* targetPlayer) {
 
-    Vector<Player*> opponents;
+    bool hasSuddenDeathCard = false;
 
-    Player* otherPlayer = currentPlayer->nextPlayer;
-
-    while (otherPlayer != currentPlayer) {
-        bool hasSuddenDeathCard = false;
-        for (Vector<Card*>::iterator it = otherPlayer->cards.begin(); it != otherPlayer->cards.end(); it++) {
-            if ((*it)->cardType == SuddenDeathCard::type) {
-                hasSuddenDeathCard = true;
-                break;
-            }
+    for (Vector<Card*>::iterator it = targetPlayer->cards.begin(); it != targetPlayer->cards.end(); it++) {
+        if ((*it)->cardType == SuddenDeathCard::type) {
+            hasSuddenDeathCard = true;
+            break;
         }
-
-        if (!hasSuddenDeathCard) {
-            opponents.push_back(otherPlayer);
-        }
-        otherPlayer = otherPlayer->nextPlayer;
     }
 
-    if (opponents.empty()) {
-        printf("\tCannot attach SuddenDeathCard. No opponents left.");
+    if (hasSuddenDeathCard) {
+        printf("\tCannot attach SuddenDeathCard. Player already has card.");
         return;
     }
 
-    otherPlayer = opponents[random(opponents.size())];
-
-    switch(otherPlayer->id) {
+    switch(targetPlayer->id) {
         case 1: animation = ANIM_P1_FLOATING; break;
         case 2: animation = ANIM_P2_FLOATING; break;
         case 3: animation = ANIM_P3_FLOATING; break;
@@ -74,8 +62,8 @@ void SuddenDeathCard::attach(Player* currentPlayer) {
 
     startTime = millis();
 
-    Card::attach(otherPlayer);
-    printf("\tAttached SuddenDeath from Player %1d to %1d.\n", currentPlayer->id, otherPlayer->id);
+    Card::attach(targetPlayer);
+    printf("\tAttached SuddenDeath to %1d.\n", targetPlayer->id);
 }
 
 //-----------------------------------------------------------------------------

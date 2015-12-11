@@ -17,12 +17,13 @@ class Card {
 public:
     Card(uint8_t cardType);
 
-    //todo: remove codeChanged
     virtual void play(bool newCardInserted, bool waitCardRemoved) = 0;
 
-    virtual void attach(Player* currentPlayer);
+    virtual void attach(Player* targetPlayer);
 
-    static void playCard(uint8_t code, Player* currentPlayer);
+    virtual bool needsPlayerSelection() {return false;}
+
+    static Card* playCard(uint8_t code);
 
     virtual const char* cardName() const = 0;
 
