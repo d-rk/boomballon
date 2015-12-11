@@ -7,6 +7,7 @@
 #include <Devices/SevenSegmentDisplay.h>
 #include <Cards/Card.h>
 #include <Tasks/TaskScheduler.h>
+#include <Helper/Diagnostic.h>
 
 #include <Arduino.h>
 
@@ -85,6 +86,7 @@ void Game::start(int8_t numPlayers, bool playJingle) {
 void Game::changePlayer() {
     currentPlayer = currentPlayer->nextPlayer; //first player
     printf("\n=== Turn changed to player %1d ===\n", currentPlayer->id);
+    printf("\tFree Ram: %d bytes\n", freeRam());
 
     SevenSegmentDisplay::instance->setCharacter(0);
     delay(500);

@@ -12,6 +12,12 @@ int TaskScheduler::SLEEP_MS = 20;
 
 //-----------------------------------------------------------------------------
 
+TaskScheduler::TaskScheduler() : tasks(Vector<Task*>(5))
+{
+}
+
+//-----------------------------------------------------------------------------
+
 void TaskScheduler::addTask(Task* task) {
     tasks.push_back(task);
 }

@@ -11,7 +11,7 @@ public:
     typedef T * iterator;
 
     Vector();
-    Vector(unsigned int size);
+    Vector(unsigned int capacity);
     Vector(unsigned int size, const T & initial);
     Vector(const Vector<T> & v);      
     ~Vector();
@@ -51,17 +51,17 @@ Vector<T>::Vector(const Vector<T> & v)
 {
     my_size = v.my_size;
     my_capacity = v.my_capacity;
-    buffer = new T[my_size];  
+    buffer = new T[my_capacity];
     for (unsigned int i = 0; i < my_size; i++)
-        buffer[i] = v.buffer[i];  
+        buffer[i] = v.buffer[i];
 }
 
 template<class T>
-Vector<T>::Vector(unsigned int size)
+Vector<T>::Vector(unsigned int capacity)
 {
-    my_capacity = size;
-    my_size = size;
-    buffer = new T[size];
+    my_size = 0;
+    my_capacity = capacity;
+    buffer = new T[capacity];
 }
 
 template<class T>
@@ -69,10 +69,9 @@ Vector<T>::Vector(unsigned int size, const T & initial)
 {
     my_size = size;
     my_capacity = size;
-    buffer = new T [size];
+    buffer = new T[size];
     for (unsigned int i = 0; i < size; i++)
         buffer[i] = initial;
-    //T();
 }
 
 template<class T>
@@ -81,7 +80,7 @@ Vector<T> & Vector<T>::operator = (const Vector<T> & v)
     delete[ ] buffer;
     my_size = v.my_size;
     my_capacity = v.my_capacity;
-    buffer = new T [my_size];
+    buffer = new T [my_capacity];
     for (unsigned int i = 0; i < my_size; i++)
         buffer[i] = v.buffer[i];
     return *this;
@@ -128,15 +127,13 @@ void Vector<T>::pop_back()
 template<class T>
 void Vector<T>::reserve(unsigned int capacity)
 {
-    if(buffer == 0)
-    {
+    if(buffer == 0) {
         my_size = 0;
         my_capacity = 0;
-    }    
+    }
+
     T * Newbuffer = new T [capacity];
-    //assert(Newbuffer);
     unsigned int l_Size = capacity < my_size ? capacity : my_size;
-    //copy (buffer, buffer + l_Size, Newbuffer);
 
     for (unsigned int i = 0; i < l_Size; i++)
         Newbuffer[i] = buffer[i];
@@ -182,12 +179,11 @@ Vector<T>::~Vector()
 {
     delete[ ] buffer;
 }
+
 template <class T>
 void Vector<T>::clear()
 {
-    my_capacity = 0;
     my_size = 0;
-    buffer = 0;
 }
 
 #endif // VECTOR_H

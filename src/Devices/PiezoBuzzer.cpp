@@ -37,7 +37,9 @@ PiezoBuzzer::PiezoBuzzer(uint8_t pin)
       melodyLength(0),
       rhythmLength(0),
       currentToneIndex(0),
-      toneFinishedMs(0L)
+      toneFinishedMs(0L),
+      dynamicMelody(Vector<uint16_t>(5)),
+      dynamicRhythm(Vector<uint8_t>(5))
 {
 }
 

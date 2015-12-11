@@ -8,6 +8,8 @@ class Task;
 class TaskScheduler
 {
 public:
+    TaskScheduler();
+
     void addTask(Task* task);
 
     void removeTask(Task* task);

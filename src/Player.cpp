@@ -12,7 +12,7 @@
  * @param nextPlayer player which comes right after this one.
  * @note this constructor recursivly creates all players and links them together.
  */
-Player::Player(int8_t numPlayers, Player* nextPlayer)
+Player::Player(int8_t numPlayers, Player* nextPlayer) : cards(Vector<Card*>(5))
 {
     //create 'numPlayers' player objects and link them together
     id = (uint8_t)numPlayers;
