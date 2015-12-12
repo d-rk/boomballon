@@ -19,8 +19,8 @@ CodeDetector* CodeDetector::instance = NULL;
  */
 CodeDetector::CodeDetector(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4, uint8_t pin5)
     : CODE_PINS{pin1, pin2, pin3, pin4, pin5},
-      MIN_THRESHOLD(500),
-      MAX_THRESHOLD(600),
+      MIN_THRESHOLD(26),
+      MAX_THRESHOLD(28),
       TIME_WAIT_MS(200),
       activeCode(0),
       currentCode(0),
@@ -86,6 +86,15 @@ uint8_t CodeDetector::readCode() {
     for (const uint8_t& pin : CODE_PINS) {
         int value = analogRead(pin);
 
+        switch (i) {
+            case 0: value = map(value, 150, 950, 0, 100); break;
+            case 1: value = map(value,  20, 910, 0, 100); break;
+            case 2: value = map(value,  20, 885, 0, 100); break;
+            case 3: value = map(value,  20, 900, 0, 100); break;
+            case 4: value = map(value,  20, 895, 0, 100); break;
+            default: break;
+        }
+
         if (value <= MIN_THRESHOLD) {
             code &= ~(1 << i); //set i-th bit to 0
         } else if (value >= MAX_THRESHOLD) {
@@ -148,21 +157,31 @@ void CodeDetector::setActiveCode(uint8_t code) {
  * @param code code from which to print the single bits.
  */
 void CodeDetector::printCodeBits(uint8_t code) {
-    for (int i=NUM_PINS-1; i >= 0; i--) {
+
+    uint8_t numPins = sizeof(CODE_PINS) / sizeof(CODE_PINS[0]);
+
+    for (int i=numPins-1; i >= 0; i--) {
         Serial.print((code >> i) & 1); //print i-th bit
     }
     Serial.println();
 }
 
+//-----------------------------------------------------------------------------
+
 /**
  * @brief CodeDetector_printRawValues Print raw values to serial.
  */
-void CodeDetector_printRawValues() {
-    for (int i=0; i < NUM_PINS; i++) {
+void CodeDetector::printRawValues() {
+
+    uint8_t numPins = sizeof(CODE_PINS) / sizeof(CODE_PINS[0]);
+
+    for (int i=0; i < numPins; i++) {
         Serial.print(rawValue[i]);
         Serial.print(",");
     }
     Serial.println();
 }
+
+//-----------------------------------------------------------------------------
 
 #endif

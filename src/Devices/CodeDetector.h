@@ -21,6 +21,11 @@ public:
 
     void setActiveCode(uint8_t code);
 
+    #ifdef DEBUG
+    void printRawValues();
+    void printCodeBits(uint8_t code);
+    #endif
+
 protected:
     virtual uint8_t readCode();
 
@@ -45,7 +50,7 @@ protected:
     uint64_t timeLastCodeChange;
 
     #ifdef DEBUG
-    uint8_t rawValue[] = {0, 0, 0, 0, 0};
+    int rawValue[5] = {0, 0, 0, 0, 0};
     #endif
 
 public:

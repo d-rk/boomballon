@@ -41,7 +41,7 @@ Card* Card::playCard(uint8_t code) {
         case CODE_11: card = new SuddenDeathCard(); break;             // Weltuntergang
 
         case CODE_13: card = new FiftyFiftyCard(100); break;           // Zwiegespalten +/- 50
-        case CODE_14: card = new UpDownCard(35, 200, true); break;     // Berg und Tal 20
+        case CODE_14: card = new UpDownCard(35, 200); break;           // Berg und Tal 20
 
         case CODE_27: card = new PushToLimitCard(255); break;          // Yin Yan
         default: break;

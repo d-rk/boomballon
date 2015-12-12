@@ -33,7 +33,7 @@ void setup() {
     TaskScheduler::instance = new TaskScheduler();
     OutputDevice::instance = new OutputDevice(PIN_3, PIN_4);
 
-    CodeDetector::instance = new CodeDetectorSerial(PIN_A1, PIN_A2, PIN_A3, PIN_A4, PIN_A5);
+    CodeDetector::instance = new CodeDetector(PIN_A1, PIN_A2, PIN_A3, PIN_A4, PIN_A5);
     PiezoBuzzer::instance  = new PiezoBuzzer(PIN_6);
     SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_8, PIN_9, PIN_7);
 
@@ -49,7 +49,7 @@ void setup() {
     printf("=== Select number of players  ===\n");
     printf("=================================\n");
 
-    game.start(2, false);
+    //game.start(2, false);
 }
 
 //-----------------------------------------------------------------------------

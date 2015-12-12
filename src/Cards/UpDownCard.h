@@ -6,7 +6,7 @@
 class UpDownCard : public VolumeCard
 {
 public:
-    UpDownCard(int8_t volumeChangePercent, uint8_t intensity, bool startUp);
+    UpDownCard(int8_t volumeChangePercent, uint8_t intensity);
 
     virtual void play(bool newCardInserted, bool waitCardRemoved);
 
