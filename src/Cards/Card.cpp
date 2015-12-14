@@ -28,10 +28,10 @@ Card* Card::playCard(uint8_t code) {
     Card* card = 0;
 
     switch (code) {
-        case CODE_1:  card = new VolumeCard(-20, 200); break;          // Hochdruck -10
-        case CODE_2:  card = new VolumeCard(-30, 200); break;          // Hochdruck -20
-        case CODE_3:  card = new ChangeDirectionCard(-30, 200); break; // Kurswechsel -30
-        case CODE_4:  card = new AngelCard(-30, 50); break;            // Engelsbote -30
+        case CODE_1:  card = new VolumeCard(-15, 200); break;          // Hochdruck -10
+        case CODE_2:  card = new VolumeCard(-25, 200); break;          // Hochdruck -20
+        case CODE_3:  card = new ChangeDirectionCard(-25, 200); break; // Kurswechsel -30
+        case CODE_4:  card = new AngelCard(-25, 50); break;            // Engelsbote -30
         case CODE_5:  card = new MissRoundCard(); break;               // Blockierung
 
         case CODE_6:  card = new VolumeCard( 30, 200); break;          // Tiefdruck +20

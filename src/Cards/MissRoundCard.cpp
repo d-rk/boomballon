@@ -30,6 +30,12 @@ void MissRoundCard::play(bool newCardInserted, bool waitCardRemoved) {
 
     if (newCardInserted && attachedPlayer != NULL) {
         Card* lastCard = NULL;
+
+        if (random(2) == 0) {
+            //just return in 50% of the time.
+            return;
+        }
+
         for (Vector<Card*>::iterator it = attachedPlayer->cards.begin(); it != attachedPlayer->cards.end(); it++) {
             if (lastCard == this) {
                 //ok we found the card which should be played after this one
@@ -48,7 +54,6 @@ void MissRoundCard::play(bool newCardInserted, bool waitCardRemoved) {
         }
     }
     discard = false;
-    byte bb = B10010;
 }
 
 //-----------------------------------------------------------------------------

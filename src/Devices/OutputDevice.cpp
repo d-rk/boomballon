@@ -13,8 +13,8 @@ OutputDevice* OutputDevice::instance = NULL;
 OutputDevice::OutputDevice(uint8_t pinMotor, uint8_t pinValve)
     : PIN_MOTOR(pinMotor),
       PIN_VALVE(pinValve),
-      FILL_TIME_MIN(8000),
-      FILL_TIME_MAX(10000),
+      FILL_TIME_MIN(8500),
+      FILL_TIME_MAX(10300),
       MOTOR_MIN(180),
       DEFLATE_TIME(7500),
       DEFLATE_CYCLE_MAX(200),
