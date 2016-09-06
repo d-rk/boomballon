@@ -13,8 +13,8 @@ OutputDevice* OutputDevice::instance = NULL;
 OutputDevice::OutputDevice(uint8_t pinMotor, uint8_t pinValve)
     : PIN_MOTOR(pinMotor),
       PIN_VALVE(pinValve),
-      FILL_TIME_MIN(8500),
-      FILL_TIME_MAX(10300),
+      FILL_TIME_MIN(9000),
+      FILL_TIME_MAX(11000),
       MOTOR_MIN(180),
       DEFLATE_TIME(7500),
       DEFLATE_CYCLE_MAX(200),
@@ -64,9 +64,9 @@ void OutputDevice::apply(int8_t volumeChangePercent, uint8_t intensity, bool for
 
 void OutputDevice::reset() {
 
-    apply(20, 255, true);
-    apply(-100, 255, true);
-    apply(-60, 255, true);
+    apply(30, 255, true);
+    apply(-110, 255, true);
+    apply(-70, 255, true);
 
     volume = 0.0f;
 }

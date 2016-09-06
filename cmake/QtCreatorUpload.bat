@@ -9,7 +9,7 @@
 taskkill /F /IM putty.exe /f >nul 2>&1
 
 @REM force reset of arduino by opening serial connection with baud 1200 and directly close it again.
-start putty.exe -serial com5 -sercfg 1200
+start putty.exe -serial com8 -sercfg 1200
 taskkill /F /IM putty.exe >nul
 
 @REM wait a second so that the virtual com port can open
