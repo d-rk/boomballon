@@ -2,6 +2,7 @@
 
 #include <Game.h>
 #include <PlayerChooser.h>
+#include<Devices/CodeDetector.h>
 #include <Devices/OutputDevice.h>
 #include <Devices/PiezoBuzzer.h>
 #include <Devices/SevenSegmentDisplay.h>
@@ -10,7 +11,7 @@
 
 #include <Constants.h>
 
-#include <Dummy/CodeDetectorSerial.h>
+//#include <Dummy/CodeDetectorSerial.h>
 
 //-----------------------------------------------------------------------------
 
@@ -26,16 +27,16 @@ void setup() {
     delay(1000);
 
     Log::setup();
-    randomSeed(analogRead(PIN_A0)); //PIN 0 needs to be unconnected
+    randomSeed(analogRead(PIN_A5)); //PIN 5 needs to be unconnected
 
     PlayerChooser::instance = new PlayerChooser(CODE_15, CODE_17, CODE_19, CODE_21, CODE_23);
 
     TaskScheduler::instance = new TaskScheduler();
-    OutputDevice::instance = new OutputDevice(PIN_3, PIN_4);
+    OutputDevice::instance = new OutputDevice(PIN_6, PIN_7);
 
-    CodeDetector::instance = new CodeDetector(PIN_A1, PIN_A2, PIN_A3, PIN_A4, PIN_A5);
-    PiezoBuzzer::instance  = new PiezoBuzzer(PIN_6);
-    SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_8, PIN_9, PIN_7);
+    CodeDetector::instance = new CodeDetector(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
+    PiezoBuzzer::instance  = new PiezoBuzzer(PIN_11);
+    SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_9, PIN_10, PIN_8);
 
     OutputDevice::instance->setup();
     CodeDetector::instance->setup();

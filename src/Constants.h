@@ -16,13 +16,6 @@
 #define PIN_12 12
 #define PIN_13 13
 
-#define PIN_A0 A0
-#define PIN_A1 A1
-#define PIN_A2 A2
-#define PIN_A3 A3
-#define PIN_A4 A4
-#define PIN_A5 A5
-
 #define CODE_NONE 0
 #define CODE_1 1
 #define CODE_2 2

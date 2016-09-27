@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8)
 #====================================================================#
 project(BoomBallon C CXX)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-threadsafe-statics")
 
 file(GLOB_RECURSE SRC_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 string(REGEX REPLACE "[^;]+CMakeFiles/[^;]+;?" "" SRC_FILES "${SRC_FILES}") 
@@ -21,5 +21,5 @@ generate_arduino_firmware(BoomBallon
     SRCS ${SRC_FILES}
     HDRS ${HDR_FILES}
     INCLUDE_DIRS ${SRC_ABSOLUTE}
-    PORT  com9
+    PORT  com8
     BOARD micro)
