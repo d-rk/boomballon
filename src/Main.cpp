@@ -2,7 +2,7 @@
 
 #include <Game.h>
 #include <PlayerChooser.h>
-#include<Devices/CodeDetector.h>
+#include <Devices/CodeDetector.h>
 #include <Devices/OutputDevice.h>
 #include <Devices/PiezoBuzzer.h>
 #include <Devices/SevenSegmentDisplay.h>
@@ -24,7 +24,8 @@ Game game;
  */
 void setup() {
 
-    delay(1000);
+    // wait two seconds so that the serial connection is established
+    delay(2000);
 
     Log::setup();
     randomSeed(analogRead(PIN_A5)); //PIN 5 needs to be unconnected
