@@ -15,6 +15,10 @@ string(REGEX REPLACE "[^;]+CMakeFiles/[^;]+;?" "" SRC_FILES "${SRC_FILES}")
 file(GLOB_RECURSE HDR_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
 string(REGEX REPLACE "[^;]+CMakeFiles/[^;]+;?" "" HDR_FILES "${HDR_FILES}")
 
+# settings for nano board
+set(nano.build.mcu atmega328p)
+set(nano.upload.speed 57600)
+
 get_filename_component(SRC_ABSOLUTE ${CMAKE_CURRENT_SOURCE_DIR}/src ABSOLUTE)
 
 set(ARDUINO_BOARD  "micro"    CACHE STRING "board name")

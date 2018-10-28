@@ -1,6 +1,15 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+// definition of availabe modes
+#define MODE_GAME() 1
+#define MODE_CODE_DETECTOR_CALIBRATION() 2
+
+// mode that should be compiled
+//#define ACTIVE_MODE() MODE_GAME()
+#define ACTIVE_MODE() MODE_CODE_DETECTOR_CALIBRATION()
+
+// definition of pins
 #define PIN_0 0
 #define PIN_1 1
 #define PIN_2 2
@@ -16,6 +25,7 @@
 #define PIN_12 12
 #define PIN_13 13
 
+// definition of codes
 #define CODE_NONE 0
 #define CODE_1 1
 #define CODE_2 2

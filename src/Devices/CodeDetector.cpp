@@ -101,7 +101,7 @@ uint8_t CodeDetector::readCode() {
             code |= 1 << i; //set i-th bit to 1
         }
 
-#ifdef DEBUG
+#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
         rawValue[i] = value;
 #endif
         i++;
@@ -151,7 +151,7 @@ void CodeDetector::setActiveCode(uint8_t code) {
 
 //-----------------------------------------------------------------------------
 
-#ifdef DEBUG
+#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
 /**
  * @brief CodeDetector::printCodeBits debug function to print the bits of a code.
  * @param code code from which to print the single bits.

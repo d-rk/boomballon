@@ -2,6 +2,7 @@
 #define CODEDETECTOR_H
 
 #include <stdint.h>
+#include <Constants.h>
 
 /**
  * @brief The CodeDetector class.
@@ -21,10 +22,10 @@ public:
 
     void setActiveCode(uint8_t code);
 
-    #ifdef DEBUG
+#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
     void printRawValues();
     void printCodeBits(uint8_t code);
-    #endif
+#endif
 
 protected:
     virtual uint8_t readCode();
@@ -49,9 +50,9 @@ protected:
     uint8_t currentCode;
     uint64_t timeLastCodeChange;
 
-    #ifdef DEBUG
+#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
     int rawValue[5] = {0, 0, 0, 0, 0};
-    #endif
+#endif
 
 public:
     static CodeDetector* instance;

@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include <Constants.h>
+
 #include <Game.h>
 #include <PlayerChooser.h>
 #include <Devices/CodeDetector.h>
@@ -8,8 +10,6 @@
 #include <Devices/SevenSegmentDisplay.h>
 #include <Tasks/TaskScheduler.h>
 #include <Helper/Log.h>
-
-#include <Constants.h>
 
 //#include <Dummy/CodeDetectorSerial.h>
 
@@ -47,15 +47,18 @@ void setup() {
 
     SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
 
+#if ACTIVE_MODE() == MODE_GAME()
     printf("=================================\n");
     printf("=== Select number of players  ===\n");
     printf("=================================\n");
+#endif
 
     //game.start(2, false);
 }
 
 //-----------------------------------------------------------------------------
 
+#if ACTIVE_MODE() == MODE_GAME()
 /**
  * @brief loop main loop for the program.
  */
@@ -70,6 +73,16 @@ void loop() {
         game.loop();
     }
 }
+
+//-----------------------------------------------------------------------------
+
+#elif ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+void loop() {
+    CodeDetector::instance->codeChanged();
+    CodeDetector::instance->printRawValues();
+    delay(500);
+}
+#endif
 
 //-----------------------------------------------------------------------------
 
