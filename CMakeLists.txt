@@ -22,8 +22,8 @@ set(nano.upload.speed 57600)
 get_filename_component(SRC_ABSOLUTE ${CMAKE_CURRENT_SOURCE_DIR}/src ABSOLUTE)
 
 set(ARDUINO_BOARD  "micro"    CACHE STRING "board name")
-set(ARDUINO_SERIAL_PORT  "com4"    CACHE STRING "port for serial communication")
-set(ARDUINO_UPLOAD_PORT  "com5"    CACHE STRING "port for uploading a firmware")
+set(ARDUINO_SERIAL_PORT  "com6"    CACHE STRING "port for serial communication" FORCE)
+set(ARDUINO_UPLOAD_PORT  "com7"    CACHE STRING "port for uploading a firmware" FORCE)
 
 message(STATUS "ARDUINO_BOARD: ${ARDUINO_BOARD}")
 message(STATUS "ARDUINO_SERIAL_PORT: ${ARDUINO_SERIAL_PORT}")

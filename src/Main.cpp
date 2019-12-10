@@ -17,6 +17,11 @@
 
 Game game;
 
+#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+bool paused = false;
+bool displayChangesOnly = false;
+#endif
+
 //-----------------------------------------------------------------------------
 
 /**
@@ -25,7 +30,7 @@ Game game;
 void setup() {
 
     // wait two seconds so that the serial connection is established
-    delay(2000);
+    delay(3000);
 
     Log::setup();
     randomSeed(analogRead(PIN_A5)); //PIN 5 needs to be unconnected
@@ -51,6 +56,11 @@ void setup() {
     printf("=================================\n");
     printf("=== Select number of players  ===\n");
     printf("=================================\n");
+#else
+    printf("=====================================\n");
+    printf("=== <SPACE> = Pause               ===\n");
+    printf("===   <TAB> = Toggle Display Mode ===\n");
+    printf("=====================================\n");
 #endif
 
     //game.start(2, false);
@@ -78,9 +88,29 @@ void loop() {
 
 #elif ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
 void loop() {
-    CodeDetector::instance->codeChanged();
-    CodeDetector::instance->printRawValues();
-    delay(500);
+
+    if (!paused) {
+        bool codeChanged = CodeDetector::instance->codeChanged();
+        CodeDetector::instance->printRawValues(codeChanged, displayChangesOnly);
+    }
+
+    int sleep = 0;
+
+    while (sleep++ < 500) {
+        if (Serial.available() > 0) {
+            char receivedChar = Serial.read();
+
+            if (receivedChar == CHAR_SPACE) {
+                paused = !paused;
+                if (paused) {
+                    printf("<PAUSED>\n");
+                }
+            } else if (receivedChar == CHAR_TAB) {
+                displayChangesOnly = !displayChangesOnly;
+            }
+        }
+        delay(1);
+    }
 }
 #endif
 

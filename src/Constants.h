@@ -164,5 +164,8 @@
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
 
+#define CHAR_SPACE 32
+#define CHAR_TAB 9
+
 #endif // CONSTANTS
 

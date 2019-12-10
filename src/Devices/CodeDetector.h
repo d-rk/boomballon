@@ -23,7 +23,7 @@ public:
     void setActiveCode(uint8_t code);
 
 #if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
-    void printRawValues();
+    void printRawValues(bool codeChanged, bool displayChangesOnly);
     void printCodeBits(uint8_t code);
 #endif
 

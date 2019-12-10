@@ -19,7 +19,7 @@ CodeDetector* CodeDetector::instance = NULL;
  */
 CodeDetector::CodeDetector(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4, uint8_t pin5)
     : CODE_PINS{pin1, pin2, pin3, pin4, pin5},
-      MIN_THRESHOLD(26),
+      MIN_THRESHOLD(20),
       MAX_THRESHOLD(28),
       TIME_WAIT_MS(200),
       activeCode(0),
@@ -87,7 +87,7 @@ uint8_t CodeDetector::readCode() {
         int value = analogRead(pin);
 
         switch (i) {
-            case 0: value = map(value, 150, 950, 0, 100); break;
+            case 0: value = map(value,  20, 950, 0, 100); break;
             case 1: value = map(value,  20, 910, 0, 100); break;
             case 2: value = map(value,  20, 885, 0, 100); break;
             case 3: value = map(value,  20, 900, 0, 100); break;
@@ -145,7 +145,9 @@ void CodeDetector::setActiveCode(uint8_t code) {
         activeCodeMirrored = code;
     }
 
+#if ACTIVE_MODE() == MODE_GAME()
     printf("\tActive Code: %2d (%2d)\n", activeCode, activeCodeMirrored);
+#endif
 }
 
 
@@ -171,15 +173,32 @@ void CodeDetector::printCodeBits(uint8_t code) {
 /**
  * @brief CodeDetector_printRawValues Print raw values to serial.
  */
-void CodeDetector::printRawValues() {
+void CodeDetector::printRawValues(bool codeChanged, bool displayChangesOnly) {
+
+    if (!codeChanged && displayChangesOnly) {
+        return;
+    }
 
     uint8_t numPins = sizeof(CODE_PINS) / sizeof(CODE_PINS[0]);
 
+    char c[3];
+
     for (int i=0; i < numPins; i++) {
-        Serial.print(rawValue[i]);
-        Serial.print(",");
+        printf("%3d ", rawValue[i]);
     }
-    Serial.println();
+
+    Serial.print(" |  ");
+
+
+    for (int i=0; i < numPins; i++) {
+        if (rawValue[i] <= MIN_THRESHOLD) {
+            Serial.print("0 ");
+        } else if (rawValue[i] >= MAX_THRESHOLD) {
+            Serial.print("1 ");
+        }
+    }
+
+    printf("  |  %2d = %2d\n", activeCode, activeCodeMirrored);
 }
 
 //-----------------------------------------------------------------------------
