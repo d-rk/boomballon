@@ -16,7 +16,9 @@ CodeDetectorSerial::CodeDetectorSerial(uint8_t pin1, uint8_t pin2, uint8_t pin3,
 
 void CodeDetectorSerial::setup() {
     currentCode = CODE_ALL;
+    #ifdef LOGGING_ENABLED
     Serial.println("Using Serial-CodeDetector.");
+    #endif
 }
 
 //-----------------------------------------------------------------------------

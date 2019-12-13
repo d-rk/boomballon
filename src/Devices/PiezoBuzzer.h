@@ -9,8 +9,8 @@
 class PiezoBuzzer : public Task
 {
 public:
-    enum Melody {M_BEVERLY_HILLS, MELODY_1, MELODY_2};
-    enum Rhythm {R_BEVERLY_HILLS, RHYTHM_1, RHYTHM_2};
+    enum Melody {M_BEVERLY_HILLS, M_ATEAM};
+    enum Rhythm {R_BEVERLY_HILLS, R_ATEAM};
 
     PiezoBuzzer(uint8_t pin);
 
@@ -31,11 +31,8 @@ private:
     uint8_t currentToneIndex;
     unsigned long toneFinishedMs;
 
-    static const uint16_t     melody1[];
-    static const uint8_t     rhythm1[];
-
-    static const uint16_t     melody2[];
-    static const uint8_t     rhythm2[];
+    static const uint16_t    aTeamMelody[];
+    static const uint8_t     aTeamRhythm[];
 
     static const uint16_t    beverlyHillsMelody[];
     static const uint8_t     beverlyHillsRhythm[];

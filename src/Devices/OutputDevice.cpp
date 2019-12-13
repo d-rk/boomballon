@@ -4,6 +4,8 @@
 #include <Constants.h>
 #include <Arduino.h>
 
+#define NO_PWM
+
 //-----------------------------------------------------------------------------
 
 OutputDevice* OutputDevice::instance = NULL;
@@ -16,6 +18,7 @@ OutputDevice::OutputDevice(uint8_t pinMotor, uint8_t pinValve)
       FILL_TIME_MIN(9000),
       FILL_TIME_MAX(11000),
       MOTOR_MIN(180),
+      FILL_TIME_FACTOR_NO_PWM(0.5f),
       DEFLATE_TIME(7500),
       DEFLATE_CYCLE_MAX(200),
       lastValueChange(0),
@@ -36,6 +39,7 @@ OutputDevice::~OutputDevice() {
 void OutputDevice::setup() {
     pinMode(PIN_MOTOR, OUTPUT);
     pinMode(PIN_VALVE, OUTPUT);
+    setValveOpen(true);
 }
 
 //-----------------------------------------------------------------------------
@@ -73,10 +77,22 @@ void OutputDevice::reset() {
 
 //-----------------------------------------------------------------------------
 
+void OutputDevice::setValveOpen(bool open) {
+    digitalWrite(PIN_VALVE, open ? HIGH : LOW);
+}
+
+//-----------------------------------------------------------------------------
+
 
 void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeIntensity, uint16_t durationMs, bool force)
 {
     uint8_t stepMs = 5;
+
+    #ifdef NO_PWM
+    if (positiveIntensity > 0) {
+        durationMs = durationMs * FILL_TIME_FACTOR_NO_PWM;
+    }
+    #endif
 
     //first determine which value to write for positive itensity (i.e. the motor)
     const float motorFactor = (255 - MOTOR_MIN) / 255.0f;
@@ -100,7 +116,13 @@ void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeI
     //loop to apply the changes
     for (uint16_t passed = 0; passed < durationMs; passed += stepMs) {
         //set motor value
+        #ifdef NO_PWM
+        if (positiveIntensity > 0) {
+            digitalWrite(PIN_MOTOR, HIGH);
+        }
+        #else
         analogWrite(PIN_MOTOR, analogValuePositive);
+        #endif
 
         //change deflate state if needed
         if (negativeIntensity > 0 && negativeIntensity < 255 && (passed - lastDeflateStateChange) > deflateHighMs) {
@@ -128,7 +150,12 @@ void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeI
     }
 
     //make sure everything is off afterwards
+    #ifdef NO_PWM
+    digitalWrite(PIN_MOTOR, LOW);
+    #else
     analogWrite(PIN_MOTOR, 0);
+    #endif
+
     digitalWrite(PIN_VALVE, LOW);
 }
 

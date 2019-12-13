@@ -16,14 +16,11 @@ const uint8_t  PiezoBuzzer::beverlyHillsRhythm[] = {2, 8, 8, 8, 64, 8, 8, 8, 8, 
                                                     8, 8, 8, 64, 8, 8, 8, 8, 8,
                                                     8, 8, 8, 16, 8, 16, 8, 8, 8, 2};
 
-const uint16_t PiezoBuzzer::melody1[] = {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4};
-const uint8_t  PiezoBuzzer::rhythm1[] = {4, 8, 8, 4, 4, 4, 4, 4};
-
-const uint16_t PiezoBuzzer::melody2[] = {NOTE_G3, NOTE_G3, NOTE_F3, NOTE_G3, NOTE_PAUSE, NOTE_F3, NOTE_PAUSE, NOTE_G3,
+const uint16_t PiezoBuzzer::aTeamMelody[] = {NOTE_G3, NOTE_G3, NOTE_F3, NOTE_G3, NOTE_PAUSE, NOTE_F3, NOTE_PAUSE, NOTE_G3,
                                          NOTE_PAUSE, NOTE_F3, NOTE_PAUSE, NOTE_F3, NOTE_C4, NOTE_AS3,
                                          NOTE_G3, NOTE_G3, NOTE_F3, NOTE_G3, NOTE_PAUSE, NOTE_F3, NOTE_PAUSE, NOTE_DS3,
                                          NOTE_PAUSE, NOTE_DS3, NOTE_PAUSE, NOTE_F3, NOTE_F3};
-const uint8_t  PiezoBuzzer::rhythm2[] = {8, 8, 8, 8, 8, 8, 8, 8,
+const uint8_t  PiezoBuzzer::aTeamRhythm[] = {8, 8, 8, 8, 8, 8, 8, 8,
                                          8, 8, 8, 8, 4, 4,
                                          8, 8, 8, 8, 8, 8, 8, 8,
                                          8, 8, 8, 8, 2};
@@ -93,13 +90,9 @@ void PiezoBuzzer::setMelody(Melody melody, Rhythm rhythm) {
             currentMelody = &(beverlyHillsMelody[0]);
             melodyLength = sizeof(beverlyHillsMelody)/sizeof(*beverlyHillsMelody);
             break;
-        case MELODY_1:
-            currentMelody = &(melody1[0]);
-            melodyLength = sizeof(melody1)/sizeof(*melody1);
-            break;
-        case MELODY_2:
-            currentMelody = &(melody2[0]);
-            melodyLength = sizeof(melody2)/sizeof(*melody2);
+        case M_ATEAM:
+            currentMelody = &(aTeamMelody[0]);
+            melodyLength = sizeof(aTeamMelody)/sizeof(*aTeamMelody);
             break;
         default:
             currentMelody = NULL;
@@ -112,13 +105,9 @@ void PiezoBuzzer::setMelody(Melody melody, Rhythm rhythm) {
             currentRhythm = &(beverlyHillsRhythm[0]);
             rhythmLength = sizeof(beverlyHillsRhythm)/sizeof(*beverlyHillsRhythm);
             break;
-        case RHYTHM_1:
-            currentRhythm = &(rhythm1[0]);
-            rhythmLength = sizeof(rhythm1)/sizeof(*rhythm1);
-            break;
-        case RHYTHM_2:
-            currentRhythm = &(rhythm2[0]);
-            rhythmLength = sizeof(rhythm2)/sizeof(*rhythm2);
+        case R_ATEAM:
+            currentRhythm = &(aTeamRhythm[0]);
+            rhythmLength = sizeof(aTeamRhythm)/sizeof(*aTeamRhythm);
             break;
         default:
             currentRhythm = NULL;

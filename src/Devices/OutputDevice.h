@@ -17,6 +17,8 @@ public:
 
     void reset();
 
+    void setValveOpen(bool open);
+
 protected:
     virtual float getVolumeIncrement(uint8_t intensity, uint16_t durationMs);
     virtual float getVolumeDecrement(uint8_t intensity, uint16_t durationMs);
@@ -32,6 +34,7 @@ public:
     const uint16_t FILL_TIME_MIN;
     const uint16_t FILL_TIME_MAX;
     const uint8_t  MOTOR_MIN;
+    const float    FILL_TIME_FACTOR_NO_PWM;
 
     const uint16_t DEFLATE_TIME;
     const uint8_t  DEFLATE_CYCLE_MAX;

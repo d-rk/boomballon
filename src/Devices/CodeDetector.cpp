@@ -145,9 +145,11 @@ void CodeDetector::setActiveCode(uint8_t code) {
         activeCodeMirrored = code;
     }
 
-#if ACTIVE_MODE() == MODE_GAME()
+    #if ACTIVE_MODE() == MODE_GAME()
+    #ifdef LOGGING_ENABLED
     printf("\tActive Code: %2d (%2d)\n", activeCode, activeCodeMirrored);
-#endif
+    #endif
+    #endif
 }
 
 

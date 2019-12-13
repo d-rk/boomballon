@@ -39,7 +39,9 @@ void MissRoundCard::play(bool newCardInserted, bool waitCardRemoved) {
         for (Vector<Card*>::iterator it = attachedPlayer->cards.begin(); it != attachedPlayer->cards.end(); it++) {
             if (lastCard == this) {
                 //ok we found the card which should be played after this one
+                #ifdef LOGGING_ENABLED
                 printf("\t%s discarded card %s.\n", cardName(), (*it)->cardName());
+                #endif
                 (*it)->discard = true;
                 discard = true;
                 //show it to the user
@@ -64,7 +66,9 @@ void MissRoundCard::play(bool newCardInserted, bool waitCardRemoved) {
  */
 void MissRoundCard::attach(Player* targetPlayer) {
     Card::attach(targetPlayer);
+    #ifdef LOGGING_ENABLED
     printf("\tAttached %s to %1d.\n", cardName(), targetPlayer->id);
+    #endif
 }
 
 //-----------------------------------------------------------------------------

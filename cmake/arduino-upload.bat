@@ -4,22 +4,19 @@ echo SERIAL_PORT: %SERIAL_PORT%
 echo UPLOAD_PORT: %UPLOAD_PORT%
 echo BOARD: %BOARD%
 
-if "%SERIAL_PORT%" == "%UPLOAD_PORT%" (
-	echo No need to restart arduino: ports equal
-	Exit /B 0
+if NOT "%SERIAL_PORT%" == "%UPLOAD_PORT%" (
+	echo Restarting arduino...
+
+	@REM close putty so that serial port is open (and generate no output from taskkill)
+	taskkill /F /IM putty.exe /f >nul 2>&1
+
+	@REM force reset of arduino by opening serial connection with baud 1200
+	mode %SERIAL_PORT% BAUD=1200 PARITY=n DATA=8
+
+	@REM wait a second so that the virtual com port can open
+	echo Wait for com port switch...
+	ping 127.0.0.1 -n 2 > NUL
 )
-
-echo Restarting arduino...
-
-@REM close putty so that serial port is open (and generate no output from taskkill)
-taskkill /F /IM putty.exe /f >nul 2>&1
-
-@REM force reset of arduino by opening serial connection with baud 1200
-mode %SERIAL_PORT% BAUD=1200 PARITY=n DATA=8
-
-@REM wait a second so that the virtual com port can open
-echo Wait for com port switch...
-ping 127.0.0.1 -n 2 > NUL
 
 @REM Run command and pipe all output to tmp file
 mingw32-make upload > tmp 2>&1
@@ -37,8 +34,10 @@ if %errCode% == 0 (
 	IF EXIST tmp del /F tmp
 )
 
-@REM wait a second so that the com port can go back to initial state.
-echo Wait for com port switch...
-ping 127.0.0.1 -n 2 > NUL
+if NOT "%SERIAL_PORT%" == "%UPLOAD_PORT%" (
+	@REM wait a second so that the com port can go back to initial state.
+	echo Wait for com port switch...
+	ping 127.0.0.1 -n 2 > NUL
+)
 	
 exit /b %errCode%

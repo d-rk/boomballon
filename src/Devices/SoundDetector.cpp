@@ -1,6 +1,7 @@
 #include "SoundDetector.h"
 #include <Arduino.h>
 #include <Tasks/TaskScheduler.h>
+#include <Constants.h>
 
 //-----------------------------------------------------------------------------
 
@@ -24,7 +25,9 @@ void SoundDetector::setup() {
 
 bool SoundDetector::applyChange(unsigned long timeMs) {
     int value = analogRead(PIN);
+    #ifdef LOGGING_ENABLED
     Serial.println(value);
+    #endif
     return true;
 }
 

@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include <Cards/Card.h>
+#include <Constants.h>
 
 #include <Arduino.h>
 
@@ -109,7 +110,10 @@ void Player::changeDirection() {
     Player* tmp = nextPlayer;
     nextPlayer = prevPlayer;
     prevPlayer = tmp;
+
+    #ifdef LOGGING_ENABLED
     printf("Player %d - prev: %d next: %d\n", id, prevPlayer->id, nextPlayer->id);
+    #endif
 
     if (!nextPlayerChanged) {
         //do it recursive for all players.

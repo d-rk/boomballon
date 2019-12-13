@@ -1,5 +1,6 @@
 #include "DevilCard.h"
 #include <Arduino.h>
+#include <Constants.h>
 
 //-----------------------------------------------------------------------------
 
@@ -22,7 +23,9 @@ void DevilCard::play(bool newCardInserted, bool waitCardRemoved) {
 
 void DevilCard::attach(Player* targetPlayer) {
     Card::attach(targetPlayer);
+    #ifdef LOGGING_ENABLED
     printf("\tAttached %s to %1d.\n", cardName(), targetPlayer->id);
+    #endif
 }
 
 //-----------------------------------------------------------------------------

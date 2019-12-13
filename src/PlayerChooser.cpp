@@ -44,7 +44,9 @@ bool PlayerChooser::detectNumPlayers() {
         for (const uint8_t playerCode : CODES) {
             if (nPlayers > 1 && code == playerCode) {
                 //numPlayers detected
+                #ifdef LOGGING_ENABLED
                 printf("\n=== Selected %1d players ===\n\n", nPlayers);
+                #endif
                 numPlayers = nPlayers;
                 //play animation once
                 PiezoBuzzer::instance->playTone(NOTE_DS8, 16, 1, 16);

@@ -29,8 +29,15 @@ bool displayChangesOnly = false;
  */
 void setup() {
 
+    SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_9, PIN_10, PIN_8);
+    SevenSegmentDisplay::instance->setup();
+    SevenSegmentDisplay::instance->setCharacter(CHAR_MINUS);
+
     // wait two seconds so that the serial connection is established
-    delay(3000);
+    #ifdef LOGGING_ENABLED
+    delay(2500);
+    #endif
+    SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
 
     Log::setup();
     randomSeed(analogRead(PIN_A5)); //PIN 5 needs to be unconnected
@@ -42,28 +49,28 @@ void setup() {
 
     CodeDetector::instance = new CodeDetector(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
     PiezoBuzzer::instance  = new PiezoBuzzer(PIN_11);
-    SevenSegmentDisplay::instance = new SevenSegmentDisplay(PIN_9, PIN_10, PIN_8);
+
 
     OutputDevice::instance->setup();
     CodeDetector::instance->setup();
     PiezoBuzzer::instance->setup();
 
-    SevenSegmentDisplay::instance->setup();
-
-    SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
-
-#if ACTIVE_MODE() == MODE_GAME()
+    #ifdef LOGGING_ENABLED
+    #if ACTIVE_MODE() == MODE_GAME()
     printf("=================================\n");
     printf("=== Select number of players  ===\n");
     printf("=================================\n");
-#else
+    #else
     printf("=====================================\n");
     printf("=== <SPACE> = Pause               ===\n");
     printf("===   <TAB> = Toggle Display Mode ===\n");
     printf("=====================================\n");
-#endif
+    #endif
+    #endif
 
-    //game.start(2, false);
+    #ifdef AUTOSTART_GAME
+    game.start(2, false);
+    #endif
 }
 
 //-----------------------------------------------------------------------------

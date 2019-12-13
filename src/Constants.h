@@ -1,13 +1,17 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+//#define AUTOSTART_GAME
+
+//#define LOGGING_ENABLED
+
 // definition of availabe modes
 #define MODE_GAME() 1
 #define MODE_CODE_DETECTOR_CALIBRATION() 2
 
 // mode that should be compiled
-//#define ACTIVE_MODE() MODE_GAME()
-#define ACTIVE_MODE() MODE_CODE_DETECTOR_CALIBRATION()
+#define ACTIVE_MODE() MODE_GAME()
+//#define ACTIVE_MODE() MODE_CODE_DETECTOR_CALIBRATION()
 
 // definition of pins
 #define PIN_0 0
