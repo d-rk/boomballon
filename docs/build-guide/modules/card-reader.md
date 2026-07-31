@@ -45,11 +45,15 @@ clear spot on the card) and an unlit sensor (light blocked by an opaque spot)
 produce clearly different analog voltages, which the firmware thresholds into
 the 5 bits of the card code.
 
-!!! warning "Divider resistor is 10 kΩ, not 330 Ω"
-    The Fritzing sketch shows **330 Ω** on the Fotomodul dividers, but that is a
-    drawing error. The correct — and actually ordered — value is **10 kΩ**
-    (Bürklin 28 E497). 330 Ω is far too small for a photocell divider and would
-    give almost no usable voltage swing. **Build with 10 kΩ.**
+!!! warning "Divider resistor is 10 kΩ, not 330 Ω — source conflict"
+    The sources disagree. The Fotomodul parts list
+    (`hardware/card-reader/Artikelnummern.txt`) specifies a **10 kΩ** series
+    resistor (Bürklin 28 E497), whereas the Fritzing sketch shows **330 Ω** (its
+    default) and the general order sheet
+    (`hardware/bom/20170825_Bestellliste.xlsx`) also lists 330 Ω on that line.
+    Electrically, a photoresistor voltage divider needs roughly **10 kΩ**; 330 Ω
+    is far too small and would give almost no usable voltage swing. **Build with
+    10 kΩ.**
 
 <figure markdown>
   ![Fotomodul PCB, top side](../../assets/img/fotomodul-pcb-top.png){ width="360" }

@@ -74,10 +74,12 @@ supplier mostly Reichelt). Datasheets for the numbered parts live under
 | Polycarbonate window | Display pane | 1 | Reely (Conrad 229802) |
 | 3D-printed housing | Enclosure | 1 set | see [Enclosure](enclosure.md) |
 
-!!! note "Photocell divider resistor: 10 kΩ, not 330 Ω"
-    The card-reader Fritzing sketch shows 330 Ω resistors on the *Fotomodul*,
-    but the correct photocell **voltage-divider** value is **10 kΩ** (Bürklin
-    28 E497), as ordered. Build with 10 kΩ. See the
+!!! note "Photocell divider resistor: 10 kΩ, not 330 Ω (source conflict)"
+    The Fotomodul parts list (`hardware/card-reader/Artikelnummern.txt`)
+    specifies **10 kΩ** (Bürklin 28 E497) for the photocell **voltage divider**,
+    while the Fritzing sketch and the order sheet
+    (`hardware/bom/20170825_Bestellliste.xlsx`) both show 330 Ω. 10 kΩ is the
+    electrically correct divider value — build with 10 kΩ. See the
     [card reader page](modules/card-reader.md) for details.
 
 ### Cost
