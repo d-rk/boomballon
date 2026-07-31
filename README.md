@@ -37,6 +37,10 @@ The site is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-mate
 - [Build Guide — Overview & BOM](docs/build-guide/overview-bom.md)
 - [The Card Deck](docs/gameplay/card-deck.md)
 
+## Publishing
+
+Docs are built and deployed to GitHub Pages automatically by [`.github/workflows/deploy-docs.yml`](.github/workflows/deploy-docs.yml) on every push to `main`. After this workflow lands on `main`, enable Pages once at **Settings → Pages → Build and deployment → Source: GitHub Actions**. The site then publishes at [https://d-rk.github.io/boomballon/](https://d-rk.github.io/boomballon/).
+
 ## License
 
 © 2016–2026 Christian Volkmar and Dirk Wilden. Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) — share and adapt for non-commercial use, with attribution, under the same terms. Commercial use requires permission (contact dirkwilden@gmail.com). See [LICENSE](LICENSE).
