@@ -1,6 +1,6 @@
 # The Card Deck
 
-This page is the **authoritative catalog** of the BoomBalloon deck. Every card's German name, English gloss, printed face value, optical code, firmware effect, and deck count is listed here, cross-verified against the firmware and the design spreadsheets. Other documents that need the deck (including `cards/deck.md` in the repository) point back to this page.
+This page is the **authoritative catalog** of the BoomBalloon deck. Every card's German name, English gloss, printed face value, optical code, firmware effect, and deck count is listed here, cross-verified against the firmware and the design spreadsheets. Other documents that need the deck (including `cards/README.md` in the repository) point back to this page.
 
 ![The BoomBalloon effect cards (Spielkarten), the deck's main play cards.](../assets/img/deck-effect-cards.png){ loading=lazy }
 

@@ -3,7 +3,7 @@
 This page is the **single source of truth** for how BoomBalloon encodes and
 reads its cards. Every card carries a 5-bit optical code, and both the printed
 deck and the firmware agree on the scheme documented here. Other documents that
-touch the encoding — including `cards/codes.md` in the repository — point back to
+touch the encoding — including `cards/README.md` in the repository — point back to
 this page. For what each code *means* (which card, which effect), see the deck
 catalog in [The Card Deck](../gameplay/card-deck.md); for the code that
 implements the reader, see [Firmware Architecture](firmware-architecture.md).
