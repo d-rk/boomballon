@@ -36,7 +36,7 @@ Every card is a printed rectangle with a machine-readable hole pattern:
 
 ## Deck total and the player cards
 
-The full deck is **about 54 cards**: **48 effect cards** (the play cards, or *Spielkarten*) plus **6 player cards** (*Spielerkarten*).
+The full deck is **about 54 cards**: **49 effect cards** (the play cards, or *Spielkarten*) plus **5 player cards** (*Spielerkarten*), for **54** in total.
 
 The player cards, **`1 Spieler`…`5 Spieler`**, do two jobs:
 
