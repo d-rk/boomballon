@@ -28,7 +28,7 @@ For the full specification — the bit layout, how the codes map to card effects
 
 ## A single turn, step by step
 
-![The card reader tray with a printed card entering the slot, ready to be scanned.](assets/img/card-slot-detail.jpg){ loading=lazy }
+![The brick-styled card reader tray with a printed BoomBalloon card resting alongside, ready to be scanned.](assets/img/card-slot-detail.jpg){ loading=lazy }
 
 Here is what happens from the moment it is your turn:
 

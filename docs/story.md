@@ -4,7 +4,7 @@ BoomBalloon began the way a lot of good ideas do: two friends, a silly premise, 
 
 ## From breadboard to game
 
-![The first breadboard prototype, where the inflate-and-deflate logic was proven out.](assets/img/breadboard-prototype.jpg){ loading=lazy }
+![Early hand-built electronics: a hand-soldered perfboard carrying a buzzer, a DIP IC, and a 7-segment display (right), beside a purchased display-and-buzzer module (left).](assets/img/breadboard-prototype.jpg){ loading=lazy }
 
 The concept is deceptively simple — a balloon, a pump, and the nerve to keep playing — but making it read cards on its own was where the engineering lived. Instead of buttons, BoomBalloon uses a deck of cards punched with an optical code, and a custom reader that scans each card as it slides in. That decision shaped everything that followed: the card artwork, the reader mechanism, the firmware, and eventually the enclosure all had to serve the card.
 
@@ -23,7 +23,7 @@ The final push was housing the electronics. Enclosure options were quoted and a 
 
 Under the hood, BoomBalloon runs on an **Arduino** microcontroller. The design was migrated from an earlier board built around the **Arduino Micro** — the "prototype 2" generation — to the **Arduino Nano** (ATmega328P) used in the current prototype. The move brought the electronics onto the compact, low-cost controller that the finished firmware targets today.
 
-![The current control electronics: custom PCBs carrying the Arduino Nano, pump and valve drivers, and the ribbon connections to reader and display.](assets/img/pcb-boards-overview.jpg){ loading=lazy }
+![The fabricated custom PCBs before assembly — two bare boards silkscreened for the photo reader (Fotomodul), display (Displaymodul), and deflate motor (Ablassmotor), shown next to a coin for scale.](assets/img/pcb-boards-overview.jpg){ loading=lazy }
 
 ## Where it landed
 

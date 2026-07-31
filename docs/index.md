@@ -21,15 +21,15 @@ BoomBalloon turns a game of nerve into hardware you can feel. Every card you pla
 
 <div class="grid" markdown>
 
-![The brick-styled card reader with a printed BoomBalloon card sliding into the slot.](assets/img/card-slot-detail.jpg){ loading=lazy }
+![The brick-styled card reader with a printed BoomBalloon card resting by the open tray.](assets/img/card-slot-detail.jpg){ loading=lazy }
 
 ![The 7-segment display lit up, showing the active player during a turn.](assets/img/gameplay-display-lit.jpg){ loading=lazy }
 
-![The stacked custom PCBs that make up the control electronics.](assets/img/pcb-boards-overview.jpg){ loading=lazy }
+![The bare, fabricated custom PCBs before any components were soldered on.](assets/img/pcb-boards-overview.jpg){ loading=lazy }
 
 ![The wiring detail: pump, valve, and reader all routed back to the Arduino-based control board.](assets/img/internals-wiring-detail.jpg){ loading=lazy }
 
-![The earliest breadboard prototype, where the game logic first came to life.](assets/img/breadboard-prototype.jpg){ loading=lazy }
+![Early hand-soldered display and buzzer electronics on perfboard, beside a purchased 7-segment display module.](assets/img/breadboard-prototype.jpg){ loading=lazy }
 
 </div>
 
