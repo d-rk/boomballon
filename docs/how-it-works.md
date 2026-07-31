@@ -41,16 +41,16 @@ Here is what happens from the moment it is your turn:
 
 ![The 7-segment display lit during play, part of the feedback for every card.](assets/img/gameplay-display-lit.jpg){ loading=lazy }
 
-The same turn, as a sequence of firmware objects — note how the buzzer and display animate concurrently with the pump/valve while the volume change is applied:
+The same turn, as a sequence of firmware objects. Two feedback details are worth noting: the "accepted" buzzer tone is a separate, sequential cue played the moment the card is accepted (it plays to completion before the effect runs), while the 7-segment display animates *concurrently* with the pump/valve pulse — the `Card` starts the fill animation and `OutputDevice` keeps servicing it via the scheduler's `iterate()` during its blocking pump/valve loop:
 
 ```mermaid
 sequenceDiagram
     actor Player
     participant CardReader as CardReader (CodeDetector)
     participant Game
+    participant Buzzer as PiezoBuzzer
     participant Card as Card (via playCard factory)
     participant OutputDevice
-    participant Buzzer as PiezoBuzzer
     participant Display as SevenSegmentDisplay
 
     Player->>CardReader: insert card
@@ -58,6 +58,7 @@ sequenceDiagram
     CardReader->>Game: decoded 5-bit code
     Game->>Card: Card::playCard(code)
     Card-->>Game: card instance
+    Game->>Buzzer: accepted tone (plays to completion, sequential)
 
     opt card needs a target (Blocking / Devil's messenger / Apocalypse)
         Player->>CardReader: insert player card
@@ -65,14 +66,11 @@ sequenceDiagram
         Game->>Card: attach target player
     end
 
-    Game->>OutputDevice: apply(card effect)
-    par concurrent feedback
-        OutputDevice->>OutputDevice: pulse pump/valve (volume change)
-    and
-        OutputDevice->>Buzzer: play tone
-    and
-        OutputDevice->>Display: animate fill
-    end
+    Game->>Card: play() (via Player::loop)
+    Card->>Display: setAnimation(ANIM_FILL)
+    Card->>OutputDevice: apply(volume change)
+    Note over OutputDevice,Display: pump/valve pulses in a blocking loop that<br/>calls scheduler iterate() every ~5 ms, so the<br/>display fill animation advances concurrently
+    Card->>Display: stopAnimation()
 
     Player->>CardReader: pull card out
     CardReader->>Game: CODE_ALL (card removed)
