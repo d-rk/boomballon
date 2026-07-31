@@ -106,6 +106,9 @@ The design note itself is explicit that these were early ideas ("*these are just
 ideas for now*"), so nothing here was a broken promise — it is simply a feature
 that stopped at the design stage.
 
+**Source:** the original German design note is archived alongside this page as
+[`anforderungen-moduswechsel.txt`](anforderungen-moduswechsel.txt).
+
 ## Roadmap
 
 None of these are committed work — they are the natural next steps that the code

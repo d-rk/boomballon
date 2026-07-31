@@ -129,11 +129,19 @@ physically being pushed in or pulled out by hand.
 Building the firmware with `ACTIVE_MODE()` set to
 `MODE_CODE_DETECTOR_CALIBRATION()` (in `Constants.h`) replaces the game loop with
 a bring-up tool. Instead of playing, it continuously prints each channel's raw
-normalised value alongside the decoded bits and the resulting code, e.g.:
+normalised value alongside the decoded bits and the resulting code. Each line has
+three columns: the five normalised values for `A0`–`A4`, the thresholded bits in
+the same `A0`-first order, and finally `activeCode = mirror` (the canonical code
+and its 180° mirror). For example, inserting the **Player 1 card** (code **15**,
+holes `01111` from the worked example above) reads as:
 
 ```
- 98  95  12  97  10  |  1 1 0 1 0   |  22 = 13
+ 98  95  97  92   8  |  1 1 1 1 0   |  15 = 30
 ```
+
+Reading the bits `A0`-first gives `1·1 + 1·2 + 1·4 + 1·8 + 0·16 = 15`; the low
+`A4` value (8, below the threshold) is the single dark position, and 15's mirror
+is 30, so the reader reports `15 = 30`.
 
 Over the serial monitor, `<SPACE>` pauses the stream and `<TAB>` toggles
 "changes only" output. This is the mode you use to pick the per-pin `map()`

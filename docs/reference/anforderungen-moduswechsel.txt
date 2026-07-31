@@ -1,0 +1,15 @@
+Moduswechsel „Yin Yang“
+
+Auswahl zwischen „Standard“, „Himmel“, „Hölle“ und „Herausforderung“
+Display-Zeichen „S“ Modus „Standard“
+Display-Zeichen „Kreis“ Modus „Himmel“ aktiviert
+Display-Zeichen „Minus“ Modus „Hölle“ aktiviert
+Display-Zeichen „P“ Modus „Provokation“
+Modus „Standard“ ohne Extras
+Modus „Himmel“ verringert den Luftdruck nach jeder dritten Runde (zufälliger Spieler)
+Modus „Hölle“ erhöht den Luftdruck nach jeder dritten Runde (zufälliger Spieler)
+Modus „Provokation“ füllt den Ballon zum Anfang des Spiels
+
+Ziel ist es mit der Moduswechselkarte bevor die Spielerkarte zum Einsatz kommt durch mehrmaliges einschieben der Karte den Modus zu wechseln oder die Karte bleibt stecken und wenn der richtige Modus Ausgewählt ist dann Karte rausziehen.
+
+Das sind erstmal nur Ideen, ich fände es aber super wenn wir ein paar (4 Spielmodi) zu verfügung hätten. Vielleicht fällt dir auch noch etwas besseres ein:)

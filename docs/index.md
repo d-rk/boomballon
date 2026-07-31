@@ -2,6 +2,8 @@
 
 ![The BoomBalloon prototype — control board, 12 V pump, air valve, brick-styled card reader, and a lit 7-segment display, all wired together on the bench.](assets/img/prototype-full-setup.jpg){ loading=lazy }
 
+*The unit pictured is the earlier [Arduino Micro prototype](story.md#the-controller-from-micro-to-nano) (the "prototype 2" generation); the current firmware targets the Arduino Nano (ATmega328P).*
+
 **An electronic party game where players inflate a real balloon with punched cards until it bursts — whoever is holding the moment it pops loses.**
 
 BoomBalloon turns a game of nerve into hardware you can feel. Every card you play sends a puff of air into a genuine rubber balloon. It swells, the tension rises, and nobody knows which card will be the one too many. It is a *Buckaroo!*-style dare for the electronics age: a microcontroller, a pump, a valve, and a deck of optically-coded cards that the machine reads all by itself.

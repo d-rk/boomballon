@@ -23,7 +23,7 @@ The final push was housing the electronics. Enclosure options were quoted and a 
 
 Under the hood, BoomBalloon runs on an **Arduino** microcontroller. The design was migrated from an earlier board built around the **Arduino Micro** — the "prototype 2" generation — to the **Arduino Nano** (ATmega328P) used in the current prototype. The move brought the electronics onto the compact, low-cost controller that the finished firmware targets today.
 
-![The fabricated custom PCBs before assembly — two bare boards silkscreened for the photo reader (Fotomodul), display (Displaymodul), and deflate motor (Ablassmotor), shown next to a coin for scale.](assets/img/pcb-boards-overview.jpg){ loading=lazy }
+![The fabricated custom PCBs before assembly — the larger control board (Steuermodul), its connector silkscreens reading Fotomodul (photo reader), Displaymodul (display), and Ablassmotor (deflate motor), beside the smaller display module, next to a coin for scale.](assets/img/pcb-boards-overview.jpg){ loading=lazy }
 
 ## Where it landed
 
