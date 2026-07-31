@@ -1,0 +1,12 @@
+
+Steckerpins:
+1 Vcc 3,3V
+2 Masse
+3 A0
+4 A1
+5 A2
+6 A3
+7 A4
+
+
+

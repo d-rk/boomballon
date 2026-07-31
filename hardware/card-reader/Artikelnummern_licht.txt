@@ -1,0 +1,9 @@
+Bürklin Artikelnummern:
+
+- LED_3mm_Datenblatt		67 S 4470 	
+- Vorwiderstand 330R 0,25W	28 E 418
+
+
+Reichelt Artikelnummern:
+
+- LED_3mm_Datenblatt_1.pdf    	LED EL 3-11250KW

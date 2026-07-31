@@ -1,0 +1,12 @@
+Conrad Artikelnummern:
+
+- Fotowiderstand		145475 - 62
+
+
+Reichelt Artikelnummern:
+
+- Fotowiderstand_1		A 905014
+
+Bürklin:
+
+- Vorwiderstand 10kR.pdf	28 E497

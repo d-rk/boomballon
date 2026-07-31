@@ -1,0 +1,21 @@
+
+Steckerpins:
+1 Vcc +5V (rot)
+2 Masse (schwarz)
+3 DS (lila)
+4 STCP (grau)
+5 SHCP (weiﬂ)
+6 Buzzer (blau)
+
+Buzzerpins:
+1 Vcc
+2 Masse
+
+Widerst‰nde:
+330 Ohm
+
+Schaltkreis:
+74hc595 SMD
+
+7 Segment_Anzeige:
+cathode statt anode
