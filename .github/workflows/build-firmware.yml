@@ -1,0 +1,30 @@
+name: Build firmware
+on:
+  push:
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/build-firmware.yml'
+  pull_request:
+    paths:
+      - 'firmware/**'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Cache PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: pio-${{ runner.os }}-${{ hashFiles('firmware/platformio.ini') }}
+      - name: Install PlatformIO
+        run: pip install platformio
+      - name: Build firmware (both environments)
+        run: pio run
+        working-directory: firmware

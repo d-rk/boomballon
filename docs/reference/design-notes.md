@@ -10,23 +10,31 @@ is the page that explains why. For the clean architectural overview see
 ## Controller migration: Arduino Micro → Nano
 
 The project was originally developed on an **Arduino Micro** and later moved to
-an **Arduino Nano (ATmega328P)**, which is what the shipped device uses. Most of
-the migration is invisible, but one residue survives in the build system.
+an **Arduino Nano (ATmega328P)**, which is what the shipped device uses.
 
-`firmware/CMakeLists.txt` keeps **two separate port variables** —
-`ARDUINO_SERIAL_PORT` and `ARDUINO_UPLOAD_PORT` — with a comment explaining the
-split:
+A trace of this migration survived in the *original* build system: the old
+arduino-cmake build (since replaced — see below) kept **two separate port
+variables**, `ARDUINO_SERIAL_PORT` and `ARDUINO_UPLOAD_PORT`, with a comment
+noting they are equal on the Nano (a single USB-serial bridge) but differ on the
+Micro, whose native-USB bootloader exposes a separate upload port. That was
+harmless residual Micro support.
 
-```cmake
-# for nano boards SERIAL_PORT equals UPLOAD_PORT
-# for micro boards they are different
-```
+## Build system: arduino-cmake → PlatformIO
 
-On the Nano both are the same COM port (a single USB-serial bridge), so the two
-variables are set identically. The distinction only mattered on the Micro, whose
-native-USB bootloader exposes a separate upload port. The split is kept as
-harmless residual Micro support; on the Nano you configure one port and set both
-to it (see [Firmware — Build & Flash](../build-guide/firmware-build.md)).
+The firmware was first built with **arduino-cmake** — a CMake toolchain driven
+by `mingw32-make` on Windows, flashing through `avrdude` wrapped in `.bat`
+scripts. That project dates to ~2013 and is incompatible with modern CMake
+(CMake 4 removed the pre-3.5 compatibility it relied on, and its manual
+`include(Platform/UnixPaths)` calls a helper that no longer exists), so it no
+longer configures on an up-to-date system.
+
+Rather than patch the legacy toolchain, the firmware migrated to
+[PlatformIO](https://platformio.org/). The old `CMakeLists.txt`, `cmake/`
+toolchain, and `.bat` scripts were removed (they remain in git history); the
+build is now a single `platformio.ini` with two environments —
+`nanoatmega328` (old bootloader, 57600) and `nanoatmega328new` (115200) — which
+also subsumes the old two-port split by simply matching whichever bootloader the
+board has. See [Firmware — Build & Flash](../build-guide/firmware-build.md).
 
 ## Simulated balloon volume (not sensed)
 
@@ -57,8 +65,8 @@ cleanly or are simply never referenced, but they can mislead a first-time reader
   LED bar graph instead of a real pump, and feed codes over the serial port
   instead of the optical reader, so the game logic could be exercised without the
   hardware. These classes are still **compiled and linked** into the firmware —
-  the CMake source glob (`file(GLOB_RECURSE ... *.cpp)`) picks up every `.cpp`
-  with no exclusion for `Dummy/` — but they are **never instantiated**: nothing
+  PlatformIO compiles every `.cpp` under `src/`, with no build-src filter
+  excluding `Dummy/` — but they are **never instantiated**: nothing
   calls `new OutputDeviceDummy(...)`, and the `#include <Dummy/...>` in
   `Main.cpp` is commented out, so nothing in the running game reaches them. It is
   dead, unreachable code kept for reference. Reinforcing that: `OutputDeviceDummy`

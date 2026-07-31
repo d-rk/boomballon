@@ -1,86 +1,67 @@
 # Firmware — Build & Flash
 
-The firmware targets the Arduino Nano (ATmega328P). It is a plain CMake/OOP C++
-source tree — **not** an `.ino` sketch: `src/Main.cpp` defines
-`setup()`/`loop()` and headers are included root-relative with angle brackets
-(e.g. `#include <Cards/Card.h>`). The canonical reference is
+The firmware targets the Arduino Nano (ATmega328P). It is a small OOP C++
+source tree under `firmware/src/` (`Main.cpp` provides `setup()`/`loop()`;
+headers are included root-relative, e.g. `#include <Cards/Card.h>`). The build
+system is [PlatformIO](https://platformio.org/), which pins the toolchain and
+Arduino core so a clean checkout builds identically everywhere. The canonical
+reference is
 [`firmware/README.md`](https://github.com/d-rk/boomballon/blob/main/firmware/README.md);
 this page summarizes it. If anything here disagrees with that README, the README
 wins.
 
-There are two build paths: the original arduino-cmake/MinGW flow the project was
-developed with, and a portable arduino-cli flow.
+## Prerequisites
 
-## Canonical build (original): arduino-cmake + MinGW on Windows
-
-This is the build the project was developed and flashed with.
-
-**Prerequisites:** Arduino IDE/SDK, CMake, and MinGW (provides
-`mingw32-make`).
-
-**Steps:**
-
-1. Configure the serial/upload port in **one** place — the
-   `ARDUINO_SERIAL_PORT` / `ARDUINO_UPLOAD_PORT` cache variables in
-   `firmware/CMakeLists.txt` (default `com5`). This is the single place the COM
-   port needs to change.
-2. Generate the build with CMake, pointing `CMAKE_TOOLCHAIN_FILE` at
-   `cmake/ArduinoToolchain.cmake` (already set at the top of `CMakeLists.txt`).
-3. Build and flash:
-   ```bash
-   mingw32-make arduino-upload
-   ```
-4. Open a serial monitor (PuTTY) attached to the board:
-   ```bash
-   mingw32-make attach
-   ```
-   Use this with `LOGGING_ENABLED` (below) to see runtime output.
-
-## Cross-platform build (arduino-cli)
-
-To build outside the Windows/MinGW flow, stage the sources under an empty
-sketch's `src/` subfolder (arduino-cli compiles a sketch's `src/` tree
-recursively, unlike sketch-root subfolders) and add `firmware/src` to the
-include path:
+Install PlatformIO Core:
 
 ```bash
-mkdir -p /tmp/bb_build/bb_build/src
-: > /tmp/bb_build/bb_build/bb_build.ino   # empty; sources provide setup()/loop()
-cp -r firmware/src/* /tmp/bb_build/bb_build/src/
-arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old \
-  --build-property "build.extra_flags=-std=c++11 -fno-threadsafe-statics -I{build.source.path}/src" \
-  /tmp/bb_build/bb_build
+pip install platformio        # or: pipx install platformio
 ```
 
-To **flash** instead of just compiling, add `--upload -p <port>`:
+(Or the PlatformIO IDE extension for VS Code — it uses the same
+`platformio.ini`.) The first build downloads the `atmelavr` platform and AVR
+toolchain automatically.
+
+## Build
 
 ```bash
-arduino-cli compile --upload -p /dev/ttyUSB0 \
-  --fqbn arduino:avr:nano:cpu=atmega328old \
-  --build-property "build.extra_flags=-std=c++11 -fno-threadsafe-statics -I{build.source.path}/src" \
-  /tmp/bb_build/bb_build
+cd firmware
+pio run                       # builds both environments
+pio run -e nanoatmega328      # just the old-bootloader Nano
 ```
 
-Use `-p /dev/ttyUSB0` on Linux or `-p COM5` on Windows. To watch runtime output,
-open the serial monitor:
+The compiled image is written to `.pio/build/<env>/firmware.hex`.
+
+## Flash
+
+Two environments cover the two common Nano bootloaders — pick the one that
+matches your board:
 
 ```bash
-arduino-cli monitor -p /dev/ttyUSB0
+pio run -t upload -e nanoatmega328      # original Nano, old bootloader (57600 baud)
+pio run -t upload -e nanoatmega328new   # newer clones (115200 baud)
 ```
 
-!!! note "arduino-cli is a compile-check, not a replacement"
-    The arduino-cli path was used to compile-verify the sources on a
-    non-Windows host; it is a portable build/flash harness. The canonical build
-    for day-to-day development remains the arduino-cmake + MinGW/Windows flow
-    above.
+PlatformIO auto-detects the serial port; force it with
+`--upload-port /dev/ttyUSB0` (Linux CH340 clone), `/dev/ttyACM0` (genuine), or
+`COMx` (Windows).
+
+## Serial monitor
+
+```bash
+pio device monitor            # 9600 baud, matching Serial.begin(9600)
+```
+
+Runtime output only appears when `LOGGING_ENABLED` is defined (below).
 
 ## Build switches
 
 Compile-time switches live in `src/Constants.h`:
 
 - **`LOGGING_ENABLED`** — enables all serial `printf` logging. **Off by
-  default**; when disabled it strips the logging code entirely (saves flash).
-  Turn it on when using the serial monitor.
+  default**; when disabled it strips the logging code entirely (saves
+  flash/RAM). Turn it on when using the serial monitor, or build with
+  `pio run -a "-DLOGGING_ENABLED"`.
 - **`AUTOSTART_GAME`** — auto-starts a 2-player game on boot, skipping the
   player-count detection flow. Handy for testing.
 - **`ACTIVE_MODE()`** — selects the top-level mode:
@@ -89,6 +70,20 @@ Compile-time switches live in `src/Constants.h`:
       [card-reader](modules/card-reader.md) bring-up harness that prints raw
       analog values. `<SPACE>` pauses output; `<TAB>` switches to changes-only
       output. Use this to pick card-reader thresholds.
+
+## Verified build
+
+Both environments compile with no source changes — a 16186-byte image (52.7 %
+of flash), 744 bytes of RAM. A GitHub Actions workflow
+(`.github/workflows/build-firmware.yml`) runs `pio run` on every push, so the
+firmware is guaranteed to keep building.
+
+!!! note "Legacy build"
+    The firmware was originally built with **arduino-cmake** (a CMake toolchain)
+    under MinGW on Windows, flashing via `avrdude` wrapped in `.bat` scripts.
+    That ~2013 toolchain is incompatible with modern CMake, so the project
+    migrated to PlatformIO and removed the old build files (still in git
+    history).
 
 ## See also
 
