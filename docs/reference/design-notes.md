@@ -56,12 +56,17 @@ cleanly or are simply never referenced, but they can mislead a first-time reader
   `CodeDetectorSerial`. This was a **simulation / desk-testing path**: drive an
   LED bar graph instead of a real pump, and feed codes over the serial port
   instead of the optical reader, so the game logic could be exercised without the
-  hardware. Its include in `Main.cpp` is commented out and it is not built.
-  Worth noting: `OutputDeviceDummy` has **drifted out of sync** with its base
-  class — it overrides `applyPositive()` / `applyNegative()`, but `OutputDevice`
-  was since refactored and no longer has those virtuals (it now works through
-  `applyIntensities()`). So the Dummy path would need repair before it could run
-  again.
+  hardware. These classes are still **compiled and linked** into the firmware —
+  the CMake source glob (`file(GLOB_RECURSE ... *.cpp)`) picks up every `.cpp`
+  with no exclusion for `Dummy/` — but they are **never instantiated**: nothing
+  calls `new OutputDeviceDummy(...)`, and the `#include <Dummy/...>` in
+  `Main.cpp` is commented out, so nothing in the running game reaches them. It is
+  dead, unreachable code kept for reference. Reinforcing that: `OutputDeviceDummy`
+  has **drifted out of sync** with its base class — it overrides
+  `applyPositive()` / `applyNegative()`, but `OutputDevice` was since refactored
+  and no longer has those virtuals (it now works through `applyIntensities()`), so
+  those methods override nothing. The Dummy path would need repair before it could
+  be wired back in.
 - **`Devices/Button` and `Devices/Led`** — general-purpose helper drivers that
   are **not used** anywhere in the game (BoomBalloon has no gameplay buttons; the
   only input is the card reader). They are unused scaffolding.
