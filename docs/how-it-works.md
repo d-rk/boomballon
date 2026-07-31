@@ -41,6 +41,44 @@ Here is what happens from the moment it is your turn:
 
 ![The 7-segment display lit during play, part of the feedback for every card.](assets/img/gameplay-display-lit.jpg){ loading=lazy }
 
+The same turn, as a sequence of firmware objects — note how the buzzer and display animate concurrently with the pump/valve while the volume change is applied:
+
+```mermaid
+sequenceDiagram
+    actor Player
+    participant CardReader as CardReader (CodeDetector)
+    participant Game
+    participant Card as Card (via playCard factory)
+    participant OutputDevice
+    participant Buzzer as PiezoBuzzer
+    participant Display as SevenSegmentDisplay
+
+    Player->>CardReader: insert card
+    CardReader->>CardReader: debounce + resolve 180° mirror
+    CardReader->>Game: decoded 5-bit code
+    Game->>Card: Card::playCard(code)
+    Card-->>Game: card instance
+
+    opt card needs a target (Blocking / Devil's messenger / Apocalypse)
+        Player->>CardReader: insert player card
+        CardReader->>Game: decoded player code
+        Game->>Card: attach target player
+    end
+
+    Game->>OutputDevice: apply(card effect)
+    par concurrent feedback
+        OutputDevice->>OutputDevice: pulse pump/valve (volume change)
+    and
+        OutputDevice->>Buzzer: play tone
+    and
+        OutputDevice->>Display: animate fill
+    end
+
+    Player->>CardReader: pull card out
+    CardReader->>Game: CODE_ALL (card removed)
+    Game->>Game: advance to next player
+```
+
 The loop repeats, card after card, until someone plays the card that pushes the modelled volume past 100 % on their own turn. That player loses — and the balloon, at last, gets to pop.
 
 ---

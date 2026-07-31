@@ -37,7 +37,20 @@ runs at **3.3 V** for a stable analog reference. The exact pin assignments are
 on the [wiring & pin map](wiring-pinmap.md) page — the authoritative source for
 all connections.
 
-<!-- system block diagram added in Task 10 -->
+The block diagram below shows how the four modules connect through the Arduino Nano, using the verified pin map (photoresistor inputs, pump/valve/display/buzzer outputs, and the shared 12 V supply):
+
+```mermaid
+flowchart LR
+  Cards[Punched cards] -->|light through holes| Reader[Card Reader<br/>5 photoresistors A0-A4]
+  Reader --> MCU[Arduino Nano]
+  MCU -->|D6| Pump[TIP120 → Pump]
+  MCU -->|D7| Valve[TIP120 → Valve]
+  Pump --> Balloon((Balloon))
+  Valve --> Balloon
+  MCU -->|D8-D10 74HC595| Disp[7-seg display]
+  MCU -->|D11| Buzz[Buzzer]
+  PSU[12V / 3A] --> MCU & Pump & Valve
+```
 
 For how the software drives all this during play, see
 [How It Works](../how-it-works.md); for the card encoding scheme, see the
