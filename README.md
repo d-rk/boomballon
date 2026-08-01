@@ -28,8 +28,8 @@ Players insert optically-coded punched cards into a reader; the firmware decodes
 ## Build the docs locally
 
 ```bash
-pip install -r requirements.txt
-mkdocs serve
+pip install -r docs/requirements.txt
+mkdocs serve -f docs/mkdocs.yml
 ```
 
 The site is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
