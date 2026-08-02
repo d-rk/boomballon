@@ -1,6 +1,10 @@
-# BoomBalloon
+<p align="center">
+  <img src="media/logo/logo.svg" alt="Boom Balloon logo" width="420">
+</p>
 
-![The BoomBalloon prototype — control board, 12 V pump, air valve, brick-styled card reader, and a lit 7-segment display, all wired together on the bench.](media/prototype-full-setup.jpg)
+# Boom Balloon
+
+![The Boom Balloon prototype — control board, 12 V pump, air valve, brick-styled card reader, and a lit 7-segment display, all wired together on the bench.](media/prototype-full-setup.jpg)
 
 *The unit pictured is the earlier Arduino Micro prototype (the "prototype 2" generation); the current firmware targets the Arduino Nano (ATmega328P) — see [the story](docs/story.md#the-controller-from-micro-to-nano).*
 

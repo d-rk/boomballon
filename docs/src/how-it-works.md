@@ -1,6 +1,6 @@
 # How It Works
 
-BoomBalloon looks like a toy and behaves like a small embedded system. There is a real balloon, a real pump, and a real valve — but the thing everyone is nervous about, the balloon's fill level, is tracked entirely in software. This page explains the model behind the game, how the machine reads its cards, and what actually happens during a single turn.
+Boom Balloon looks like a toy and behaves like a small embedded system. There is a real balloon, a real pump, and a real valve — but the thing everyone is nervous about, the balloon's fill level, is tracked entirely in software. This page explains the model behind the game, how the machine reads its cards, and what actually happens during a single turn.
 
 ## The balloon-volume model
 
@@ -18,7 +18,7 @@ This is a deliberate design: it keeps the hardware cheap and reliable, and it me
 
 ## The cards are the input
 
-BoomBalloon has no buttons for gameplay. The only way a player interacts with the machine is by inserting a **card (Spielkarte, "playing card")** into the reader. Each card carries a **5-bit optical code** — a pattern of punched holes — that the reader scans as the card slides in.
+Boom Balloon has no buttons for gameplay. The only way a player interacts with the machine is by inserting a **card (Spielkarte, "playing card")** into the reader. Each card carries a **5-bit optical code** — a pattern of punched holes — that the reader scans as the card slides in.
 
 ![The optical hole-pattern master used to lay out the punched codes on the cards.](assets/img/muster.svg){ loading=lazy }
 
@@ -28,7 +28,7 @@ For the full specification — the bit layout, how the codes map to card effects
 
 ## A single turn, step by step
 
-![The brick-styled card reader tray with a printed BoomBalloon card resting alongside, ready to be scanned.](assets/img/card-slot-detail.jpg){ loading=lazy }
+![The brick-styled card reader tray with a printed Boom Balloon card resting alongside, ready to be scanned.](assets/img/card-slot-detail.jpg){ loading=lazy }
 
 Here is what happens from the moment it is your turn:
 

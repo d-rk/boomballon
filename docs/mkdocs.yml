@@ -1,4 +1,4 @@
-site_name: BoomBalloon
+site_name: Boom Balloon
 site_description: An electronic balloon party game — firmware, hardware, and build guide.
 site_url: https://d-rk.github.io/boomballon/
 repo_url: https://github.com/d-rk/boomballon
@@ -8,16 +8,18 @@ docs_dir: src
 site_dir: site
 theme:
   name: material
+  logo: assets/img/logo-icon.svg
+  favicon: assets/img/favicon-128.png
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: red
-      accent: deep orange
+      primary: custom
+      accent: custom
       toggle: { icon: material/weather-night, name: Switch to dark mode }
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: red
-      accent: deep orange
+      primary: custom
+      accent: custom
       toggle: { icon: material/weather-sunny, name: Switch to light mode }
   features:
     - navigation.sections

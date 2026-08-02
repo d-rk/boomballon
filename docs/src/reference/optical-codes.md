@@ -1,6 +1,6 @@
 # Optical Code System
 
-This page is the **single source of truth** for how BoomBalloon encodes and
+This page is the **single source of truth** for how Boom Balloon encodes and
 reads its cards. Every card carries a 5-bit optical code, and both the printed
 deck and the firmware agree on the scheme documented here. Other documents that
 touch the encoding — including `cards/README.md` in the repository — point back to

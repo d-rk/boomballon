@@ -1,7 +1,7 @@
 # Overview & BOM
 
 This is the top of the **Build Guide** — the reproducible-rebuild half of the
-site. It describes the BoomBalloon device as four cooperating modules and gives
+site. It describes the Boom Balloon device as four cooperating modules and gives
 the single, authoritative **bill of materials (BOM)**. Each module has its own
 page; wiring and firmware get dedicated pages too.
 

@@ -1,6 +1,6 @@
 # Design Notes & Roadmap
 
-This page is the honest engineering commentary on BoomBalloon: the history behind
+This page is the honest engineering commentary on Boom Balloon: the history behind
 some of the code, the parts that are experimental or unused, the shortcuts that
 were taken deliberately, and the ideas that were specced but never built. If you
 are reading the source and something looks half-finished or contradictory, this
@@ -76,7 +76,7 @@ cleanly or are simply never referenced, but they can mislead a first-time reader
   those methods override nothing. The Dummy path would need repair before it could
   be wired back in.
 - **`Devices/Button` and `Devices/Led`** — general-purpose helper drivers that
-  are **not used** anywhere in the game (BoomBalloon has no gameplay buttons; the
+  are **not used** anywhere in the game (Boom Balloon has no gameplay buttons; the
   only input is the card reader). They are unused scaffolding.
 - **`Devices/SoundDetector`** — unused, as described above.
 

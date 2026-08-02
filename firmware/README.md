@@ -1,6 +1,6 @@
-# BoomBalloon Firmware
+# Boom Balloon Firmware
 
-Firmware for the BoomBalloon device — **Arduino Nano (ATmega328P)**, C++11 on
+Firmware for the Boom Balloon device — **Arduino Nano (ATmega328P)**, C++11 on
 the Arduino AVR core. The sources are a small OOP tree under `src/`
 (`Main.cpp` provides `setup()`/`loop()`); see the
 [Firmware Architecture](../docs/reference/firmware-architecture.md) doc for how

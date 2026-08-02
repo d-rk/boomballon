@@ -1,12 +1,16 @@
-# BoomBalloon
+# Boom Balloon
 
-![The BoomBalloon prototype — control board, 12 V pump, air valve, brick-styled card reader, and a lit 7-segment display, all wired together on the bench.](assets/img/prototype-full-setup.jpg){ loading=lazy }
+<p align="center">
+  <img src="assets/img/logo.svg" alt="Boom Balloon logo" width="420">
+</p>
+
+![The Boom Balloon prototype — control board, 12 V pump, air valve, brick-styled card reader, and a lit 7-segment display, all wired together on the bench.](assets/img/prototype-full-setup.jpg){ loading=lazy }
 
 *The unit pictured is the earlier [Arduino Micro prototype](story.md#the-controller-from-micro-to-nano) (the "prototype 2" generation); the current firmware targets the Arduino Nano (ATmega328P).*
 
 **An electronic party game where players inflate a real balloon with punched cards until it bursts — whoever is holding the moment it pops loses.**
 
-BoomBalloon turns a game of nerve into hardware you can feel. Every card you play sends a puff of air into a genuine rubber balloon. It swells, the tension rises, and nobody knows which card will be the one too many. It is a *Buckaroo!*-style dare for the electronics age: a microcontroller, a pump, a valve, and a deck of optically-coded cards that the machine reads all by itself.
+Boom Balloon turns a game of nerve into hardware you can feel. Every card you play sends a puff of air into a genuine rubber balloon. It swells, the tension rises, and nobody knows which card will be the one too many. It is a *Buckaroo!*-style dare for the electronics age: a microcontroller, a pump, a valve, and a deck of optically-coded cards that the machine reads all by itself.
 
 ## In 30 seconds
 
@@ -23,7 +27,7 @@ BoomBalloon turns a game of nerve into hardware you can feel. Every card you pla
 
 <div class="grid" markdown>
 
-![The brick-styled card reader with a printed BoomBalloon card resting by the open tray.](assets/img/card-slot-detail.jpg){ loading=lazy }
+![The brick-styled card reader with a printed Boom Balloon card resting by the open tray.](assets/img/card-slot-detail.jpg){ loading=lazy }
 
 ![The 7-segment display lit up, showing the active player during a turn.](assets/img/gameplay-display-lit.jpg){ loading=lazy }
 
@@ -37,4 +41,4 @@ BoomBalloon turns a game of nerve into hardware you can feel. Every card you pla
 
 ---
 
-BoomBalloon was a hobby and pre-commercial project built between roughly 2016 and 2018. It reached a working, multi-unit prototype with complete firmware before enclosure costs stalled it. [Read the full story](story.md).
+Boom Balloon was a hobby and pre-commercial project built between roughly 2016 and 2018. It reached a working, multi-unit prototype with complete firmware before enclosure costs stalled it. [Read the full story](story.md).

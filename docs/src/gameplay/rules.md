@@ -1,10 +1,10 @@
 # Rules
 
-BoomBalloon is a party game of nerve and sabotage. A real balloon slowly fills as players take turns, and the machine keeps a hidden, software-modelled fill level (see [How It Works](../how-it-works.md)). Every action happens by inserting a **card (Spielkarte, "playing card")** into the reader — there are no gameplay buttons. Your goal is simple: do not be the player holding the turn when the modelled volume crosses **100 %**.
+Boom Balloon is a party game of nerve and sabotage. A real balloon slowly fills as players take turns, and the machine keeps a hidden, software-modelled fill level (see [How It Works](../how-it-works.md)). Every action happens by inserting a **card (Spielkarte, "playing card")** into the reader — there are no gameplay buttons. Your goal is simple: do not be the player holding the turn when the modelled volume crosses **100 %**.
 
 ## What you need
 
-- The BoomBalloon machine, powered on, with a balloon fitted.
+- The Boom Balloon machine, powered on, with a balloon fitted.
 - The card deck (see [The Card Deck](card-deck.md) for the full catalog).
 - **At least two players.** A `1 Spieler` ("1 player") card exists, but only as a target card — it cannot start a game.
 

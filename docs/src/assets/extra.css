@@ -1,1 +1,140 @@
-/* BoomBalloon docs theme tweaks. */
+/* Boom Balloon docs theme tweaks. */
+
+/* Orange palette taken from the card artwork, matching the header weave.
+   Primary drives links and nav highlights, accent their hover state, so the
+   two are kept a step apart in depth. Each scheme gets its own pair: burnt
+   orange on white, lighter orange on the dark background, so every colour
+   here clears WCAG AA against the page it sits on. */
+[data-md-color-primary="custom"] {
+  --md-primary-fg-color: #b25306;
+  --md-primary-fg-color--light: #d96507;
+  --md-primary-fg-color--dark: #7f3a04;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: #ffffffb3;
+}
+
+[data-md-color-scheme="slate"][data-md-color-primary="custom"] {
+  --md-primary-fg-color: #ff9d4f;
+  --md-primary-fg-color--light: #ffb066;
+  --md-primary-fg-color--dark: #d96507;
+}
+
+[data-md-color-accent="custom"] {
+  --md-accent-fg-color: #8f4205;
+  --md-accent-fg-color--transparent: #8f420519;
+  --md-accent-bg-color: #ffffff;
+  --md-accent-bg-color--light: #ffffffb3;
+}
+
+[data-md-color-scheme="slate"][data-md-color-accent="custom"] {
+  --md-accent-fg-color: #ff7b12;
+  --md-accent-fg-color--transparent: #ff7b1219;
+  --md-accent-bg-color: #2b1400;
+  --md-accent-bg-color--light: #2b1400b3;
+}
+
+/* Card-back weave pattern (cards/artwork/muster.svg) as the header backdrop.
+   The tile (assets/img/muster-tile.png) is cut to whole pattern cells so it
+   repeats seamlessly; the dark scrim layered over it keeps the title and
+   icons legible. Regenerate the tile with media/generate-pngs.sh. */
+.md-header {
+  background-image:
+    linear-gradient(rgba(60, 20, 0, 0.55), rgba(60, 20, 0, 0.55)),
+    url(img/muster-tile.png);
+  background-repeat: repeat, repeat;
+  background-size: auto, 132px auto;
+}
+
+/* The header holds two topics: the site name and the page title. By default
+   the theme stacks them and cross-fades to the page title on scroll. We want
+   the wordmark to stay put and the page title to sit beside it, so the two
+   are laid out as a centred flex row and the swap animation is switched off.
+   !important is needed because the theme drives that animation through a
+   class it toggles on the parent. */
+.md-header__ellipsis {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.md-header__topic {
+  position: static !important;
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  z-index: auto !important;
+  transition: none !important;
+}
+
+/* The page title: allowed to shrink and ellipsise, and dropped entirely on
+   narrow screens where the wordmark alone already fills the bar. */
+.md-header__topic + .md-header__topic {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 400;
+}
+
+.md-header__topic + .md-header__topic .md-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 59.9375em) {
+  .md-header__topic + .md-header__topic {
+    display: none;
+  }
+}
+
+/* Site name set as artwork in the logo's face. The name itself stays in the
+   DOM and is pushed out of view, so screen readers and the page title still
+   read it. */
+.md-header__topic:first-child {
+  flex: none;
+}
+
+.md-header__topic:first-child .md-ellipsis {
+  display: block;
+  height: 1.3rem;
+  aspect-ratio: 883 / 101;
+  max-width: 100%;
+  background: url(img/wordmark.png) no-repeat left center;
+  background-size: contain;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  /* Centring the wordmark's bounding box sits it too low beside the page
+     title: Snap ITC has a very large lowercase (x-height is 71% of the cap
+     height, against ~53% for the theme's Roboto) and "Boom Balloon" has tall
+     capitals but no descenders, so its box centre falls well below its
+     visual mass. Lifting it by a tenth of its height puts the lowercase on
+     the header's centre line, which also lands within half a pixel of the
+     page title's own lowercase. Percentages resolve against the element's
+     height, so this holds at any font size. */
+  transform: translateY(-10%);
+}
+
+/* Responsive gallery of individual card artworks. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.card-grid figure {
+  margin: 0;
+  text-align: center;
+}
+
+.card-grid figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.card-grid figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  color: var(--md-default-fg-color--light);
+}

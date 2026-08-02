@@ -1,6 +1,6 @@
 # Firmware Architecture
 
-This page is a developer's tour of the BoomBalloon firmware — how the source
+This page is a developer's tour of the Boom Balloon firmware — how the source
 tree is organised, how the program starts, and how the pieces cooperate at run
 time. It is aimed at someone who wants to read or change the code. For how to
 compile and flash it, see [Firmware — Build & Flash](../build-guide/firmware-build.md);

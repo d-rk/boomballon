@@ -1,6 +1,6 @@
 # Cards
 
-This folder holds the BoomBalloon card assets, plus pointers to the
+This folder holds the Boom Balloon card assets, plus pointers to the
 authoritative card documentation.
 
 ## Contents
