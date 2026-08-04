@@ -27,6 +27,15 @@ protected:
 
     float getDeflateTime(uint8_t deflateCycleMs);
 
+    // Physical output hooks, so a subclass (e.g. OutputDeviceMock) can replace
+    // the pump/valve pin writes without reimplementing the volume model.
+    virtual void writeMotor(uint8_t analogValue);
+    virtual void writeValve(bool open);
+
+    // Called once at the end of every applyIntensities() operation; the real
+    // device does nothing, mocks use it to report the resulting volume.
+    virtual void afterApply(uint8_t positiveIntensity, uint8_t negativeIntensity);
+
 public:
     const uint8_t PIN_MOTOR;
     const uint8_t PIN_VALVE;

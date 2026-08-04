@@ -11,7 +11,10 @@
 #include <Tasks/TaskScheduler.h>
 #include <Helper/Log.h>
 
-//#include <Dummy/CodeDetectorSerial.h>
+#ifdef MOCKED_DEVICES
+#include <Mock/CodeDetectorMock.h>
+#include <Mock/OutputDeviceMock.h>
+#endif
 
 //-----------------------------------------------------------------------------
 
@@ -34,7 +37,7 @@ void setup() {
     SevenSegmentDisplay::instance->setCharacter(CHAR_MINUS);
 
     // wait two seconds so that the serial connection is established
-    #ifdef LOGGING_ENABLED
+    #if defined(LOGGING_ENABLED) || defined(MOCKED_DEVICES)
     delay(2500);
     #endif
     SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
@@ -45,9 +48,17 @@ void setup() {
     PlayerChooser::instance = new PlayerChooser(CODE_15, CODE_17, CODE_19, CODE_21, CODE_23);
 
     TaskScheduler::instance = new TaskScheduler();
-    OutputDevice::instance = new OutputDevice(PIN_6, PIN_7);
 
+    #ifdef MOCKED_DEVICES
+    // no pump/valve or card reader attached: drive the game from serial and
+    // report the balloon volume back over serial (see src/Mock/).
+    OutputDevice::instance = new OutputDeviceMock(PIN_6, PIN_7);
+    CodeDetector::instance = new CodeDetectorMock(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
+    #else
+    OutputDevice::instance = new OutputDevice(PIN_6, PIN_7);
     CodeDetector::instance = new CodeDetector(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
+    #endif
+
     PiezoBuzzer::instance  = new PiezoBuzzer(PIN_11);
 
 

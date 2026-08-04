@@ -80,6 +80,24 @@ Compile-time switches live in `src/Constants.h`:
   stays undefined and the firmware uploads with logging silently stripped.
 - **`AUTOSTART_GAME`** — auto-starts a 2-player game on boot, skipping the
   player-count detection flow. Handy for testing.
+- **`MOCKED_DEVICES`** — runs the game with **no hardware attached** by wiring in
+  the serial mocks from `src/Mock/` in place of the real card reader and
+  pump/valve. Type card codes into the serial console; the balloon volume prints
+  back as a percentage and an ASCII bar. Pair it with `AUTOSTART_GAME` to boot
+  straight into a game:
+
+  ```bash
+  PLATFORMIO_BUILD_FLAGS="-D MOCKED_DEVICES -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
+  ```
+
+    !!! warning "Don't combine `MOCKED_DEVICES` with `LOGGING_ENABLED`"
+        The mock narrates itself (it always prints its prompts and the volume
+        bar), so it does not need `LOGGING_ENABLED`. Enabling both at once is a
+        RAM footgun on the ATmega328P: the game's `printf` format strings live
+        in SRAM, and the extra pressure leaves only ~144 bytes free at runtime,
+        so the nested card-apply + `printf` path overflows the stack into the
+        heap and the firmware crashes (garbage on the serial line). Use
+        `MOCKED_DEVICES` on its own.
 - **`ACTIVE_MODE()`** — selects the top-level mode:
     - **`MODE_GAME()`** — normal gameplay (default).
     - **`MODE_CODE_DETECTOR_CALIBRATION()`** — a

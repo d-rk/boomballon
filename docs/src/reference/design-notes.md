@@ -60,21 +60,6 @@ not taken.
 A few things in the tree are **not part of the running game**. They compile-guard
 cleanly or are simply never referenced, but they can mislead a first-time reader:
 
-- **The `Dummy/` subtree** — `OutputDeviceDummy`, `LedBar`, and
-  `CodeDetectorSerial`. This was a **simulation / desk-testing path**: drive an
-  LED bar graph instead of a real pump, and feed codes over the serial port
-  instead of the optical reader, so the game logic could be exercised without the
-  hardware. These classes are still **compiled and linked** into the firmware —
-  PlatformIO compiles every `.cpp` under `src/`, with no build-src filter
-  excluding `Dummy/` — but they are **never instantiated**: nothing
-  calls `new OutputDeviceDummy(...)`, and the `#include <Dummy/...>` in
-  `Main.cpp` is commented out, so nothing in the running game reaches them. It is
-  dead, unreachable code kept for reference. Reinforcing that: `OutputDeviceDummy`
-  has **drifted out of sync** with its base class — it overrides
-  `applyPositive()` / `applyNegative()`, but `OutputDevice` was since refactored
-  and no longer has those virtuals (it now works through `applyIntensities()`), so
-  those methods override nothing. The Dummy path would need repair before it could
-  be wired back in.
 - **`Devices/Button` and `Devices/Led`** — general-purpose helper drivers that
   are **not used** anywhere in the game (Boom Balloon has no gameplay buttons; the
   only input is the card reader). They are unused scaffolding.
@@ -82,6 +67,35 @@ cleanly or are simply never referenced, but they can mislead a first-time reader
 
 None of these are on the critical path; they are listed here so nobody mistakes
 them for live code.
+
+## The mock devices
+
+The `Mock/` subtree is a **desk-testing path**: run the whole game with no pump,
+valve, or card reader attached. Build with `-D MOCKED_DEVICES` (or uncomment
+`#define MOCKED_DEVICES` in `Constants.h`) and `Main.cpp` swaps two devices for
+serial-driven stand-ins:
+
+- **`CodeDetectorMock`** replaces `CodeDetector`. Instead of reading the five
+  photoresistors, it reads a card code you type into the serial console — a
+  number followed by `<enter>` "inserts" that card, an empty line "pulls it out"
+  again. It subclasses `CodeDetector` and overrides `readCode()`.
+- **`OutputDeviceMock`** replaces `OutputDevice`. Instead of driving the 12 V
+  pump and valve, it prints the balloon volume to serial after each inflate or
+  deflate, as a percentage and a little ASCII bar. It keeps the real volume
+  model (fill/deflate timing) and only swaps out the physical pin writes.
+
+To make the output mock possible without duplicating the volume model,
+`OutputDevice` exposes three protected virtual hooks — `writeMotor()`,
+`writeValve()`, and `afterApply()` — that the real device implements as pin
+writes and a no-op, and the mock overrides to suppress hardware and report
+volume. (This is the seam that the earlier, drifted `Dummy/` code lacked: it
+tried to override `applyPositive()`/`applyNegative()` methods that no longer
+existed.)
+
+Because the mock talks over serial, a `MOCKED_DEVICES` build also gets the
+2.5 s startup delay and always initializes the serial port, regardless of
+`LOGGING_ENABLED`. Combine it with `-D AUTOSTART_GAME` to boot straight into a
+2-player game and watch the balloon fill on the console.
 
 ## The unbuilt mode system
 
@@ -126,10 +140,6 @@ above points toward:
   design note (Standard / Himmel / Hölle / Provokation), including the
   insert-repeatedly-to-cycle interaction and the every-third-round random-player
   effects. The card, its code (27), and the display glyphs already exist.
-- **Revive the simulation / `Dummy` path.** Bring `OutputDeviceDummy` back in
-  line with the refactored `OutputDevice` base class so the game can once again
-  be run and demoed on an LED bar graph with codes fed over serial — a genuinely
-  useful test rig.
 - **Add real pressure sensing.** Close the loop that `SoundDetector` only
   gestured at: measure actual balloon pressure (or detect the pop) and reconcile
   it with the software volume model, so the game reacts to the real balloon

@@ -69,6 +69,20 @@ Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
   ```
 - `AUTOSTART_GAME` — auto-starts a 2-player game on boot, for testing without
   the player-count detection flow.
+- `MOCKED_DEVICES` — wires in the serial mocks from `src/Mock/` instead of the
+  real card reader and pump/valve, so the game runs with no hardware attached:
+  type card codes into the serial console and watch the balloon volume print
+  back. Pair it with `AUTOSTART_GAME` to boot straight into a game:
+
+  ```bash
+  PLATFORMIO_BUILD_FLAGS="-D MOCKED_DEVICES -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
+  ```
+
+  Do **not** also enable `LOGGING_ENABLED`: the mock narrates itself, and on the
+  ATmega328P the game's `printf` format strings sit in SRAM — with all three
+  flags on, only ~144 bytes of RAM remain free at runtime and the nested
+  card-apply + `printf` path overflows the stack and crashes. Use
+  `MOCKED_DEVICES` on its own.
 - `ACTIVE_MODE()` — selects `MODE_GAME()` (normal gameplay) or
   `MODE_CODE_DETECTOR_CALIBRATION()` (a card-reader bring-up harness that
   prints raw analog values; `<SPACE>` pauses output, `<TAB>` switches to

@@ -78,7 +78,29 @@ void OutputDevice::reset() {
 //-----------------------------------------------------------------------------
 
 void OutputDevice::setValveOpen(bool open) {
+    writeValve(open);
+}
+
+//-----------------------------------------------------------------------------
+
+void OutputDevice::writeMotor(uint8_t analogValue) {
+    #ifdef NO_PWM
+    digitalWrite(PIN_MOTOR, analogValue > 0 ? HIGH : LOW);
+    #else
+    analogWrite(PIN_MOTOR, analogValue);
+    #endif
+}
+
+//-----------------------------------------------------------------------------
+
+void OutputDevice::writeValve(bool open) {
     digitalWrite(PIN_VALVE, open ? HIGH : LOW);
+}
+
+//-----------------------------------------------------------------------------
+
+void OutputDevice::afterApply(uint8_t /*positiveIntensity*/, uint8_t /*negativeIntensity*/) {
+    // real device: nothing to report
 }
 
 //-----------------------------------------------------------------------------
@@ -118,10 +140,10 @@ void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeI
         //set motor value
         #ifdef NO_PWM
         if (positiveIntensity > 0) {
-            digitalWrite(PIN_MOTOR, HIGH);
+            writeMotor(255);
         }
         #else
-        analogWrite(PIN_MOTOR, analogValuePositive);
+        writeMotor(analogValuePositive);
         #endif
 
         //change deflate state if needed
@@ -131,7 +153,7 @@ void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeI
         }
 
         //set valve value
-        digitalWrite(PIN_VALVE, deflateState);
+        writeValve(deflateState == HIGH);
 
         //wait certain time
         delay(stepMs);
@@ -150,13 +172,10 @@ void OutputDevice::applyIntensities(uint8_t positiveIntensity, uint8_t negativeI
     }
 
     //make sure everything is off afterwards
-    #ifdef NO_PWM
-    digitalWrite(PIN_MOTOR, LOW);
-    #else
-    analogWrite(PIN_MOTOR, 0);
-    #endif
+    writeMotor(0);
+    writeValve(false);
 
-    digitalWrite(PIN_VALVE, LOW);
+    afterApply(positiveIntensity, negativeIntensity);
 }
 
 //-----------------------------------------------------------------------------

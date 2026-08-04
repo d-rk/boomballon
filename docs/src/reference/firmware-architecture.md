@@ -22,12 +22,18 @@ The tree lives under `firmware/src/`:
 | Game logic | `Game.*`, `Player.*`, `PlayerChooser.*` | Turn flow, player ring, startup player-count selection |
 | Cards | `Cards/Card.*` + subclasses | Card behaviours and the code→card factory |
 | Devices | `Devices/CodeDetector.*`, `OutputDevice.*`, `PiezoBuzzer.*`, `SevenSegmentDisplay.*` | Hardware drivers |
+| Mock devices | `Mock/CodeDetectorMock.*`, `Mock/OutputDeviceMock.*` | Serial stand-ins for the card reader and pump/valve, compiled in only with `-D MOCKED_DEVICES` |
 | Scheduling | `Tasks/Task.h`, `Tasks/TaskScheduler.*` | Cooperative multitasking |
 | Helpers | `Helper/Vector.h`, `Helper/Diagnostic.h`, `Helper/Log.*` | STL-free container, RAM probe, `printf` logging |
-| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build modes |
+| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build switches (`LOGGING_ENABLED`, `AUTOSTART_GAME`, `MOCKED_DEVICES`, `ACTIVE_MODE`) |
 
-There is also a `Devices/` trio (`Button`, `Led`, `SoundDetector`) and a
-`Dummy/` subtree that are **not part of the running game** — see
+The `Mock/` subtree lets the whole game run with **no hardware attached**: build
+with `-D MOCKED_DEVICES` and `Main.cpp` swaps the real card reader and
+pump/valve for serial-driven stand-ins (type codes in, watch the balloon volume
+print out). See [Design Notes](design-notes.md#the-mock-devices) for how it works.
+
+There is also a `Devices/` trio (`Button`, `Led`, `SoundDetector`) that is
+**not part of the running game** — see
 [Design Notes & Roadmap](design-notes.md) for what they were for.
 
 ## Startup and object ownership
