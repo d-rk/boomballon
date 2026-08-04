@@ -102,12 +102,11 @@ Compile-time switches live in `src/Constants.h`:
         autostart only ~144 bytes remain free at runtime, so the nested
         card-apply + `printf` path overflows the stack into the heap and the
         firmware crashes (garbage on the serial line).
-- **`ACTIVE_MODE()`** — selects the top-level mode:
-    - **`MODE_GAME()`** — normal gameplay (default).
-    - **`MODE_CODE_DETECTOR_CALIBRATION()`** — a
-      [card-reader](modules/card-reader.md) bring-up harness that prints raw
-      analog values. `<SPACE>` pauses output; `<TAB>` switches to changes-only
-      output. Use this to pick card-reader thresholds.
+- **`DETECTOR_CALIBRATION`** — replaces the game loop with a
+  [card-reader](modules/card-reader.md) bring-up harness that prints raw
+  photoresistor values. `<SPACE>` pauses output; `<TAB>` switches to
+  changes-only output. Use it to pick card-reader thresholds. Off by default
+  (normal gameplay); build with `-D DETECTOR_CALIBRATION` (or `make calibrate`).
 
 ## See also
 

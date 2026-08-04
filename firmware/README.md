@@ -89,10 +89,10 @@ Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
   SRAM — with logging plus both mocks plus autostart, only ~144 bytes of RAM
   remain free at runtime and the nested card-apply + `printf` path overflows the
   stack and crashes.
-- `ACTIVE_MODE()` — selects `MODE_GAME()` (normal gameplay) or
-  `MODE_CODE_DETECTOR_CALIBRATION()` (a card-reader bring-up harness that
-  prints raw analog values; `<SPACE>` pauses output, `<TAB>` switches to
-  changes-only output).
+- `DETECTOR_CALIBRATION` — replaces the game loop with a card-reader bring-up
+  harness that prints raw photoresistor values (`<SPACE>` pauses output, `<TAB>`
+  switches to changes-only output). Off by default (normal gameplay); build with
+  `-D DETECTOR_CALIBRATION` to enable.
 
 ## Build verification
 

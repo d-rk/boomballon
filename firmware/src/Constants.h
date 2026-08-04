@@ -12,13 +12,10 @@
 //#define MOCK_CODE_DETECTOR   // feed card codes over serial (no card reader)
 //#define MOCK_OUTPUT_DEVICE   // print balloon volume to serial (no pump/valve)
 
-// definition of availabe modes
-#define MODE_GAME() 1
-#define MODE_CODE_DETECTOR_CALIBRATION() 2
-
-// mode that should be compiled
-#define ACTIVE_MODE() MODE_GAME()
-//#define ACTIVE_MODE() MODE_CODE_DETECTOR_CALIBRATION()
+// Replace the game loop with the card-reader calibration harness (prints raw
+// photoresistor values to serial for picking thresholds). Enable here, or build
+// with -D DETECTOR_CALIBRATION. Default (undefined) is the normal game.
+//#define DETECTOR_CALIBRATION
 
 // definition of pins
 #define PIN_0 0

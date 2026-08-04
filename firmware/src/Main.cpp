@@ -22,7 +22,7 @@
 
 Game game;
 
-#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+#ifdef DETECTOR_CALIBRATION
 bool paused = false;
 bool displayChangesOnly = false;
 #endif
@@ -71,7 +71,7 @@ void setup() {
     PiezoBuzzer::instance->setup();
 
     #ifdef LOGGING_ENABLED
-    #if ACTIVE_MODE() == MODE_GAME()
+    #ifndef DETECTOR_CALIBRATION
     printf("=================================\n");
     printf("=== Select number of players  ===\n");
     printf("=================================\n");
@@ -90,7 +90,7 @@ void setup() {
 
 //-----------------------------------------------------------------------------
 
-#if ACTIVE_MODE() == MODE_GAME()
+#ifndef DETECTOR_CALIBRATION
 /**
  * @brief loop main loop for the program.
  */
@@ -108,7 +108,7 @@ void loop() {
 
 //-----------------------------------------------------------------------------
 
-#elif ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+#else // DETECTOR_CALIBRATION
 void loop() {
 
     if (!paused) {

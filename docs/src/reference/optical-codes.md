@@ -126,9 +126,7 @@ physically being pushed in or pulled out by hand.
 
 ### Calibration harness
 
-Building the firmware with `ACTIVE_MODE()` set to
-`MODE_CODE_DETECTOR_CALIBRATION()` (in `Constants.h`) replaces the game loop with
-a bring-up tool. Instead of playing, it continuously prints each channel's raw
+Building the firmware with `-D DETECTOR_CALIBRATION` replaces the game loop with a bring-up tool. Instead of playing, it continuously prints each channel's raw
 normalised value alongside the decoded bits and the resulting code. Each line has
 three columns: the five normalised values for `A0`–`A4`, the thresholded bits in
 the same `A0`-first order, and finally `activeCode = mirror` (the canonical code

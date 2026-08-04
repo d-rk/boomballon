@@ -52,6 +52,11 @@ mock-output: ## Build + flash with only the pump/valve mocked (real card reader)
 	PLATFORMIO_BUILD_FLAGS="-D MOCK_OUTPUT_DEVICE" \
 	  $(PIO_RUN) -t upload -e $(ENV) $(PORT_ARG)
 
+.PHONY: calibrate
+calibrate: ## Build + flash the card-reader calibration harness (raw values over serial)
+	PLATFORMIO_BUILD_FLAGS="-D DETECTOR_CALIBRATION" \
+	  $(PIO_RUN) -t upload -e $(ENV) $(PORT_ARG)
+
 .PHONY: monitor
 monitor: ## Open the serial console (9600 baud)
 	$(PIO) device monitor -d firmware -e $(ENV) $(MON_PORT_ARG)

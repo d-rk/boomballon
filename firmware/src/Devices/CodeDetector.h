@@ -22,7 +22,7 @@ public:
 
     void setActiveCode(uint8_t code);
 
-#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+#ifdef DETECTOR_CALIBRATION
     void printRawValues(bool codeChanged, bool displayChangesOnly);
     void printCodeBits(uint8_t code);
 #endif
@@ -50,7 +50,7 @@ protected:
     uint8_t currentCode;
     uint64_t timeLastCodeChange;
 
-#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+#ifdef DETECTOR_CALIBRATION
     int rawValue[5] = {0, 0, 0, 0, 0};
 #endif
 

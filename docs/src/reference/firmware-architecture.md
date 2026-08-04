@@ -25,7 +25,7 @@ The tree lives under `firmware/src/`:
 | Mock devices | `Mock/CodeDetectorMock.*`, `Mock/OutputDeviceMock.*` | Serial stand-ins for the card reader and pump/valve, compiled in with `-D MOCK_CODE_DETECTOR` / `-D MOCK_OUTPUT_DEVICE` |
 | Scheduling | `Tasks/Task.h`, `Tasks/TaskScheduler.*` | Cooperative multitasking |
 | Helpers | `Helper/Vector.h`, `Helper/Diagnostic.h`, `Helper/Log.*` | STL-free container, RAM probe, `printf` logging |
-| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build switches (`LOGGING_ENABLED`, `AUTOSTART_GAME`, `MOCK_CODE_DETECTOR`, `MOCK_OUTPUT_DEVICE`, `ACTIVE_MODE`) |
+| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build switches (`LOGGING_ENABLED`, `AUTOSTART_GAME`, `MOCK_CODE_DETECTOR`, `MOCK_OUTPUT_DEVICE`, `DETECTOR_CALIBRATION`) |
 
 The `Mock/` subtree lets the game run with **missing hardware**: build with
 `-D MOCK_CODE_DETECTOR` and/or `-D MOCK_OUTPUT_DEVICE` and `Main.cpp` swaps that
@@ -195,13 +195,12 @@ hand-rolled utilities:
 
 ## Build modes and logging
 
-`Constants.h` exposes two compile-time knobs that change what gets built:
+`Constants.h` exposes several compile-time knobs that change what gets built:
 
-- **`ACTIVE_MODE()`** selects the top-level `loop()`:
-    - `MODE_GAME()` — the normal game (default).
-    - `MODE_CODE_DETECTOR_CALIBRATION()` — a bring-up harness that just prints
-      raw analog readings from the card reader, used to tune the reader
-      thresholds. See the [Optical Code System](optical-codes.md#calibration-harness).
+- **`DETECTOR_CALIBRATION`** replaces the game `loop()` with a bring-up harness
+  that just prints raw analog readings from the card reader, used to tune the
+  reader thresholds. Off by default (the normal game). See the
+  [Optical Code System](optical-codes.md#calibration-harness).
 - **`LOGGING_ENABLED`** turns the `printf`-over-serial logging (and a 2.5 s
   startup delay to let the serial link settle) on or off.
 

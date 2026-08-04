@@ -101,7 +101,7 @@ uint8_t CodeDetector::readCode() {
             code |= 1 << i; //set i-th bit to 1
         }
 
-#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+#ifdef DETECTOR_CALIBRATION
         rawValue[i] = value;
 #endif
         i++;
@@ -145,7 +145,7 @@ void CodeDetector::setActiveCode(uint8_t code) {
         activeCodeMirrored = code;
     }
 
-    #if ACTIVE_MODE() == MODE_GAME()
+    #ifndef DETECTOR_CALIBRATION
     #ifdef LOGGING_ENABLED
     printf("\tActive Code: %2d (%2d)\n", activeCode, activeCodeMirrored);
     #endif
@@ -155,7 +155,7 @@ void CodeDetector::setActiveCode(uint8_t code) {
 
 //-----------------------------------------------------------------------------
 
-#if ACTIVE_MODE() == MODE_CODE_DETECTOR_CALIBRATION()
+#ifdef DETECTOR_CALIBRATION
 /**
  * @brief CodeDetector::printCodeBits debug function to print the bits of a code.
  * @param code code from which to print the single bits.

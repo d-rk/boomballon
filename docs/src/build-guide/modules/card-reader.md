@@ -116,5 +116,5 @@ map across all modules, see the [wiring & pin map](../wiring-pinmap.md).
 Because photocell behaviour depends on the exact LEDs, ambient light, and card
 material, the firmware ships with a bring-up harness that prints raw analog
 values so you can pick thresholds. See
-[`MODE_CODE_DETECTOR_CALIBRATION`](../firmware-build.md#build-switches) on the
+[`DETECTOR_CALIBRATION`](../firmware-build.md#build-switches) on the
 firmware build page.
