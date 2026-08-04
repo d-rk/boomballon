@@ -5,10 +5,12 @@
 
 //#define LOGGING_ENABLED
 
-// Wire in the serial mocks from src/Mock/ instead of the real pump/valve and
-// card reader, so the game can be driven and observed over serial with no
-// hardware attached. Enable here, or build with -D MOCKED_DEVICES.
-//#define MOCKED_DEVICES
+// Wire in the serial mocks from src/Mock/ instead of the real devices, so the
+// game can be driven and observed over serial with no hardware attached. Each
+// device can be mocked independently; enable either or both here, or build with
+// -D MOCK_CODE_DETECTOR / -D MOCK_OUTPUT_DEVICE.
+//#define MOCK_CODE_DETECTOR   // feed card codes over serial (no card reader)
+//#define MOCK_OUTPUT_DEVICE   // print balloon volume to serial (no pump/valve)
 
 // definition of availabe modes
 #define MODE_GAME() 1

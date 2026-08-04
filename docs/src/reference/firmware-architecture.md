@@ -22,15 +22,16 @@ The tree lives under `firmware/src/`:
 | Game logic | `Game.*`, `Player.*`, `PlayerChooser.*` | Turn flow, player ring, startup player-count selection |
 | Cards | `Cards/Card.*` + subclasses | Card behaviours and the code→card factory |
 | Devices | `Devices/CodeDetector.*`, `OutputDevice.*`, `PiezoBuzzer.*`, `SevenSegmentDisplay.*` | Hardware drivers |
-| Mock devices | `Mock/CodeDetectorMock.*`, `Mock/OutputDeviceMock.*` | Serial stand-ins for the card reader and pump/valve, compiled in only with `-D MOCKED_DEVICES` |
+| Mock devices | `Mock/CodeDetectorMock.*`, `Mock/OutputDeviceMock.*` | Serial stand-ins for the card reader and pump/valve, compiled in with `-D MOCK_CODE_DETECTOR` / `-D MOCK_OUTPUT_DEVICE` |
 | Scheduling | `Tasks/Task.h`, `Tasks/TaskScheduler.*` | Cooperative multitasking |
 | Helpers | `Helper/Vector.h`, `Helper/Diagnostic.h`, `Helper/Log.*` | STL-free container, RAM probe, `printf` logging |
-| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build switches (`LOGGING_ENABLED`, `AUTOSTART_GAME`, `MOCKED_DEVICES`, `ACTIVE_MODE`) |
+| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build switches (`LOGGING_ENABLED`, `AUTOSTART_GAME`, `MOCK_CODE_DETECTOR`, `MOCK_OUTPUT_DEVICE`, `ACTIVE_MODE`) |
 
-The `Mock/` subtree lets the whole game run with **no hardware attached**: build
-with `-D MOCKED_DEVICES` and `Main.cpp` swaps the real card reader and
-pump/valve for serial-driven stand-ins (type codes in, watch the balloon volume
-print out). See [Design Notes](design-notes.md#the-mock-devices) for how it works.
+The `Mock/` subtree lets the game run with **missing hardware**: build with
+`-D MOCK_CODE_DETECTOR` and/or `-D MOCK_OUTPUT_DEVICE` and `Main.cpp` swaps that
+device for a serial-driven stand-in (type codes in, watch the balloon volume
+print out). Each is independent. See
+[Design Notes](design-notes.md#the-mock-devices) for how it works.
 
 There is also a `Devices/` trio (`Button`, `Led`, `SoundDetector`) that is
 **not part of the running game** — see

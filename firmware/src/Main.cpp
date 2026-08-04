@@ -11,8 +11,10 @@
 #include <Tasks/TaskScheduler.h>
 #include <Helper/Log.h>
 
-#ifdef MOCKED_DEVICES
+#ifdef MOCK_CODE_DETECTOR
 #include <Mock/CodeDetectorMock.h>
+#endif
+#ifdef MOCK_OUTPUT_DEVICE
 #include <Mock/OutputDeviceMock.h>
 #endif
 
@@ -37,7 +39,7 @@ void setup() {
     SevenSegmentDisplay::instance->setCharacter(CHAR_MINUS);
 
     // wait two seconds so that the serial connection is established
-    #if defined(LOGGING_ENABLED) || defined(MOCKED_DEVICES)
+    #if defined(LOGGING_ENABLED) || defined(MOCK_CODE_DETECTOR) || defined(MOCK_OUTPUT_DEVICE)
     delay(2500);
     #endif
     SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
@@ -49,13 +51,15 @@ void setup() {
 
     TaskScheduler::instance = new TaskScheduler();
 
-    #ifdef MOCKED_DEVICES
-    // no pump/valve or card reader attached: drive the game from serial and
-    // report the balloon volume back over serial (see src/Mock/).
+    #ifdef MOCK_OUTPUT_DEVICE
     OutputDevice::instance = new OutputDeviceMock(PIN_6, PIN_7);
-    CodeDetector::instance = new CodeDetectorMock(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
     #else
     OutputDevice::instance = new OutputDevice(PIN_6, PIN_7);
+    #endif
+
+    #ifdef MOCK_CODE_DETECTOR
+    CodeDetector::instance = new CodeDetectorMock(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
+    #else
     CodeDetector::instance = new CodeDetector(PIN_A0, PIN_A1, PIN_A2, PIN_A3, PIN_A4);
     #endif
 

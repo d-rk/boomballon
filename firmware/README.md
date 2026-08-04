@@ -69,20 +69,26 @@ Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
   ```
 - `AUTOSTART_GAME` — auto-starts a 2-player game on boot, for testing without
   the player-count detection flow.
-- `MOCKED_DEVICES` — wires in the serial mocks from `src/Mock/` instead of the
-  real card reader and pump/valve, so the game runs with no hardware attached:
-  type card codes into the serial console and watch the balloon volume print
-  back. Pair it with `AUTOSTART_GAME` to boot straight into a game:
+- `MOCK_CODE_DETECTOR` / `MOCK_OUTPUT_DEVICE` — wire in the serial mocks from
+  `src/Mock/` in place of the real devices, so the game can run with missing
+  hardware. Each is independent, so you can mock one and keep the other real:
+    - `MOCK_CODE_DETECTOR` — read card codes from the serial console (type a
+      code + `<enter>`) instead of the photoresistor card reader.
+    - `MOCK_OUTPUT_DEVICE` — print the balloon volume to serial (percentage +
+      ASCII bar) instead of driving the pump/valve.
+
+  Enable either or both. Pair them with `AUTOSTART_GAME` to boot straight into a
+  game with no hardware at all:
 
   ```bash
-  PLATFORMIO_BUILD_FLAGS="-D MOCKED_DEVICES -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
+  PLATFORMIO_BUILD_FLAGS="-D MOCK_CODE_DETECTOR -D MOCK_OUTPUT_DEVICE -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
   ```
 
-  Do **not** also enable `LOGGING_ENABLED`: the mock narrates itself, and on the
-  ATmega328P the game's `printf` format strings sit in SRAM — with all three
-  flags on, only ~144 bytes of RAM remain free at runtime and the nested
-  card-apply + `printf` path overflows the stack and crashes. Use
-  `MOCKED_DEVICES` on its own.
+  Avoid also enabling `LOGGING_ENABLED` alongside the mocks: the mocks narrate
+  themselves, and on the ATmega328P the game's `printf` format strings sit in
+  SRAM — with logging plus both mocks plus autostart, only ~144 bytes of RAM
+  remain free at runtime and the nested card-apply + `printf` path overflows the
+  stack and crashes.
 - `ACTIVE_MODE()` — selects `MODE_GAME()` (normal gameplay) or
   `MODE_CODE_DETECTOR_CALIBRATION()` (a card-reader bring-up harness that
   prints raw analog values; `<SPACE>` pauses output, `<TAB>` switches to

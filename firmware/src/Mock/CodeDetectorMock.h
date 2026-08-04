@@ -9,7 +9,7 @@
  * physical card reader attached. Type a code followed by <enter> to "insert"
  * a card; send an empty line (or any non-code) to "pull it out" again.
  *
- * Wired in when the firmware is built with -D MOCKED_DEVICES.
+ * Wired in when the firmware is built with -D MOCK_CODE_DETECTOR.
  */
 class CodeDetectorMock : public CodeDetector
 {

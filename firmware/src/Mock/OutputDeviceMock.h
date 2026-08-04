@@ -10,7 +10,7 @@
  * OutputDevice volume model (timing, fill/deflate rates) and only replaces the
  * physical pin writes, which become no-ops.
  *
- * Wired in when the firmware is built with -D MOCKED_DEVICES.
+ * Wired in when the firmware is built with -D MOCK_OUTPUT_DEVICE.
  */
 class OutputDeviceMock : public OutputDevice
 {

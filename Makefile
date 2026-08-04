@@ -38,8 +38,18 @@ upload: ## Build + flash the Nano (set PORT= to force the serial port)
 	$(PIO_RUN) -t upload -e $(ENV) $(PORT_ARG)
 
 .PHONY: mock
-mock: ## Build + flash the no-hardware serial mock build (MOCKED_DEVICES + AUTOSTART_GAME)
-	PLATFORMIO_BUILD_FLAGS="-D MOCKED_DEVICES -D AUTOSTART_GAME" \
+mock: ## Build + flash a full no-hardware mock build (both devices + AUTOSTART_GAME)
+	PLATFORMIO_BUILD_FLAGS="-D MOCK_CODE_DETECTOR -D MOCK_OUTPUT_DEVICE -D AUTOSTART_GAME" \
+	  $(PIO_RUN) -t upload -e $(ENV) $(PORT_ARG)
+
+.PHONY: mock-code
+mock-code: ## Build + flash with only the card reader mocked (real pump/valve)
+	PLATFORMIO_BUILD_FLAGS="-D MOCK_CODE_DETECTOR" \
+	  $(PIO_RUN) -t upload -e $(ENV) $(PORT_ARG)
+
+.PHONY: mock-output
+mock-output: ## Build + flash with only the pump/valve mocked (real card reader)
+	PLATFORMIO_BUILD_FLAGS="-D MOCK_OUTPUT_DEVICE" \
 	  $(PIO_RUN) -t upload -e $(ENV) $(PORT_ARG)
 
 .PHONY: monitor

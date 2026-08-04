@@ -70,19 +70,22 @@ them for live code.
 
 ## The mock devices
 
-The `Mock/` subtree is a **desk-testing path**: run the whole game with no pump,
-valve, or card reader attached. Build with `-D MOCKED_DEVICES` (or uncomment
-`#define MOCKED_DEVICES` in `Constants.h`) and `Main.cpp` swaps two devices for
-serial-driven stand-ins:
+The `Mock/` subtree is a **desk-testing path**: run the game with missing
+hardware. Each device is mocked independently by its own build flag, so you can
+stand in for one and keep the other real, or mock both:
 
-- **`CodeDetectorMock`** replaces `CodeDetector`. Instead of reading the five
-  photoresistors, it reads a card code you type into the serial console — a
-  number followed by `<enter>` "inserts" that card, an empty line "pulls it out"
-  again. It subclasses `CodeDetector` and overrides `readCode()`.
-- **`OutputDeviceMock`** replaces `OutputDevice`. Instead of driving the 12 V
-  pump and valve, it prints the balloon volume to serial after each inflate or
-  deflate, as a percentage and a little ASCII bar. It keeps the real volume
-  model (fill/deflate timing) and only swaps out the physical pin writes.
+- **`CodeDetectorMock`** (build with `-D MOCK_CODE_DETECTOR`) replaces
+  `CodeDetector`. Instead of reading the five photoresistors, it reads a card
+  code you type into the serial console — a number followed by `<enter>`
+  "inserts" that card, an empty line "pulls it out" again. It subclasses
+  `CodeDetector` and overrides `readCode()`.
+- **`OutputDeviceMock`** (build with `-D MOCK_OUTPUT_DEVICE`) replaces
+  `OutputDevice`. Instead of driving the 12 V pump and valve, it prints the
+  balloon volume to serial after each inflate or deflate, as a percentage and a
+  little ASCII bar. It keeps the real volume model (fill/deflate timing) and
+  only swaps out the physical pin writes.
+
+Either flag can be set on the command line or uncommented in `Constants.h`.
 
 To make the output mock possible without duplicating the volume model,
 `OutputDevice` exposes three protected virtual hooks — `writeMotor()`,
@@ -92,9 +95,9 @@ volume. (This is the seam that the earlier, drifted `Dummy/` code lacked: it
 tried to override `applyPositive()`/`applyNegative()` methods that no longer
 existed.)
 
-Because the mock talks over serial, a `MOCKED_DEVICES` build also gets the
+Because the mocks talk over serial, a build with either mock also gets the
 2.5 s startup delay and always initializes the serial port, regardless of
-`LOGGING_ENABLED`. Combine it with `-D AUTOSTART_GAME` to boot straight into a
+`LOGGING_ENABLED`. Combine them with `-D AUTOSTART_GAME` to boot straight into a
 2-player game and watch the balloon fill on the console.
 
 ## The unbuilt mode system

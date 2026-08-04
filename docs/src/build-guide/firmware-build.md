@@ -77,24 +77,31 @@ Compile-time switches live in `src/Constants.h`:
 
 - **`AUTOSTART_GAME`** — auto-starts a 2-player game on boot, skipping the
   player-count detection flow. Handy for testing.
-- **`MOCKED_DEVICES`** — runs the game with **no hardware attached** by wiring in
-  the serial mocks from `src/Mock/` in place of the real card reader and
-  pump/valve. Type card codes into the serial console; the balloon volume prints
-  back as a percentage and an ASCII bar. Pair it with `AUTOSTART_GAME` to boot
-  straight into a game:
+- **`MOCK_CODE_DETECTOR`** / **`MOCK_OUTPUT_DEVICE`** — swap in the serial mocks
+  from `src/Mock/` in place of the real devices, so the game runs with missing
+  hardware. The two are **independent** — mock one and keep the other real, or
+  mock both:
+    - **`MOCK_CODE_DETECTOR`** reads card codes from the serial console (type a
+      code + `<enter>`) instead of the photoresistor card reader.
+    - **`MOCK_OUTPUT_DEVICE`** prints the balloon volume to serial (a percentage
+      and an ASCII bar) instead of driving the pump/valve.
+
+  Pair them with `AUTOSTART_GAME` to boot straight into a game with no hardware
+  attached (the `make mock`, `make mock-code`, and `make mock-output` targets
+  wrap these):
 
   ```bash
-  PLATFORMIO_BUILD_FLAGS="-D MOCKED_DEVICES -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
+  PLATFORMIO_BUILD_FLAGS="-D MOCK_CODE_DETECTOR -D MOCK_OUTPUT_DEVICE -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
   ```
 
-    !!! warning "Don't combine `MOCKED_DEVICES` with `LOGGING_ENABLED`"
-        The mock narrates itself (it always prints its prompts and the volume
-        bar), so it does not need `LOGGING_ENABLED`. Enabling both at once is a
-        RAM footgun on the ATmega328P: the game's `printf` format strings live
-        in SRAM, and the extra pressure leaves only ~144 bytes free at runtime,
-        so the nested card-apply + `printf` path overflows the stack into the
-        heap and the firmware crashes (garbage on the serial line). Use
-        `MOCKED_DEVICES` on its own.
+    !!! warning "Don't combine the mocks with `LOGGING_ENABLED`"
+        The mocks narrate themselves (they always print their prompts and the
+        volume bar), so they don't need `LOGGING_ENABLED`. Enabling logging
+        alongside them is a RAM footgun on the ATmega328P: the game's `printf`
+        format strings live in SRAM, and with logging plus both mocks plus
+        autostart only ~144 bytes remain free at runtime, so the nested
+        card-apply + `printf` path overflows the stack into the heap and the
+        firmware crashes (garbage on the serial line).
 - **`ACTIVE_MODE()`** — selects the top-level mode:
     - **`MODE_GAME()`** — normal gameplay (default).
     - **`MODE_CODE_DETECTOR_CALIBRATION()`** — a
