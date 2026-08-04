@@ -60,20 +60,14 @@ PlatformIO auto-detects the serial port; force it with
 pio device monitor            # 9600 baud, matching Serial.begin(9600)
 ```
 
-Runtime output only appears when `LOGGING_ENABLED` is defined (below).
+Serial `printf` logging is always on. The format strings are kept in flash
+(via a `printf` → `printf_P(PSTR(...))` macro in `Constants.h`), so on the
+ATmega328P logging costs essentially no RAM — only ~16 bytes over a
+hypothetical silent build — and it doesn't need a build switch.
 
 ## Build switches
 
 Compile-time switches live in `src/Constants.h`:
-
-- **`LOGGING_ENABLED`** — enables all serial `printf` logging. **Off by
-  default**; when disabled it strips the logging code entirely (saves
-  flash/RAM). Turn it on for the serial monitor by uncommenting the `#define`
-  in `Constants.h`, or inject it for one build without editing the file:
-
-  ```bash
-  PLATFORMIO_BUILD_FLAGS="-D LOGGING_ENABLED" pio run -t upload -e nanoatmega328
-  ```
 
 - **`AUTOSTART_GAME`** — auto-starts a 2-player game on boot, skipping the
   player-count detection flow. Handy for testing.
@@ -86,7 +80,7 @@ Compile-time switches live in `src/Constants.h`:
     - **`MOCK_OUTPUT_DEVICE`** prints the balloon volume to serial (a percentage
       and an ASCII bar) instead of driving the pump/valve.
 
-  Pair them with `AUTOSTART_GAME` to boot straight into a game with no hardware
+    Pair them with `AUTOSTART_GAME` to boot straight into a game with no hardware
   attached (the `make mock`, `make mock-code`, and `make mock-output` targets
   wrap these):
 
@@ -94,19 +88,14 @@ Compile-time switches live in `src/Constants.h`:
   PLATFORMIO_BUILD_FLAGS="-D MOCK_CODE_DETECTOR -D MOCK_OUTPUT_DEVICE -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
   ```
 
-    !!! warning "Don't combine the mocks with `LOGGING_ENABLED`"
-        The mocks narrate themselves (they always print their prompts and the
-        volume bar), so they don't need `LOGGING_ENABLED`. Enabling logging
-        alongside them is a RAM footgun on the ATmega328P: the game's `printf`
-        format strings live in SRAM, and with logging plus both mocks plus
-        autostart only ~144 bytes remain free at runtime, so the nested
-        card-apply + `printf` path overflows the stack into the heap and the
-        firmware crashes (garbage on the serial line).
 - **`DETECTOR_CALIBRATION`** — replaces the game loop with a
   [card-reader](modules/card-reader.md) bring-up harness that prints raw
   photoresistor values. `<SPACE>` pauses output; `<TAB>` switches to
-  changes-only output. Use it to pick card-reader thresholds. Off by default
-  (normal gameplay); build with `-D DETECTOR_CALIBRATION` (or `make calibrate`).
+  changes-only output. Use it to pick card-reader thresholds.
+
+  ```bash
+  PLATFORMIO_BUILD_FLAGS="-D DETECTOR_CALIBRATION" pio run -t upload -e nanoatmega328
+  ```
 
 ## See also
 

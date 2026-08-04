@@ -1,9 +1,16 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-//#define AUTOSTART_GAME
+#include <stdio.h>
+#include <avr/pgmspace.h>
 
-//#define LOGGING_ENABLED
+// Keep printf format strings in flash instead of SRAM. On the ATmega328P a
+// plain printf("...") copies its literal into RAM at boot; PSTR + printf_P read
+// it straight from flash, which is what lets logging stay always-on cheaply.
+// (Format strings must be literals — which every call site here is.)
+#define printf(fmt, ...) printf_P(PSTR(fmt), ##__VA_ARGS__)
+
+//#define AUTOSTART_GAME
 
 // Wire in the serial mocks from src/Mock/ instead of the real devices, so the
 // game can be driven and observed over serial with no hardware attached. Each

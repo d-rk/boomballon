@@ -146,9 +146,7 @@ void CodeDetector::setActiveCode(uint8_t code) {
     }
 
     #ifndef DETECTOR_CALIBRATION
-    #ifdef LOGGING_ENABLED
     printf("\tActive Code: %2d (%2d)\n", activeCode, activeCodeMirrored);
-    #endif
     #endif
 }
 
@@ -189,14 +187,14 @@ void CodeDetector::printRawValues(bool codeChanged, bool displayChangesOnly) {
         printf("%3d ", rawValue[i]);
     }
 
-    Serial.print(" |  ");
+    Serial.print(F(" |  "));
 
 
     for (int i=0; i < numPins; i++) {
         if (rawValue[i] <= MIN_THRESHOLD) {
-            Serial.print("0 ");
+            Serial.print(F("0 "));
         } else if (rawValue[i] >= MAX_THRESHOLD) {
-            Serial.print("1 ");
+            Serial.print(F("1 "));
         }
     }
 

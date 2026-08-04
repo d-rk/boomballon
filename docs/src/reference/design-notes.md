@@ -95,9 +95,9 @@ volume. (This is the seam that the earlier, drifted `Dummy/` code lacked: it
 tried to override `applyPositive()`/`applyNegative()` methods that no longer
 existed.)
 
-Because the mocks talk over serial, a build with either mock also gets the
-2.5 s startup delay and always initializes the serial port, regardless of
-`LOGGING_ENABLED`. Combine them with `-D AUTOSTART_GAME` to boot straight into a
+Because the mocks talk over serial, a build with either mock also gets a 2.5 s
+startup delay so the serial link settles before the opening prompt prints
+(`printf` logging is always on). Combine them with `-D AUTOSTART_GAME` to boot straight into a
 2-player game and watch the balloon fill on the console.
 
 ## The unbuilt mode system

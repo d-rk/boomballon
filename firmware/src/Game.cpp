@@ -61,12 +61,10 @@ bool Game::isStarted() {
  * @param numPlayers number of players that participate.
  */
 void Game::start(int8_t numPlayers, bool playJingle) {
-    #ifdef LOGGING_ENABLED
     printf("\n");
     printf("=================================\n");
     printf("=== Start game with %1d players ===\n", numPlayers);
     printf("=================================\n");
-    #endif
     this->started = true;
     this->gameEnded = false;
     this->playJingle = playJingle;
@@ -106,10 +104,8 @@ void Game::start(int8_t numPlayers, bool playJingle) {
 
 void Game::changePlayer() {
     currentPlayer = currentPlayer->nextPlayer; //first player
-    #ifdef LOGGING_ENABLED
     printf("\n=== Turn changed to player %1d ===\n", currentPlayer->id);
     printf("\tFree Ram: %d bytes\n", freeRam());
-    #endif
     SevenSegmentDisplay::instance->setCharacter(0);
     delay(500);
     SevenSegmentDisplay::instance->setCharacter(CHAR_P);
@@ -131,9 +127,7 @@ void Game::loop() {
 
     if (gameEnded) {
         if (CodeDetector::instance->getActiveCode() == CODE_ALL) {
-            #ifdef LOGGING_ENABLED
             printf("** Restarting game...\n");
-            #endif
             start(numPlayers, playJingle);
         }
         return;
@@ -160,16 +154,12 @@ void Game::loop() {
                     waitCardRemoved = true;
                     currentCard = 0;
                 } else {
-                    #ifdef LOGGING_ENABLED
                     printf("\tWaiting for a player-card to attach %s...\n", currentCard->cardName());
-                    #endif
                 }
             } else {
                 //wrong card inserted
                 errorFeedback();
-                #ifdef LOGGING_ENABLED
                 printf("\tError: not a valid game card.\n");
-                #endif
             }
         } else {
             //waiting for a player card
@@ -189,16 +179,12 @@ void Game::loop() {
                     currentCard = 0;
                 } else {
                     errorFeedback();
-                    #ifdef LOGGING_ENABLED
                     printf("\tError: target player not found.\n");
-                    #endif
                 }
             } else {
                 //wrong card inserted
                 errorFeedback();
-                #ifdef LOGGING_ENABLED
                 printf("\tError: not a valid player card.\n");
-                #endif
             }
         }
     }
@@ -207,14 +193,10 @@ void Game::loop() {
     SevenSegmentDisplay::instance->setNumber(currentPlayer->id);
 
     if (OutputDevice::instance->volume > 100.0f) {
-        #ifdef LOGGING_ENABLED
         printf("\n** Player %1d lost the game!\n", currentPlayer->id);
         printf("** Perform reset...\n");
-        #endif
         OutputDevice::instance->reset();
-        #ifdef LOGGING_ENABLED
         printf("** Remove card to restart game...");
-        #endif
 
         gameEnded = true;
         return;
@@ -223,10 +205,8 @@ void Game::loop() {
     if (waitCardRemoved && CodeDetector::instance->getActiveCode() == CODE_ALL) {
         waitCardRemoved = false;
         changePlayer();
-        #ifdef LOGGING_ENABLED
         printf("\tCurrent volume: ");
         Serial.println(OutputDevice::instance->volume);
-        #endif
     }
 }
 

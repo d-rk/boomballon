@@ -25,7 +25,7 @@ The tree lives under `firmware/src/`:
 | Mock devices | `Mock/CodeDetectorMock.*`, `Mock/OutputDeviceMock.*` | Serial stand-ins for the card reader and pump/valve, compiled in with `-D MOCK_CODE_DETECTOR` / `-D MOCK_OUTPUT_DEVICE` |
 | Scheduling | `Tasks/Task.h`, `Tasks/TaskScheduler.*` | Cooperative multitasking |
 | Helpers | `Helper/Vector.h`, `Helper/Diagnostic.h`, `Helper/Log.*` | STL-free container, RAM probe, `printf` logging |
-| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, build switches (`LOGGING_ENABLED`, `AUTOSTART_GAME`, `MOCK_CODE_DETECTOR`, `MOCK_OUTPUT_DEVICE`, `DETECTOR_CALIBRATION`) |
+| Config | `Constants.h` | Pins, codes, display glyphs, note frequencies, the flash-string `printf` macro, build switches (`AUTOSTART_GAME`, `MOCK_CODE_DETECTOR`, `MOCK_OUTPUT_DEVICE`, `DETECTOR_CALIBRATION`) |
 
 The `Mock/` subtree lets the game run with **missing hardware**: build with
 `-D MOCK_CODE_DETECTOR` and/or `-D MOCK_OUTPUT_DEVICE` and `Main.cpp` swaps that
@@ -188,10 +188,11 @@ hand-rolled utilities:
   per-player card list and the scheduler's task list.
 - **`freeRam()` (`Helper/Diagnostic.h`)** — reports free SRAM by measuring the
   gap between the heap break and the stack. Handy on a 2 KB part; it is printed
-  on each turn change when logging is on.
+  on each turn change.
 - **`Log` (`Helper/Log.cpp`)** — redirects C `printf` to the Arduino `Serial`
   port, so the rest of the code can log with ordinary `printf(...)` format
-  strings. All logging is compiled out unless `LOGGING_ENABLED` is defined.
+  strings. Logging is always on; a `printf` → `printf_P(PSTR(...))` macro in
+  `Constants.h` keeps the format strings in flash so it costs almost no RAM.
 
 ## Build modes and logging
 
@@ -201,8 +202,9 @@ hand-rolled utilities:
   that just prints raw analog readings from the card reader, used to tune the
   reader thresholds. Off by default (the normal game). See the
   [Optical Code System](optical-codes.md#calibration-harness).
-- **`LOGGING_ENABLED`** turns the `printf`-over-serial logging (and a 2.5 s
-  startup delay to let the serial link settle) on or off.
+
+Serial `printf` logging is always compiled in — the format strings live in
+flash (`printf_P`/`PSTR`), so it costs almost no RAM.
 
 There is also an `AUTOSTART_GAME` switch that skips the player-count selection
 and jumps straight into a 2-player game — a convenience for testing.

@@ -30,9 +30,7 @@ void VolumeCard::play(bool newCardInserted, bool waitCardRemoved) {
         OutputDevice::instance->apply(volumeChangePercent, intensity);
         SevenSegmentDisplay::instance->stopAnimation();
 
-        #ifdef LOGGING_ENABLED
         printf("\t%s: applied volume change of %d%% with intensity %d\n", cardName(), volumeChangePercent, intensity);
-        #endif
         discard = true;
     }
 }
@@ -41,9 +39,7 @@ void VolumeCard::play(bool newCardInserted, bool waitCardRemoved) {
 
 void VolumeCard::attach(Player* currentPlayer) {
     Card::attach(currentPlayer);
-    #ifdef LOGGING_ENABLED
     printf("\tAttached %s(%d) to player %d.\n", cardName(), volumeChangePercent, currentPlayer->id);
-    #endif
 }
 
 //-----------------------------------------------------------------------------

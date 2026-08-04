@@ -54,19 +54,17 @@ PlatformIO auto-detects the serial port; pass `--upload-port /dev/ttyUSB0`
 pio device monitor            # 9600 baud, matching Serial.begin(9600)
 ```
 
-Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
+Serial `printf` logging is always on. The format strings are kept in flash via
+a `printf` → `printf_P(PSTR(...))` macro in `Constants.h`, so on the ATmega328P
+logging costs almost no RAM (~16 bytes) and needs no build switch.
 
 ## Build switches (`src/Constants.h`)
 
-- `LOGGING_ENABLED` — enables all serial `printf` logging. Off by default;
-  disabling it strips the logging code entirely (saves flash/RAM). Toggle it in
-  `Constants.h`, or inject it for one build via the environment variable
-  (note: `pio run -a "-D..."` does **not** work — `-a` is an avrdude argument,
-  not a compiler flag, so the macro stays undefined):
+The switches below are off by default. Enable one in `Constants.h`, or inject
+it for a single build via the environment variable (note: `pio run -a "-D..."`
+does **not** work — `-a` is an avrdude argument, not a compiler flag, so the
+macro stays undefined):
 
-  ```bash
-  PLATFORMIO_BUILD_FLAGS="-D LOGGING_ENABLED" pio run -t upload -e nanoatmega328
-  ```
 - `AUTOSTART_GAME` — auto-starts a 2-player game on boot, for testing without
   the player-count detection flow.
 - `MOCK_CODE_DETECTOR` / `MOCK_OUTPUT_DEVICE` — wire in the serial mocks from
@@ -83,12 +81,6 @@ Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
   ```bash
   PLATFORMIO_BUILD_FLAGS="-D MOCK_CODE_DETECTOR -D MOCK_OUTPUT_DEVICE -D AUTOSTART_GAME" pio run -t upload -e nanoatmega328
   ```
-
-  Avoid also enabling `LOGGING_ENABLED` alongside the mocks: the mocks narrate
-  themselves, and on the ATmega328P the game's `printf` format strings sit in
-  SRAM — with logging plus both mocks plus autostart, only ~144 bytes of RAM
-  remain free at runtime and the nested card-apply + `printf` path overflows the
-  stack and crashes.
 - `DETECTOR_CALIBRATION` — replaces the game loop with a card-reader bring-up
   harness that prints raw photoresistor values (`<SPACE>` pauses output, `<TAB>`
   switches to changes-only output). Off by default (normal gameplay); build with

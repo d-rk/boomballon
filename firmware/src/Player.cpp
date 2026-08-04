@@ -111,9 +111,7 @@ void Player::changeDirection() {
     nextPlayer = prevPlayer;
     prevPlayer = tmp;
 
-    #ifdef LOGGING_ENABLED
     printf("Player %d - prev: %d next: %d\n", id, prevPlayer->id, nextPlayer->id);
-    #endif
 
     if (!nextPlayerChanged) {
         //do it recursive for all players.

@@ -48,9 +48,7 @@ void SuddenDeathCard::attach(Player* targetPlayer) {
     }
 
     if (hasSuddenDeathCard) {
-        #ifdef LOGGING_ENABLED
         printf("\tCannot attach SuddenDeathCard. Player already has card.");
-        #endif
         return;
     }
 
@@ -66,9 +64,7 @@ void SuddenDeathCard::attach(Player* targetPlayer) {
     startTime = millis();
 
     Card::attach(targetPlayer);
-    #ifdef LOGGING_ENABLED
     printf("\tAttached SuddenDeath to %1d.\n", targetPlayer->id);
-    #endif
 }
 
 //-----------------------------------------------------------------------------

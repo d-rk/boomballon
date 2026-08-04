@@ -38,8 +38,9 @@ void setup() {
     SevenSegmentDisplay::instance->setup();
     SevenSegmentDisplay::instance->setCharacter(CHAR_MINUS);
 
-    // wait two seconds so that the serial connection is established
-    #if defined(LOGGING_ENABLED) || defined(MOCK_CODE_DETECTOR) || defined(MOCK_OUTPUT_DEVICE)
+    // when driving the game over serial (mock builds), wait so the serial
+    // connection is established and the opening prompt isn't missed
+    #if defined(MOCK_CODE_DETECTOR) || defined(MOCK_OUTPUT_DEVICE)
     delay(2500);
     #endif
     SevenSegmentDisplay::instance->setCharacter(CHAR_DOT);
@@ -70,7 +71,6 @@ void setup() {
     CodeDetector::instance->setup();
     PiezoBuzzer::instance->setup();
 
-    #ifdef LOGGING_ENABLED
     #ifndef DETECTOR_CALIBRATION
     printf("=================================\n");
     printf("=== Select number of players  ===\n");
@@ -80,7 +80,6 @@ void setup() {
     printf("=== <SPACE> = Pause               ===\n");
     printf("===   <TAB> = Toggle Display Mode ===\n");
     printf("=====================================\n");
-    #endif
     #endif
 
     #ifdef AUTOSTART_GAME
