@@ -26,20 +26,24 @@ AVR toolchain automatically.
 
 ```bash
 cd firmware
-pio run                       # builds both environments
-pio run -e nanoatmega328      # just the old-bootloader Nano
+pio run                       # builds all environments
+pio run -e nanoatmega328      # just the Nano (the current board)
 ```
 
 The compiled image lands at `.pio/build/<env>/firmware.hex`.
 
 ## Flash
 
-Pick the environment that matches your board's bootloader:
+Pick the environment that matches your board:
 
 ```bash
-pio run -t upload -e nanoatmega328      # original Nano, old bootloader (57600 baud)
-pio run -t upload -e nanoatmega328new   # newer Nano clones (115200 baud)
+pio run -t upload -e nanoatmega328      # Arduino Nano, old bootloader (57600 baud)
+pio run -t upload -e micro              # Arduino Micro (early-prototype board)
 ```
+
+The project's Nanos are older clones with the old bootloader. If an upload
+times out on a newer board, its bootloader expects 115200 baud — switch the
+environment to `board = nanoatmega328new` in `platformio.ini`.
 
 PlatformIO auto-detects the serial port; pass `--upload-port /dev/ttyUSB0`
 (Linux CH340 clone), `/dev/ttyACM0` (genuine), or `COMx` (Windows) to force it.
@@ -55,8 +59,14 @@ Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
 ## Build switches (`src/Constants.h`)
 
 - `LOGGING_ENABLED` — enables all serial `printf` logging. Off by default;
-  disabling it strips the logging code entirely (saves flash/RAM). Toggle it
-  in `Constants.h`, or build with `pio run -e nanoatmega328 -a "-DLOGGING_ENABLED"`.
+  disabling it strips the logging code entirely (saves flash/RAM). Toggle it in
+  `Constants.h`, or inject it for one build via the environment variable
+  (note: `pio run -a "-D..."` does **not** work — `-a` is an avrdude argument,
+  not a compiler flag, so the macro stays undefined):
+
+  ```bash
+  PLATFORMIO_BUILD_FLAGS="-D LOGGING_ENABLED" pio run -t upload -e nanoatmega328
+  ```
 - `AUTOSTART_GAME` — auto-starts a 2-player game on boot, for testing without
   the player-count detection flow.
 - `ACTIVE_MODE()` — selects `MODE_GAME()` (normal gameplay) or
@@ -69,8 +79,8 @@ Runtime output only appears when `LOGGING_ENABLED` is defined (see below).
 Both environments compile cleanly with no source changes:
 
 ```
-nanoatmega328     SUCCESS
-nanoatmega328new  SUCCESS
+nanoatmega328  SUCCESS
+micro          SUCCESS
 RAM:   [====      ]  36.3% (744 bytes / 2048)
 Flash: [=====     ]  52.7% (16186 bytes / 30720)
 ```
@@ -79,6 +89,11 @@ CI (`.github/workflows/build-firmware.yml`) runs `pio run` on every push, so
 the firmware is guaranteed to keep compiling.
 
 ## History
+
+The early prototypes (2015–2018) ran on an **Arduino Micro** (ATmega32U4); the
+build switched to the Nano in 2019. The pin assignments in `Main.cpp` predate
+the switch and work on both boards, so the `micro` environment still targets
+the original prototype hardware unchanged.
 
 The firmware was originally built with **arduino-cmake** (a CMake toolchain)
 driven by MinGW on Windows, with `avrdude` upload wrapped in `.bat` scripts.

@@ -54,6 +54,19 @@ magick -background none -fill white -font ../cards/fonts/SNAP____.TTF \
   -bordercolor none -border 4 -strip \
   ../docs/src/assets/img/wordmark.png
 
+echo "Building gallery thumbnails ..."
+# gallery/ holds the photos already downscaled for the web (long edge 1600,
+# quality 82) - the camera originals are never committed. Each one also gets a
+# square thumbnail, because the grid shows them at ~130 px and serving the full
+# photo there would cost about 230 kB a tile instead of 27 kB.
+mkdir -p ../docs/src/assets/img/gallery/thumbs
+for photo in gallery/*.jpg; do
+  name=$(basename "$photo")
+  cp "$photo" ../docs/src/assets/img/gallery/"$name"
+  magick "$photo" -resize 400x400^ -gravity center -extent 400x400 \
+    -strip -quality 80 ../docs/src/assets/img/gallery/thumbs/"$name"
+done
+
 echo "Syncing docs copies ..."
 cp logo/logo.svg logo/logo-icon.svg logo/favicon-128.png ../docs/src/assets/img/
 

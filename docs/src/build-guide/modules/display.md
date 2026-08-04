@@ -17,15 +17,36 @@ lines.
 The 7-segment digit is **common cathode** (part SC08-11). The buzzer (EKULIT
 AL-60P12) is driven directly from a dedicated MCU pin.
 
-<figure markdown>
-  ![Displaymodul PCB, top side](../../assets/img/displaymodul-pcb-top.png){ width="360" }
-  <figcaption>Displaymodul PCB — top</figcaption>
+<div class="board-pair" markdown>
+<figure markdown="span">
+![Displaymodul PCB, top side](../../assets/img/displaymodul-pcb-top.png){ loading=lazy }
+<figcaption>Displaymodul PCB — top</figcaption>
 </figure>
+<figure markdown="span">
+![Displaymodul PCB, bottom side](../../assets/img/displaymodul-pcb-bottom.png){ loading=lazy }
+<figcaption>Displaymodul PCB — bottom</figcaption>
+</figure>
+</div>
 
-<figure markdown>
-  ![Displaymodul PCB, bottom side](../../assets/img/displaymodul-pcb-bottom.png){ width="360" }
-  <figcaption>Displaymodul PCB — bottom</figcaption>
-</figure>
+### Board markings
+
+| Marking | What it is |
+|---|---|
+| `Displaymodul` | The outline of the 20 mm 7-segment digit (SC08-11) on the top side, which also carries the board name. |
+| `Summer` | The piezo buzzer (*Summer* is German for buzzer). The `+` marks its positive pin. |
+| `U1` | The 74HC595 shift register, an SOIC-16 SMD part on the bottom side. The dot and the notch in its outline mark pin 1. |
+| `R1`–`R8` | The eight 330 Ω series resistors, one per shift-register output: seven segments plus the decimal point. SMD, bottom side. |
+| `Display` | The 6-pin connector to the [control board](control-board.md). Pinout in the [table below](#connector-6-pin). |
+
+### Gallery
+
+Photos of the assembled board. Click any of them for a larger view.
+
+<div class="gallery" markdown="span">
+[![Assembled Displaymodul, top side: the 7-segment digit and the piezo buzzer.](../../assets/img/gallery/thumbs/displaymodul-top.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-top.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — top side, assembled" }
+[![Assembled Displaymodul, bottom side: the 74HC595 and the eight 330 Ω resistors.](../../assets/img/gallery/thumbs/displaymodul-bottom.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-bottom.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — bottom side, assembled" }
+[![Assembled Displaymodul edge on, with the 6-pin header and the display's part label.](../../assets/img/gallery/thumbs/displaymodul-edge.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-edge.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — edge on, showing the header and the display's part label" }
+</div>
 
 Fritzing source:
 [`Displaymodul.fzz`](https://github.com/d-rk/boomballon/blob/main/hardware/display/Displaymodul.fzz).

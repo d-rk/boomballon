@@ -138,3 +138,110 @@
   line-height: 1.25;
   color: var(--md-default-fg-color--light);
 }
+
+/* Top and bottom view of the same board, side by side. The PCB renders are
+   tall narrow strips (roughly 1:3.5), so sized to the column width a single
+   one runs well past a screenful. Capping the height instead keeps the pair
+   compact, and since both renders are the same 1600px tall it also lines the
+   two boards up with each other. */
+.board-pair {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.board-pair figure {
+  margin: 0;
+  text-align: center;
+  /* Half the row minus half the gap, so the two boards always share one row.
+     Without this the wider boards (the control board is nearly square) come
+     out too broad at the height cap below, overflow the column, and wrap back
+     into a stack. */
+  max-width: calc(50% - 0.75rem);
+}
+
+.board-pair figure img {
+  max-height: 24rem;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* On a phone a half-width board is too small to read, so let them stack and
+   use the full column instead. */
+@media screen and (max-width: 30em) {
+  .board-pair figure {
+    max-width: 100%;
+  }
+}
+
+/* Photo gallery of an assembled board: square thumbnails, five to a row,
+   wrapping onto further rows. The count steps down on narrow screens, where a
+   fifth of the column would be too small to make anything out. Clicking a
+   thumbnail opens the full-size photo through the glightbox plugin. */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+@media screen and (max-width: 45em) {
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 30em) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 125ms;
+}
+
+.gallery a:hover img,
+.gallery a:focus-visible img {
+  transform: scale(1.04);
+}
+
+/* Stand-in tile for a board nobody has photographed yet. Drawn rather than
+   shipped as an image so it follows the light and dark palettes. */
+.gallery__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 0.5rem;
+  border: 1px dashed var(--md-default-fg-color--lighter);
+  border-radius: 4px;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Keep a leading column of identifiers on one line: both a single name
+   (Displaymodu/l) and a range of them (LED1-/LED5) break badly, and the range
+   breaks at the dash between two separate code spans, so the whole cell has
+   to hold. Limited to cells that actually contain code, which leaves prose
+   columns such as the bill of materials free to wrap as before. */
+.md-typeset table:not([class]) td:first-child:has(code) {
+  white-space: nowrap;
+}
+
+.board-pair figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  color: var(--md-default-fg-color--light);
+}

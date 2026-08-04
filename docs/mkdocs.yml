@@ -29,6 +29,15 @@ theme:
     - search.suggest
 extra_css:
   - assets/extra.css
+plugins:
+  # Listing plugins disables the built-in search, so name it explicitly.
+  - search
+  # Click-to-enlarge for the board galleries. Ships its own JS and CSS into
+  # the built site, so nothing is fetched at runtime.
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
 markdown_extensions:
   - admonition
   - attr_list

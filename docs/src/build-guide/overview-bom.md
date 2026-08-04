@@ -79,7 +79,7 @@ supplier mostly Reichelt). Datasheets for the numbered parts live under
 | 7-seg 20 mm (common cathode) | Display digit | 1 | SC08-11 |
 | Piezo buzzer | Audio | 1 | EKULIT AL-60P12 |
 | Photoresistor | Card sensing | 5 | Reichelt A 905014 |
-| 10 kΩ resistor | Photocell divider | 5 | Bürklin 28 E497 |
+| 330 Ω resistor | Photocell divider (Fotomodul) | 5 | SMD 1206 |
 | 3 mm LED | Card illumination | 5 | Reichelt LED EL 3-11250KW |
 | 330 Ω resistor | LED limiting (Lichtmodul) | 5 | SMD 1206 |
 | 330 Ω resistor | Segment limiting (Display) | 8 | SMD 1206 |
@@ -87,13 +87,13 @@ supplier mostly Reichelt). Datasheets for the numbered parts live under
 | Polycarbonate window | Display pane | 1 | Reely (Conrad 229802) |
 | 3D-printed housing | Enclosure | 1 set | see [Enclosure](enclosure.md) |
 
-!!! note "Photocell divider resistor: 10 kΩ, not 330 Ω (source conflict)"
-    The Fotomodul parts list (`hardware/card-reader/Artikelnummern.txt`)
-    specifies **10 kΩ** (Bürklin 28 E497) for the photocell **voltage divider**,
-    while the Fritzing sketch and the order sheet
-    (`hardware/bom/20170825_Bestellliste.xlsx`) both show 330 Ω. 10 kΩ is the
-    electrically correct divider value — build with 10 kΩ. See the
-    [card reader page](modules/card-reader.md) for details.
+!!! note "All 18 resistors above are the same 330 Ω part"
+    The photocell dividers, the *Lichtmodul* LED resistors, and the display's
+    segment resistors are one and the same 330 Ω SMD 1206 value, so they come
+    off a single reel. `hardware/card-reader/Artikelnummern.txt` names a 10 kΩ
+    part (Bürklin 28 E497) for the dividers, but the assembled boards, the
+    Fritzing sketch, and the order sheet all agree on 330 Ω — see the
+    [card reader page](modules/card-reader.md#fotomodul-photo-module).
 
 ### Cost
 

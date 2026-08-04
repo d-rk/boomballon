@@ -26,21 +26,29 @@ toolchain automatically.
 
 ```bash
 cd firmware
-pio run                       # builds both environments
-pio run -e nanoatmega328      # just the old-bootloader Nano
+pio run                       # builds all environments
+pio run -e nanoatmega328      # just the Nano (the current board)
 ```
 
 The compiled image is written to `.pio/build/<env>/firmware.hex`.
 
 ## Flash
 
-Two environments cover the two common Nano bootloaders — pick the one that
-matches your board:
+Pick the environment that matches your board:
 
 ```bash
-pio run -t upload -e nanoatmega328      # original Nano, old bootloader (57600 baud)
-pio run -t upload -e nanoatmega328new   # newer clones (115200 baud)
+pio run -t upload -e nanoatmega328      # Arduino Nano, old bootloader (57600 baud)
+pio run -t upload -e micro              # Arduino Micro (early-prototype board)
 ```
+
+The project's Nanos are older clones with the old bootloader. If an upload
+times out on a newer board, its bootloader expects 115200 baud — switch the
+environment to `board = nanoatmega328new` in `platformio.ini`.
+
+The `micro` environment targets the Arduino Micro (ATmega32U4) that ran the
+2015–2018 prototypes (see
+[the story](../story.md#the-controller-from-micro-to-nano)). The pin map is
+unchanged since then, so a Micro still runs the current firmware.
 
 PlatformIO auto-detects the serial port; force it with
 `--upload-port /dev/ttyUSB0` (Linux CH340 clone), `/dev/ttyACM0` (genuine), or
@@ -60,8 +68,16 @@ Compile-time switches live in `src/Constants.h`:
 
 - **`LOGGING_ENABLED`** — enables all serial `printf` logging. **Off by
   default**; when disabled it strips the logging code entirely (saves
-  flash/RAM). Turn it on when using the serial monitor, or build with
-  `pio run -a "-DLOGGING_ENABLED"`.
+  flash/RAM). Turn it on for the serial monitor by uncommenting the `#define`
+  in `Constants.h`, or inject it for one build without editing the file:
+
+  ```bash
+  PLATFORMIO_BUILD_FLAGS="-D LOGGING_ENABLED" pio run -t upload -e nanoatmega328
+  ```
+
+  Do **not** use `pio run -a "-DLOGGING_ENABLED"` — `-a`/`--program-arg` passes
+  an argument to the upload tool (avrdude), not a compiler flag, so the macro
+  stays undefined and the firmware uploads with logging silently stripped.
 - **`AUTOSTART_GAME`** — auto-starts a 2-player game on boot, skipping the
   player-count detection flow. Handy for testing.
 - **`ACTIVE_MODE()`** — selects the top-level mode:
@@ -70,20 +86,6 @@ Compile-time switches live in `src/Constants.h`:
       [card-reader](modules/card-reader.md) bring-up harness that prints raw
       analog values. `<SPACE>` pauses output; `<TAB>` switches to changes-only
       output. Use this to pick card-reader thresholds.
-
-## Verified build
-
-Both environments compile with no source changes — a 16186-byte image (52.7 %
-of flash), 744 bytes of RAM. A GitHub Actions workflow
-(`.github/workflows/build-firmware.yml`) runs `pio run` on every push, so the
-firmware is guaranteed to keep building.
-
-!!! note "Legacy build"
-    The firmware was originally built with **arduino-cmake** (a CMake toolchain)
-    under MinGW on Windows, flashing via `avrdude` wrapped in `.bat` scripts.
-    That ~2013 toolchain is incompatible with modern CMake, so the project
-    migrated to PlatformIO and removed the old build files (still in git
-    history).
 
 ## See also
 

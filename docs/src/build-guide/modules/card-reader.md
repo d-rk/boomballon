@@ -1,9 +1,8 @@
 # Card Reader
 
 The card reader (*Kartenmodul*, card module) is how the device knows which card
-a player has inserted. It is an **optical** reader: it never touches a contact
-or a chip. Instead it shines light through the card and measures where the light
-gets through.
+a player has inserted. It is an **optical** reader: it shines light through the
+card and measures where the light gets through.
 
 It is built from two stacked PCBs:
 
@@ -22,15 +21,31 @@ own **330 Ω** series resistor to limit current. The five LEDs sit directly abov
 the five sensors on the *Fotomodul*, so each sensor is lit from above through
 the card.
 
-<figure markdown>
-  ![Lichtmodul PCB, top side](../../assets/img/lichtmodul-pcb-top.png){ width="360" }
-  <figcaption>Lichtmodul PCB — top</figcaption>
+<div class="board-pair" markdown>
+<figure markdown="span">
+![Lichtmodul PCB, top side](../../assets/img/lichtmodul-pcb-top.png){ loading=lazy }
+<figcaption>Lichtmodul PCB — top</figcaption>
 </figure>
+<figure markdown="span">
+![Lichtmodul PCB, bottom side](../../assets/img/lichtmodul-pcb-bottom.png){ loading=lazy }
+<figcaption>Lichtmodul PCB — bottom</figcaption>
+</figure>
+</div>
 
-<figure markdown>
-  ![Lichtmodul PCB, bottom side](../../assets/img/lichtmodul-pcb-bottom.png){ width="360" }
-  <figcaption>Lichtmodul PCB — bottom</figcaption>
-</figure>
+### Board markings
+
+| Marking | What it is |
+|---|---|
+| `LED1`–`LED5` | The five 3 mm LEDs. |
+| `R1`–`R5` | The 330 Ω series resistor belonging to the LED of the same number, mounted as SMD parts on the bottom side. |
+| `LM` | The 2-pin connector (*Lichtmodul*) carrying power for the LEDs. It plugs into the matching `LM` header on the *Fotomodul* below. |
+| `1` | Pin-1 marker, printed next to `LM`. |
+
+### Gallery
+
+<div class="gallery">
+<div class="gallery__empty">No photos of this board yet</div>
+</div>
 
 Fritzing source:
 [`Kartenleser_Lichtmodul.fzz`](https://github.com/d-rk/boomballon/blob/main/hardware/card-reader/Kartenleser_Lichtmodul.fzz).
@@ -39,31 +54,40 @@ Fritzing source:
 
 The *Fotomodul* is the sensor board. It carries **5× photoresistors**
 (light-dependent resistors, Reichelt A 905014), each forming a
-**voltage divider** with a **10 kΩ** resistor. Each divider's midpoint feeds one
+**voltage divider** with a **330 Ω** resistor. Each divider's midpoint feeds one
 of the Arduino's analog inputs, `A0`–`A4`. A lit sensor (light passing through a
 clear spot on the card) and an unlit sensor (light blocked by an opaque spot)
 produce clearly different analog voltages, which the firmware thresholds into
 the 5 bits of the card code.
 
-!!! warning "Divider resistor is 10 kΩ, not 330 Ω — source conflict"
-    The sources disagree. The Fotomodul parts list
-    (`hardware/card-reader/Artikelnummern.txt`) specifies a **10 kΩ** series
-    resistor (Bürklin 28 E497), whereas the Fritzing sketch shows **330 Ω** (its
-    default) and the general order sheet
-    (`hardware/bom/20170825_Bestellliste.xlsx`) also lists 330 Ω on that line.
-    Electrically, a photoresistor voltage divider needs roughly **10 kΩ**; 330 Ω
-    is far too small and would give almost no usable voltage swing. **Build with
-    10 kΩ.**
 
-<figure markdown>
-  ![Fotomodul PCB, top side](../../assets/img/fotomodul-pcb-top.png){ width="360" }
-  <figcaption>Fotomodul PCB — top</figcaption>
+<div class="board-pair" markdown>
+<figure markdown="span">
+![Fotomodul PCB, top side](../../assets/img/fotomodul-pcb-top.png){ loading=lazy }
+<figcaption>Fotomodul PCB — top</figcaption>
 </figure>
+<figure markdown="span">
+![Fotomodul PCB, bottom side](../../assets/img/fotomodul-pcb-bottom.png){ loading=lazy }
+<figcaption>Fotomodul PCB — bottom</figcaption>
+</figure>
+</div>
 
-<figure markdown>
-  ![Fotomodul PCB, bottom side](../../assets/img/fotomodul-pcb-bottom.png){ width="360" }
-  <figcaption>Fotomodul PCB — bottom</figcaption>
-</figure>
+### Board markings
+
+| Marking | What it is |
+|---|---|
+| `F1`–`F5` | The five photoresistors. Each one lines up under an LED on the *Lichtmodul*. |
+| `R1`–`R5` | The 330 Ω divider resistor belonging to the sensor of the same number, mounted as SMD parts on the bottom side. |
+| `LM` | The 2-pin header that feeds the *Lichtmodul* stacked above. |
+| `FM` | The 7-pin header to the [control board](control-board.md) — 3.3 V, GND, and `A0`–`A4`. Pinout in the [table below](#fotomodul-connector-7-pin). |
+| `Connector` | A 6-pin **pass-through for the display cable**, electrically no part of the card reader. The control board sits at the bottom of the case and the *Fotomodul* in the middle, so relaying the display cable through here keeps the display in the lid easy to unplug. |
+| `1` | Pin-1 marker, printed next to `LM` and `FM`. |
+
+### Gallery
+
+<div class="gallery">
+<div class="gallery__empty">No photos of this board yet</div>
+</div>
 
 Fritzing source:
 [`Kartenleser_Fotomodul.fzz`](https://github.com/d-rk/boomballon/blob/main/hardware/card-reader/Kartenleser_Fotomodul.fzz).
