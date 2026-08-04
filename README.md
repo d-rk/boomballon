@@ -38,6 +38,21 @@ mkdocs serve -f docs/mkdocs.yml
 
 The site is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
 
+## Common tasks
+
+A root `Makefile` wraps the everyday commands — run `make` to see them all:
+
+| Command | What it does |
+|---|---|
+| `make build` | Build the firmware for the Arduino Nano |
+| `make upload` | Build + flash the Nano (`PORT=…` to force the serial port) |
+| `make mock` | Flash the no-hardware serial mock build (drive the game over serial) |
+| `make monitor` | Open the serial console |
+| `make docs` | Build the documentation site (`make docs-serve` to live-preview) |
+
+Firmware targets need [PlatformIO](https://platformio.org/) (`pio`) on your
+`PATH`; docs targets use a local virtualenv created by `make docs-setup`.
+
 ## Key pages
 
 - [Build Guide — Overview & BOM](docs/build-guide/overview-bom.md)

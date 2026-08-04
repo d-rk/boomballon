@@ -75,9 +75,6 @@ Compile-time switches live in `src/Constants.h`:
   PLATFORMIO_BUILD_FLAGS="-D LOGGING_ENABLED" pio run -t upload -e nanoatmega328
   ```
 
-  Do **not** use `pio run -a "-DLOGGING_ENABLED"` — `-a`/`--program-arg` passes
-  an argument to the upload tool (avrdude), not a compiler flag, so the macro
-  stays undefined and the firmware uploads with logging silently stripped.
 - **`AUTOSTART_GAME`** — auto-starts a 2-player game on boot, skipping the
   player-count detection flow. Handy for testing.
 - **`MOCKED_DEVICES`** — runs the game with **no hardware attached** by wiring in
