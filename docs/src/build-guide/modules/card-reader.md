@@ -41,6 +41,16 @@ the card.
 | `LM` | The 2-pin connector (*Lichtmodul*) carrying power for the LEDs. It plugs into the matching `LM` header on the *Fotomodul* below. |
 | `1` | Pin-1 marker, printed next to `LM`. |
 
+### Parts & datasheets
+
+The components populated on the *Lichtmodul*, with the datasheet for each part
+archived in the repo where available.
+
+| Component | Qty | Part / supplier | Datasheet |
+|---|---|---|---|
+| 3 mm white LED | 5 | Reichelt LED EL 3-11250KW (Bürklin 67 S 4470) | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/204-15UTC-S400-X9-L_V2.pdf) |
+| 330 Ω resistor (SMD 1206) | 5 | Reichelt SMD 1206, LED series resistor | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/SMD_1206.pdf) |
+
 ### Gallery
 
 <div class="gallery">
@@ -82,6 +92,18 @@ the 5 bits of the card code.
 | `FM` | The 7-pin header to the [control board](control-board.md) — 3.3 V, GND, and `A0`–`A4`. Pinout in the [table below](#fotomodul-connector-7-pin). |
 | `Connector` | A 6-pin **pass-through for the display cable**, electrically no part of the card reader. The control board sits at the bottom of the case and the *Fotomodul* in the middle, so relaying the display cable through here keeps the display in the lid easy to unplug. |
 | `1` | Pin-1 marker, printed next to `LM` and `FM`. |
+
+### Parts & datasheets
+
+The components populated on the *Fotomodul*, with the datasheet for each part
+archived in the repo where available. Its 330 Ω divider resistors are the same
+SMD 1206 part as on the *Lichtmodul* — see the
+[note on the BOM page](../overview-bom.md#bill-of-materials).
+
+| Component | Qty | Part / supplier | Datasheet |
+|---|---|---|---|
+| Photoresistor (LDR) | 5 | Reichelt A 905014 (Conrad 145475-62) | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/A90xxxx%23PE.pdf) |
+| 330 Ω resistor (SMD 1206) | 5 | Reichelt SMD 1206, divider resistor | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/SMD_1206.pdf) |
 
 ### Gallery
 

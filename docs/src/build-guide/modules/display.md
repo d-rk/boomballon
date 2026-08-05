@@ -32,11 +32,23 @@ AL-60P12) is driven directly from a dedicated MCU pin.
 
 | Marking | What it is |
 |---|---|
-| `Displaymodul` | The outline of the 20 mm 7-segment digit (SC08-11) on the top side, which also carries the board name. |
 | `Summer` | The piezo buzzer (*Summer* is German for buzzer). The `+` marks its positive pin. |
 | `U1` | The 74HC595 shift register, an SOIC-16 SMD part on the bottom side. The dot and the notch in its outline mark pin 1. |
 | `R1`–`R8` | The eight 330 Ω series resistors, one per shift-register output: seven segments plus the decimal point. SMD, bottom side. |
 | `Display` | The 6-pin connector to the [control board](control-board.md). Pinout in the [table below](#connector-6-pin). |
+
+### Parts & datasheets
+
+The components populated on the board, with the datasheet for each part archived
+in the repo where available. The eight segment resistors are the same 330 Ω SMD
+1206 part used elsewhere — see the [note on the BOM page](../overview-bom.md#bill-of-materials).
+
+| Component | Qty | Part / supplier | Datasheet |
+|---|---|---|---|
+| 7-segment 20 mm digit (common cathode) | 1 | SC08-11 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/SC08-11SRWA%28V6%29.pdf) |
+| 74HC595 shift register (SOIC-16, SMD) | 1 | SMD HC 595 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/smd_hc_595.pdf) |
+| 330 Ω resistor (SMD 1206) | 8 | Reichelt SMD 1206, segment resistors | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/SMD_1206.pdf) |
+| Piezo buzzer | 1 | EKULIT AL-60P12 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/155120AL-60P12.pdf) |
 
 ### Gallery
 

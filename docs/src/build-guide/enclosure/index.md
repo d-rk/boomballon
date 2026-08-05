@@ -44,18 +44,3 @@ the original Creo/Pro-E files to print or machine the parts:
     [`render-all.sh`](https://github.com/d-rk/boomballon/blob/main/media/enclosure/render-all.sh)
     regenerates the exact set. Requires Blender ≥ 4.2.
 
-## Print / quote history — cost-blocked
-
-The enclosure is where the prototype budget went. The parts were quoted by two
-professional 3D-printing services, both of which came back too expensive to
-justify a polished production housing:
-
-- **i.materialise** — polished-finish quotes ran roughly €100–135 for the upper
-  and lower housing shells *each*, plus the card module, roof, and nozzle.
-- **Rapid Object** — comparable or higher quotes; the order sheet flags these
-  rows outright as *ZU TEUER* (too expensive).
-
-Together with the electronics, these quotes drove the **~€577** aggregate
-prototype spend (see the [BOM](../overview-bom.md#cost)). A future rebuild would
-most likely print the housing in-house (FDM/SLA) from the committed STL files
-rather than order polished prints.

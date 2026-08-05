@@ -21,7 +21,6 @@ the inflate pump and the deflate valve.
 
 | Marking | What it is |
 |---|---|
-| *(large centre outline)* | The Arduino footprint, with the board's pin names printed alongside it. The sketch was drawn around an Arduino **Micro**, so those names follow the Micro's layout — see [the story](../../story.md#the-controller-from-micro-to-nano) and [fitting the Nano](#fitting-the-nano-in-the-micro-footprint) below. |
 | `Motor` | The 3-pin footprint for the **pump** channel's TIP120 (*Motor* = the inflate pump). |
 | `Ablassmotor` | The same for the **valve** channel (*Ablassmotor* = release motor, the deflate solenoid). |
 | `D1`, `D2` | The 1N4004 flyback diodes, one per channel, cathode toward +12 V. |
@@ -74,6 +73,30 @@ To place the Nano on the board:
     hole. Before applying power, confirm the Nano's `5V` pin sits in the hole
     marked `5V` and `D13` is in the corner hole next to the `Fotomodul`
     header.
+
+### Parts & datasheets
+
+The components populated on the board, with the datasheet for each part archived
+in the repo where available.
+
+| Component | Qty | Part / supplier | Datasheet |
+|---|---|---|---|
+| Arduino Nano (ATmega328P) | 1 | Keywish Nano (footprint drawn for an Arduino Micro) | — |
+| TIP120 Darlington transistor | 2 | STM (Reichelt) | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/TIP120_TIP121_TIP122_TIP125_TIP126_TIP127%23STM.pdf) |
+| 1N4004 flyback diode | 2 | Fairchild | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/1N400x_FAI.pdf) |
+| 2.2 kΩ resistor (metal film) | 2 | Reichelt METALL 2,20K, transistor base | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/METALL%23YAG.pdf) |
+
+The board is also the wiring hub for the power-entry parts and the two 12 V
+loads it switches. These are **not** on the PCB — they mount in the enclosure
+and land on the screw terminals — but are listed here since they are electrically
+part of this module:
+
+| Component | Qty | Part / supplier | Datasheet |
+|---|---|---|---|
+| DC socket (switched) | 1 | BKL 072342 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/072342.pdf) |
+| Toggle switch (on/off) | 1 | MS-165 series | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/MS-165_169.pdf) |
+| Membrane pump (inflate) | 1 | AIRPO D2028B (12 V) | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/AIRPO%20D2028B.pdf) |
+| Solenoid valve (deflate) | 1 | CEME 5000EN1,5P | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/Druckluft-Magnetventil%20CEME%205000EN1%2C5P.pdf) |
 
 ### Gallery
 
