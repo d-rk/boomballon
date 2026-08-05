@@ -69,7 +69,6 @@ nav:
           - Roof: build-guide/enclosure/roof.md
           - Hose Nozzle: build-guide/enclosure/nozzle.md
           - Card-Module Housing: build-guide/enclosure/card-module.md
-          - Full Assembly: build-guide/enclosure/assembly.md
       - Wiring & Pin Map: build-guide/wiring-pinmap.md
       - Firmware — Build & Flash: build-guide/firmware-build.md
   - Reference:

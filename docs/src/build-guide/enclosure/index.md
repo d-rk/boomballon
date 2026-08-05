@@ -5,10 +5,40 @@ together: the balloon and its nozzle, the display window, the card slot, and the
 pump/valve mounts. It is the most visually distinctive — and by far the most
 expensive — part of the project.
 
+## Full assembly
+
+The upper housing, lower housing, and card module fitted together — the complete
+device body. These renders come straight from the parts in their shared Creo
+assembly coordinates (no manual positioning), so they show exactly how the parts
+mate.
+
+<div class="gallery" markdown="span">
+[![Assembly — iso](../../assets/img/enclosure/thumbs/assembly-iso-045.jpg){ loading=lazy }](../../assets/img/enclosure/assembly-iso-045.jpg){ .glightbox data-gallery="assembly" data-title="Assembly — iso 45°" }
+[![Assembly — iso](../../assets/img/enclosure/thumbs/assembly-iso-135.jpg){ loading=lazy }](../../assets/img/enclosure/assembly-iso-135.jpg){ .glightbox data-gallery="assembly" data-title="Assembly — iso 135°" }
+[![Assembly — front](../../assets/img/enclosure/thumbs/assembly-front.jpg){ loading=lazy }](../../assets/img/enclosure/assembly-front.jpg){ .glightbox data-gallery="assembly" data-title="Assembly — front" }
+[![Assembly — top](../../assets/img/enclosure/thumbs/assembly-top.jpg){ loading=lazy }](../../assets/img/enclosure/assembly-top.jpg){ .glightbox data-gallery="assembly" data-title="Assembly — top" }
+</div>
+
+**Overall size:** ≈ 172 × 130 × 88 mm (width × depth × height). The
+[roof](roof.md) and [hose nozzle](nozzle.md) fit on top of this body; the display
+window drops into the top face.
+
+### Cutaway
+
+Removing half the housing shows the [card module](card-module.md) nested inside
+the cavity — the card slot lines up with the wall opening, and the chambers with
+their drilled photoresistor bridge sit just below the top face.
+
+<div class="board-pair" markdown>
 <figure markdown="span">
-![Assembled enclosure — rendered from the CAD](../../assets/img/enclosure/assembly-iso-045.jpg){ loading=lazy }
-<figcaption>The full device, rendered from the STL models (upper + lower housing + card module)</figcaption>
+![Assembly — front cut](../../assets/img/enclosure/assembly-cut-front.jpg){ loading=lazy }
+<figcaption>Front cut — card module inside the cavity</figcaption>
 </figure>
+<figure markdown="span">
+![Assembly — side cut](../../assets/img/enclosure/assembly-cut-side.jpg){ loading=lazy }
+<figcaption>Side cut — housing mating and internal bosses</figcaption>
+</figure>
+</div>
 
 ## Parts
 
@@ -22,7 +52,6 @@ part has its own page with renders, dimensions, and CAD downloads:
 | [Roof](roof.md) | *Dach-Spitz* | top cap over the balloon nozzle |
 | [Hose nozzle](nozzle.md) | *Schlauch-Stutzen* | balloon nozzle mount (elbow + barbed fitting) |
 | [Card-module housing](card-module.md) | *Kartenmodul-Gehäuse* | tray/shroud for the card slot and optical reader |
-| [Full assembly](assembly.md) | *Device komplett* | the parts fitted together, with cutaways |
 | Display window | *Scheibe* | polycarbonate pane (Reely, cut to size) — **not printed** |
 
 The pump and valve mount inside the lower housing; the display window is a
@@ -33,6 +62,8 @@ polycarbonate pane (Reely, from Conrad) fitted over the 7-segment display.
 Neutral-format CAD exports are committed to the repository, so you don't need
 the original Creo/Pro-E files to print or machine the parts:
 
+- **Full-assembly STEP:**
+  [`180129_bb_device_cpl_asm.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/180129_bb_device_cpl_asm.stp)
 - **STEP** (`.stp`, for CAD/CAM):
   [`hardware/enclosure/step/`](https://github.com/d-rk/boomballon/tree/main/hardware/enclosure/step)
 - **STL** (`.stl`, for slicing/printing):
@@ -43,4 +74,3 @@ the original Creo/Pro-E files to print or machine the parts:
     [`media/enclosure/render.py`](https://github.com/d-rk/boomballon/blob/main/media/enclosure/render.py);
     [`render-all.sh`](https://github.com/d-rk/boomballon/blob/main/media/enclosure/render-all.sh)
     regenerates the exact set. Requires Blender ≥ 4.2.
-
