@@ -67,6 +67,21 @@ for photo in gallery/*.jpg; do
     -strip -quality 80 ../docs/src/assets/img/gallery/thumbs/"$name"
 done
 
+echo "Syncing enclosure renders + thumbnails ..."
+# enclosure/renders/ holds the Blender renders (regenerated from the STL models
+# by media/enclosure/render-all.sh; not committed — reproducible build output).
+# Each render becomes a full-size JPG for the lightbox and a 400 px JPG
+# thumbnail for the gallery grid. JPG (not the ~1.3 MB source PNG) keeps the
+# committed docs assets small.
+mkdir -p ../docs/src/assets/img/enclosure/thumbs
+for render in enclosure/renders/*.png; do
+  base=$(basename "${render%.png}")
+  magick "$render" -strip -quality 92 \
+    ../docs/src/assets/img/enclosure/"$base.jpg"
+  magick "$render" -resize 400x400 -strip -quality 82 \
+    ../docs/src/assets/img/enclosure/thumbs/"$base.jpg"
+done
+
 echo "Syncing docs copies ..."
 cp logo/logo.svg logo/logo-icon.svg logo/favicon-128.png ../docs/src/assets/img/
 

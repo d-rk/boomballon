@@ -8,7 +8,7 @@ page; wiring and firmware get dedicated pages too.
 - [Card reader](modules/card-reader.md) — *Kartenmodul* (card module)
 - [Display](modules/display.md) — *Displaymodul*
 - [Control board](modules/control-board.md) — *Steuermodul* (control module, the hub)
-- [Enclosure](enclosure.md) — *Gehäuse* (housing)
+- [Enclosure](enclosure/index.md) — *Gehäuse* (housing)
 - [Wiring & pin map](wiring-pinmap.md) — the master pin map (single source of truth)
 - [Firmware — build & flash](firmware-build.md)
 
@@ -85,7 +85,7 @@ supplier mostly Reichelt). Datasheets for the numbered parts live under
 | 330 Ω resistor | Segment limiting (Display) | 8 | SMD 1206 |
 | Headers / stacking strips | Inter-module connectors | — | MPE-Garry / STAPELLEISTE (Reichelt) |
 | Polycarbonate window | Display pane | 1 | Reely (Conrad 229802) |
-| 3D-printed housing | Enclosure | 1 set | see [Enclosure](enclosure.md) |
+| 3D-printed housing | Enclosure | 1 set | see [Enclosure](enclosure/index.md) |
 
 !!! note "All 18 resistors above are the same 330 Ω part"
     The photocell dividers, the *Lichtmodul* LED resistors, and the display's
@@ -102,4 +102,4 @@ Across the three prototype build sets, aggregate spend was on the order of
 tens of euros per unit) but the **enclosure**: the 3D-printed housing quotes
 from i.materialise and Rapid Object ran to hundreds of euros per set and
 ultimately cost-blocked a polished production housing. See the
-[Enclosure](enclosure.md) page for that history.
+[Enclosure](enclosure/index.md) page for that history.

@@ -62,7 +62,14 @@ nav:
           - Card Reader: build-guide/modules/card-reader.md
           - Display: build-guide/modules/display.md
           - Control Board: build-guide/modules/control-board.md
-      - Enclosure: build-guide/enclosure.md
+      - Enclosure:
+          - Overview: build-guide/enclosure/index.md
+          - Upper Housing: build-guide/enclosure/upper-housing.md
+          - Lower Housing: build-guide/enclosure/lower-housing.md
+          - Roof: build-guide/enclosure/roof.md
+          - Hose Nozzle: build-guide/enclosure/nozzle.md
+          - Card-Module Housing: build-guide/enclosure/card-module.md
+          - Full Assembly: build-guide/enclosure/assembly.md
       - Wiring & Pin Map: build-guide/wiring-pinmap.md
       - Firmware — Build & Flash: build-guide/firmware-build.md
   - Reference:
