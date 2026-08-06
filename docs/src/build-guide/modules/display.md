@@ -52,12 +52,14 @@ in the repo where available. The eight segment resistors are the same 330 Ω SMD
 
 ### Gallery
 
-Photos of the assembled board. Click any of them for a larger view.
+Photos of the board, before and after assembly. Click any of them for a larger view.
 
 <div class="gallery" markdown="span">
+[![The bare Displaymodul PCBs: the top with the buzzer and 7-segment digit footprints, the bottom with the 74HC595 and the eight segment-resistor pads.](../../assets/img/gallery/thumbs/displaymodul-boards.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-boards.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — bare PCBs, both sides" }
 [![Assembled Displaymodul, top side: the 7-segment digit and the piezo buzzer.](../../assets/img/gallery/thumbs/displaymodul-top.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-top.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — top side, assembled" }
 [![Assembled Displaymodul, bottom side: the 74HC595 and the eight 330 Ω resistors.](../../assets/img/gallery/thumbs/displaymodul-bottom.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-bottom.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — bottom side, assembled" }
 [![Assembled Displaymodul edge on, with the 6-pin header and the display's part label.](../../assets/img/gallery/thumbs/displaymodul-edge.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-edge.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — edge on, showing the header and the display's part label" }
+[![Three assembled Displaymodul boards: the 7-segment digit, the piezo buzzer, and the 6-pin header.](../../assets/img/gallery/thumbs/displaymodul-assembled.jpg){ loading=lazy }](../../assets/img/gallery/displaymodul-assembled.jpg){ .glightbox data-gallery="displaymodul" data-title="Displaymodul — assembled boards" }
 </div>
 
 Fritzing source:

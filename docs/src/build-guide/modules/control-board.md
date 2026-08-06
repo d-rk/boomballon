@@ -100,8 +100,11 @@ part of this module:
 
 ### Gallery
 
-<div class="gallery">
-<div class="gallery__empty">No photos of this board yet</div>
+Photos of the board, before and after assembly. Click any of them for a larger view.
+
+<div class="gallery" markdown="span">
+[![Control-board parts before assembly: the bare Steuermodul PCB, the Arduino Nano, two TIP120 transistors, the flyback diodes and base resistors, the pin headers, and the wiring.](../../assets/img/gallery/thumbs/steuermodul-parts.jpg){ loading=lazy }](../../assets/img/gallery/steuermodul-parts.jpg){ .glightbox data-gallery="steuermodul" data-title="Steuermodul — parts before assembly" }
+[![The assembled control board: the Arduino Nano in its footprint, the two TIP120 channels, and the Motor/valve, 12 V, Fotomodul and Displaymodul headers.](../../assets/img/gallery/thumbs/steuermodul-assembled.jpg){ loading=lazy }](../../assets/img/gallery/steuermodul-assembled.jpg){ .glightbox data-gallery="steuermodul" data-title="Steuermodul — assembled, with the Nano fitted" }
 </div>
 
 ## Power switching: two TIP120 channels

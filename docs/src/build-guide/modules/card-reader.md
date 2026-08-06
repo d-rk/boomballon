@@ -53,8 +53,11 @@ archived in the repo where available.
 
 ### Gallery
 
-<div class="gallery">
-<div class="gallery__empty">No photos of this board yet</div>
+Photos of the board, before and after assembly. Click any of them for a larger view.
+
+<div class="gallery" markdown="span">
+[![Lichtmodul before assembly: the bare PCB (LED footprints on top, SMD resistor pads on the bottom), five 3 mm LEDs, the SMD 330 Ω resistors, and the LM connector.](../../assets/img/gallery/thumbs/lichtmodul-parts.jpg){ loading=lazy }](../../assets/img/gallery/lichtmodul-parts.jpg){ .glightbox data-gallery="lichtmodul" data-title="Lichtmodul — parts before assembly" }
+[![Assembled Lichtmodul boards: the five 3 mm LEDs (LED1–LED5) and the LM power header.](../../assets/img/gallery/thumbs/lichtmodul-assembled.jpg){ loading=lazy }](../../assets/img/gallery/lichtmodul-assembled.jpg){ .glightbox data-gallery="lichtmodul" data-title="Lichtmodul — assembled, LEDs populated" }
 </div>
 
 Fritzing source:
@@ -107,8 +110,11 @@ SMD 1206 part as on the *Lichtmodul* — see the
 
 ### Gallery
 
-<div class="gallery">
-<div class="gallery__empty">No photos of this board yet</div>
+Photos of the board, before and after assembly. Click any of them for a larger view.
+
+<div class="gallery" markdown="span">
+[![Fotomodul before assembly: the bare PCB, five photoresistors, the SMD divider resistors, and the LM/FM headers.](../../assets/img/gallery/thumbs/fotomodul-parts.jpg){ loading=lazy }](../../assets/img/gallery/fotomodul-parts.jpg){ .glightbox data-gallery="fotomodul" data-title="Fotomodul — parts before assembly" }
+[![Assembled Fotomodul boards: the five photoresistors (F1–F5), the FM header, and the display pass-through connector.](../../assets/img/gallery/thumbs/fotomodul-assembled.jpg){ loading=lazy }](../../assets/img/gallery/fotomodul-assembled.jpg){ .glightbox data-gallery="fotomodul" data-title="Fotomodul — assembled, photoresistors populated" }
 </div>
 
 Fritzing source:
