@@ -7,32 +7,41 @@ Usage:
     blender -b --factory-startup -P render.py -- \
         --target <stl-basename|assembly> --name <prefix> \
         --mode clay|wire|xray|cut [--views top,iso-045,...] [--flip] \
-        [--cut front|side] --out <dir> [--res N --samples N --color r,g,b]
+        [--cut front|back|side|left] --out <dir> [--res N --samples N --color r,g,b]
 
 Notes on orientation:
   * A single part is laid flat automatically (its thinnest bounding-box axis is
     rotated to vertical). --flip adds a 180 deg roll so the "bottom" view shows
     the shell interior (otherwise the floor hides it).
-  * "assembly" loads got + gut + kartenmodul, which share Creo assembly
-    coordinates, and stands them upright (their Y axis becomes Z).
+  * "assembly" loads got + gut + kartenmodul + balloon adapter, which share
+    Creo assembly coordinates, and stands them upright (their Y axis becomes Z).
 """
 
 import bpy, sys, math, os, argparse
 from mathutils import Vector, Euler
 
 STL_DIR = "hardware/enclosure/stl"
-ASSEMBLY_PARTS = ["180820_bb_got", "180123_bb_gut", "180123_bb_karten-modul_gehaeuse"]
+ASSEMBLY_PARTS = ["180820_bb_got", "180123_bb_gut", "180123_bb_karten-modul_gehaeuse",
+                  "260805_got_ballon_aufsatz", "260805_bb_got_stutzen"]
 
 
 def parse_args():
     argv = sys.argv[sys.argv.index("--") + 1:]
     p = argparse.ArgumentParser()
     p.add_argument("--target", required=True)
+    p.add_argument("--parts", default="",
+                   help="comma-separated STL basenames to render as an assembly subset "
+                        "(in shared Creo coords); overrides the default assembly part list")
+    p.add_argument("--no-floor", dest="floor", action="store_false",
+                   help="omit the floor plane and add an under-light, so iso-*-below "
+                        "cameras can look up at the model's underside")
     p.add_argument("--name", required=True)
     p.add_argument("--mode", default="clay", choices=["clay", "wire", "xray", "cut"])
     p.add_argument("--views", default="")
-    p.add_argument("--cut", default="front", choices=["front", "side"])
+    p.add_argument("--cut", default="front", choices=["front", "back", "side", "left"])
     p.add_argument("--flip", action="store_true")
+    p.add_argument("--no-edges", dest="edges", action="store_false",
+                   help="skip the freestyle outline on wire/cut renders (pure clay)")
     p.add_argument("--out", required=True)
     p.add_argument("--res", type=int, default=1200)
     p.add_argument("--samples", type=int, default=64)
@@ -76,14 +85,17 @@ def assembly_views():
     el = math.radians(30)
     for az in range(0, 360, 45):
         a = math.radians(az)
-        v[f"iso-{az:03d}"] = Vector((math.cos(a)*math.cos(el), math.sin(a)*math.cos(el), math.sin(el)))
+        c = math.cos(a) * math.cos(el); s = math.sin(a) * math.cos(el)
+        v[f"iso-{az:03d}"] = Vector((c, s, math.sin(el)))          # looking down from above
+        v[f"iso-{az:03d}-below"] = Vector((c, s, -math.sin(el)))   # looking up from below
     return v
 
 
 def main():
     args = parse_args()
     color = tuple(float(x) for x in args.color.split(","))
-    is_asm = args.target == "assembly"
+    parts = args.parts.split(",") if args.parts else ASSEMBLY_PARTS
+    is_asm = args.target == "assembly" or bool(args.parts)
     os.makedirs(args.out, exist_ok=True)
 
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -92,7 +104,7 @@ def main():
     # ---- import + orient ----
     objs = []
     if is_asm:
-        for b in ASSEMBLY_PARTS:
+        for b in parts:
             o = import_stl(b)
             apply_rotation(o, Euler((math.radians(90), 0, 0)))   # Y-up -> Z-up
             objs.append(o)
@@ -107,29 +119,46 @@ def main():
         apply_rotation(o, o.rotation_euler)
         objs.append(o)
 
-    with bpy.context.temp_override(active_object=objs[0], selected_editable_objects=objs):
-        bpy.ops.object.join()
-    obj = objs[0]; obj.name = args.name
-
-    # ---- center on origin, sit on floor ----
-    mn, mx = world_bbox(obj); dims = mx - mn
+    # ---- center on origin, sit on floor (one shared transform for all parts) ----
+    mns, mxs = zip(*(world_bbox(o) for o in objs))
+    mn = Vector([min(m[i] for m in mns) for i in range(3)])
+    mx = Vector([max(m[i] for m in mxs) for i in range(3)])
+    dims = mx - mn
     center = (mn + mx) / 2.0
-    obj.location -= Vector((center.x, center.y, mn.z))
+    offset = Vector((center.x, center.y, mn.z))
+    for o in objs:
+        o.location -= offset
     bpy.context.view_layer.update()
     h = dims.z
     tgt_pt = Vector((0, 0, h / 2.0))
     radius = 0.5 * math.sqrt(dims.x**2 + dims.y**2 + dims.z**2)
 
     # ---- optional half-cut ----
+    # Cut each part separately, before joining: the EXACT boolean solver needs a
+    # single closed solid, so it silently no-ops on a merged multi-part mesh (the
+    # overlapping shells where parts mate read as non-solid). Each STL on its own
+    # is a clean manifold, so a per-part difference against the same half-space
+    # cube slices them all consistently.
     if args.mode == "cut":
         S = radius * 10
+        cut_loc = {"front": (0, S/2, h/2), "back": (0, -S/2, h/2),
+                   "side": (S/2, 0, h/2), "left": (-S/2, 0, h/2)}
         bpy.ops.mesh.primitive_cube_add(size=1)
         cutter = bpy.context.active_object; cutter.scale = (S, S, S)
-        cutter.location = (0, S/2, h/2) if args.cut == "front" else (S/2, 0, h/2)
-        bpy.context.view_layer.objects.active = obj
-        m = obj.modifiers.new("cut", 'BOOLEAN'); m.operation = 'DIFFERENCE'; m.solver = 'EXACT'; m.object = cutter
-        bpy.ops.object.modifier_apply(modifier="cut")
+        cutter.location = cut_loc[args.cut]
+        for o in objs:
+            bpy.ops.object.select_all(action='DESELECT')
+            o.select_set(True)
+            bpy.context.view_layer.objects.active = o
+            m = o.modifiers.new("cut", 'BOOLEAN'); m.operation = 'DIFFERENCE'
+            m.solver = 'EXACT'; m.object = cutter
+            bpy.ops.object.modifier_apply(modifier="cut")
         bpy.data.objects.remove(cutter, do_unlink=True)
+
+    # ---- join for one material + render ----
+    with bpy.context.temp_override(active_object=objs[0], selected_editable_objects=objs):
+        bpy.ops.object.join()
+    obj = objs[0]; obj.name = args.name
 
     # ---- clay material (+ optional x-ray) ----
     mat = bpy.data.materials.new("clay"); mat.use_nodes = True
@@ -152,12 +181,13 @@ def main():
         poly.use_smooth = False
 
     # ---- floor, world, lights ----
-    bpy.ops.mesh.primitive_plane_add(size=radius * 40, location=(0, 0, 0))
-    fm = bpy.data.materials.new("floor"); fm.use_nodes = True
-    fbs = fm.node_tree.nodes["Principled BSDF"]
-    fbs.inputs["Base Color"].default_value = (0.82, 0.82, 0.85, 1)
-    fbs.inputs["Roughness"].default_value = 0.95
-    bpy.context.active_object.data.materials.append(fm)
+    if args.floor:
+        bpy.ops.mesh.primitive_plane_add(size=radius * 40, location=(0, 0, 0))
+        fm = bpy.data.materials.new("floor"); fm.use_nodes = True
+        fbs = fm.node_tree.nodes["Principled BSDF"]
+        fbs.inputs["Base Color"].default_value = (0.82, 0.82, 0.85, 1)
+        fbs.inputs["Roughness"].default_value = 0.95
+        bpy.context.active_object.data.materials.append(fm)
 
     world = bpy.data.worlds.new("studio"); scene.world = world; world.use_nodes = True
     bg = world.node_tree.nodes["Background"]
@@ -178,6 +208,8 @@ def main():
     else:
         add_area("key",  ( radius*3,  -radius*3,  radius*4.5), radius**2*90, radius*4)
         add_area("fill", (-radius*3.5, -radius*1.5, radius*2), radius**2*30, radius*5)
+    if not args.floor:   # light the underside for iso-*-below cameras
+        add_area("under", (radius*2.5, -radius*2.5, -radius*4.5), radius**2*70, radius*4)
 
     # ---- camera ----
     lens = 60 if args.mode == "cut" else 62
@@ -188,7 +220,7 @@ def main():
     dist = radius / math.tan(halffov) * (1.28 if args.mode == "cut" else 1.3)
 
     # ---- freestyle edges for wire + cut ----
-    if args.mode in ("wire", "cut"):
+    if args.mode in ("wire", "cut") and args.edges:
         scene.render.use_freestyle = True
         vl = bpy.context.view_layer; vl.use_freestyle = True
         fs = vl.freestyle_settings; fs.crease_angle = math.radians(135)
@@ -207,7 +239,9 @@ def main():
 
     # ---- render ----
     if args.mode == "cut":
-        d = Vector((0.35, 0.9, 0.45)) if args.cut == "front" else Vector((0.9, 0.35, 0.45))
+        cut_cam = {"front": Vector((0.35, 0.9, 0.45)), "back": Vector((0.35, -0.9, 0.45)),
+                   "side": Vector((0.9, 0.35, 0.45)), "left": Vector((-0.9, 0.35, 0.45))}
+        d = cut_cam[args.cut]
         cam.location = tgt_pt + d.normalized() * dist
         scene.render.filepath = os.path.join(args.out, f"{args.name}-cut-{args.cut}.png")
         bpy.ops.render.render(write_still=True)

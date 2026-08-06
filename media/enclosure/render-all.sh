@@ -22,6 +22,8 @@ GUT=180123_bb_gut                              # lower housing
 DACH=180123_bb_dach                            # roof
 STUTZEN=180123_bb_got_stutzen                  # hose nozzle
 KM=180123_bb_karten-modul_gehaeuse             # card-module housing
+AUFSATZ=260805_got_ballon_aufsatz              # balloon-neck adapter
+STUTZEN_ASM=260805_bb_got_stutzen              # hose nozzle, repositioned into assembly coords
 
 # --- upper housing ---
 r --target $GOT --name got --mode clay --views top,iso-045 "${CLAY[@]}"
@@ -44,9 +46,20 @@ r --target $KM --name kartenmodul --mode clay --views bottom --flip "${CLAY[@]}"
 r --target $KM --name kartenmodul --mode cut --cut front "${CUT[@]}"
 r --target $KM --name kartenmodul --mode cut --cut side "${CUT[@]}"
 
-# --- full assembly (got + gut + kartenmodul, in shared Creo assembly coords) ---
+# --- balloon adapter ---
+r --target $AUFSATZ --name aufsatz --mode clay --views iso-045,front,top "${CLAY[@]}"
+r --target $AUFSATZ --name aufsatz --mode clay --views bottom --flip "${CLAY[@]}"
+r --target $AUFSATZ --name aufsatz --mode cut --cut side "${CUT[@]}"
+r --target assembly --parts $AUFSATZ,$STUTZEN_ASM --name aufsatz-nozzle --mode cut --cut side "${CUT[@]}"
+
+# --- full assembly (got + gut + kartenmodul + adapter, shared Creo assembly coords) ---
 r --target assembly --name assembly --mode clay --views front,top,iso-045,iso-135 "${CLAY[@]}"
 r --target assembly --name assembly --mode cut --cut front "${CUT[@]}"
 r --target assembly --name assembly --mode cut --cut side "${CUT[@]}"
+
+# --- assembly split open: lower half from above, upper half from below ---
+r --target assembly --parts $GUT,$KM --name assembly-base --mode clay --views iso-045 "${CLAY[@]}"
+r --target assembly --parts $GOT,$STUTZEN_ASM,$AUFSATZ --name assembly-lid --no-floor \
+    --mode clay --views iso-045-below "${CLAY[@]}"
 
 echo "Done. $(ls "$OUT"/*.png | wc -l) images in $OUT"

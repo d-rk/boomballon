@@ -68,6 +68,7 @@ nav:
           - Lower Housing: build-guide/enclosure/lower-housing.md
           - Roof: build-guide/enclosure/roof.md
           - Hose Nozzle: build-guide/enclosure/nozzle.md
+          - Balloon Adapter: build-guide/enclosure/balloon-adapter.md
           - Card-Module Housing: build-guide/enclosure/card-module.md
       - Wiring & Pin Map: build-guide/wiring-pinmap.md
       - Firmware — Build & Flash: build-guide/firmware-build.md

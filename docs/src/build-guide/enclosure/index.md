@@ -19,15 +19,19 @@ mate.
 [![Assembly — top](../../assets/img/enclosure/thumbs/assembly-top.jpg){ loading=lazy }](../../assets/img/enclosure/assembly-top.jpg){ .glightbox data-gallery="assembly" data-title="Assembly — top" }
 </div>
 
-**Overall size:** ≈ 172 × 130 × 88 mm (width × depth × height). The
-[roof](roof.md) and [hose nozzle](nozzle.md) fit on top of this body; the display
-window drops into the top face.
+**Overall size:** ≈ 172 × 130 × 88 mm (width × depth × height), excluding the
+parts on top. The [roof](roof.md), [hose nozzle](nozzle.md), and
+[balloon adapter](balloon-adapter.md) — the spigot rising from the top face in
+these renders — fit on top of this body; the display window drops into the top
+face.
 
 ### Cutaway
 
 Removing half the housing shows the [card module](card-module.md) nested inside
 the cavity — the card slot lines up with the wall opening, and the chambers with
-their drilled photoresistor bridge sit just below the top face.
+their drilled photoresistor bridge sit just below the top face. On the centre
+axis the [balloon adapter](balloon-adapter.md) and the [hose nozzle](nozzle.md)
+line up into one bore, from the balloon seat on top down to the pump tubing.
 
 <div class="board-pair" markdown>
 <figure markdown="span">
@@ -36,7 +40,26 @@ their drilled photoresistor bridge sit just below the top face.
 </figure>
 <figure markdown="span">
 ![Assembly — side cut](../../assets/img/enclosure/assembly-cut-side.jpg){ loading=lazy }
-<figcaption>Side cut — housing mating and internal bosses</figcaption>
+<figcaption>Side cut — the adapter and nozzle bore on the centre axis</figcaption>
+</figure>
+</div>
+
+### Split apart
+
+Separating the device along the housing seam — the lower half seen from above, the
+upper half turned over and seen from below — shows how the two halves meet: the
+[card module](card-module.md) sits in the base, while the balloon
+[adapter](balloon-adapter.md) and [nozzle](nozzle.md) hang from the underside of
+the upper housing.
+
+<div class="board-pair" markdown>
+<figure markdown="span">
+![Lower half from above](../../assets/img/enclosure/assembly-base-iso-045.jpg){ loading=lazy }
+<figcaption>Lower half, from above — card module in the base</figcaption>
+</figure>
+<figure markdown="span">
+![Upper half from below](../../assets/img/enclosure/assembly-lid-iso-045-below.jpg){ loading=lazy }
+<figcaption>Upper half, from below — nozzle and adapter passage</figcaption>
 </figure>
 </div>
 
@@ -51,6 +74,7 @@ part has its own page with renders, dimensions, and CAD downloads:
 | [Lower housing](lower-housing.md) | *Gehäuse Unterteil* | lower body shell / base — houses the pump and valve |
 | [Roof](roof.md) | *Dach-Spitz* | top cap over the balloon nozzle |
 | [Hose nozzle](nozzle.md) | *Schlauch-Stutzen* | balloon nozzle mount (elbow + barbed fitting) |
+| [Balloon adapter](balloon-adapter.md) | *Ballon-Aufsatz* | barbed balloon-neck adapter mounted on top of the upper housing |
 | [Card-module housing](card-module.md) | *Kartenmodul-Gehäuse* | tray/shroud for the card slot and optical reader |
 | Display window | *Scheibe* | polycarbonate pane (Reely, cut to size) — **not printed** |
 
