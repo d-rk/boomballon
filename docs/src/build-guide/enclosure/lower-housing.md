@@ -15,5 +15,5 @@ the card slot and connectors. The [upper housing](upper-housing.md) caps it.
 
 ## CAD & print files
 
-- STL: [`180123_bb_gut.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/180123_bb_gut.stl)
-- STEP: [`180123_bb_gut.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/180123_bb_gut.stp)
+- STL: [`lower-housing.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/lower-housing.stl)
+- STEP: [`lower-housing.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/lower-housing.stp)

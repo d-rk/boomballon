@@ -68,7 +68,7 @@ Neutral-format CAD exports are committed to the repository, so you don't need
 the original Creo/Pro-E files to print or machine the parts:
 
 - **Full-assembly STEP:**
-  [`180129_bb_device_cpl_asm.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/180129_bb_device_cpl_asm.stp)
+  [`full-assembly.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/full-assembly.stp)
 - **STEP** (`.stp`, for CAD/CAM):
   [`hardware/enclosure/step/`](https://github.com/d-rk/boomballon/tree/main/hardware/enclosure/step)
 - **STL** (`.stl`, for slicing/printing):

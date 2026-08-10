@@ -14,5 +14,5 @@ window** cutout and the **balloon-nozzle passage**; it mates onto the
 
 ## CAD & print files
 
-- STL: [`180820_bb_got.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/180820_bb_got.stl)
-- STEP: [`180820_bb_got.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/180820_bb_got.stp)
+- STL: [`upper-housing.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/upper-housing.stl)
+- STEP: [`upper-housing.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/upper-housing.stp)

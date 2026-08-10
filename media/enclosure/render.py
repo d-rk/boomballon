@@ -13,16 +13,17 @@ Notes on orientation:
   * A single part is laid flat automatically (its thinnest bounding-box axis is
     rotated to vertical). --flip adds a 180 deg roll so the "bottom" view shows
     the shell interior (otherwise the floor hides it).
-  * "assembly" loads got + gut + kartenmodul + balloon adapter, which share
-    Creo assembly coordinates, and stands them upright (their Y axis becomes Z).
+  * "assembly" loads the upper housing, lower housing, card-module housing,
+    and balloon adapter, which share Creo assembly coordinates, and stands
+    them upright (their Y axis becomes Z).
 """
 
 import bpy, sys, math, os, argparse
 from mathutils import Vector, Euler
 
 STL_DIR = "hardware/enclosure/stl"
-ASSEMBLY_PARTS = ["180820_bb_got", "180123_bb_gut", "180123_bb_karten-modul_gehaeuse",
-                  "260805_got_ballon_aufsatz", "260805_bb_got_stutzen"]
+ASSEMBLY_PARTS = ["upper-housing", "lower-housing", "card-module-housing",
+                  "balloon-adapter", "hose-nozzle"]
 
 
 def parse_args():

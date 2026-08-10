@@ -14,5 +14,5 @@ other (for the pump/valve tubing). It mounts under the [roof](roof.md).
 
 ## CAD & print files
 
-- STL: [`180123_bb_got_stutzen.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/180123_bb_got_stutzen.stl)
-- STEP: [`180123_bb_got_stutzen.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/180123_bb_got_stutzen.stp)
+- STL: [`hose-nozzle.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/hose-nozzle.stl)
+- STEP: [`hose-nozzle.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/hose-nozzle.stp)

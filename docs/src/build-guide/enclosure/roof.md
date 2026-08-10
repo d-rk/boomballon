@@ -14,5 +14,5 @@ underside locate it on the [upper housing](upper-housing.md).
 
 ## CAD & print files
 
-- STL: [`180123_bb_dach.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/180123_bb_dach.stl)
-- STEP: [`180123_bb_dach.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/180123_bb_dach.stp)
+- STL: [`roof.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/roof.stl)
+- STEP: [`roof.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/roof.stp)

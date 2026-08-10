@@ -38,5 +38,5 @@ fitting.
 
 ## CAD & print files
 
-- STL: [`260805_got_ballon_aufsatz.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/260805_got_ballon_aufsatz.stl)
-- STEP: [`260805_got_ballon_aufsatz.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/260805_got_ballon_aufsatz.stp) (tessellated from the mesh)
+- STL: [`balloon-adapter.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/balloon-adapter.stl)
+- STEP: [`balloon-adapter.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/balloon-adapter.stp) (tessellated from the mesh)
