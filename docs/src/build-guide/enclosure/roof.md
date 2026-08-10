@@ -1,6 +1,6 @@
 # Roof
 
-*Dach-Spitz* — the domed top cap that sits over the balloon nozzle. Its central
+*Dach-Spitze* — the domed top cap that sits over the balloon nozzle. Its central
 hole passes the nozzle/balloon through the top of the device; four legs on the
 underside locate it on the [upper housing](upper-housing.md).
 
