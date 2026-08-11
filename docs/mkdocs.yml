@@ -57,8 +57,9 @@ nav:
       - Rules: gameplay/rules.md
       - The Card Deck: gameplay/card-deck.md
   - Build Guide:
-      - Overview & BOM: build-guide/overview-bom.md
+      - System Overview: build-guide/overview-bom.md
       - Modules:
+          - Overview: build-guide/modules/index.md
           - Card Reader: build-guide/modules/card-reader.md
           - Display: build-guide/modules/display.md
           - Control Board: build-guide/modules/control-board.md
@@ -73,6 +74,7 @@ nav:
       - Wiring & Pin Map: build-guide/wiring-pinmap.md
       - Firmware — Build & Flash: build-guide/firmware-build.md
   - Reference:
+      - Bill of Materials: reference/bill-of-materials.md
       - Firmware Architecture: reference/firmware-architecture.md
       - Optical Code System: reference/optical-codes.md
       - Design Notes & Roadmap: reference/design-notes.md

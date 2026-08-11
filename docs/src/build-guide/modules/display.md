@@ -41,7 +41,7 @@ AL-60P12) is driven directly from a dedicated MCU pin.
 
 The components populated on the board, with the datasheet for each part archived
 in the repo where available. The eight segment resistors are the same 330 Ω SMD
-1206 part used elsewhere — see the [note on the BOM page](../overview-bom.md#bill-of-materials).
+1206 part used elsewhere — see the [note on the BOM page](../../reference/bill-of-materials.md).
 
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|

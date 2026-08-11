@@ -101,7 +101,7 @@ the 5 bits of the card code.
 The components populated on the *Fotomodul*, with the datasheet for each part
 archived in the repo where available. Its 330 Ω divider resistors are the same
 SMD 1206 part as on the *Lichtmodul* — see the
-[note on the BOM page](../overview-bom.md#bill-of-materials).
+[note on the BOM page](../../reference/bill-of-materials.md).
 
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|
