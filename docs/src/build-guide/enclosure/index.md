@@ -15,7 +15,7 @@ The complete device body, all printed parts fitted together.
 [![Assembly — top](../../assets/img/enclosure/thumbs/assembly-top.jpg){ loading=lazy }](../../assets/img/enclosure/assembly-top.jpg){ .glightbox data-gallery="assembly" data-title="Assembly — top" }
 </div>
 
-**Overall size:** ≈ 172 × 130 × 110 mm (width × depth × height).
+**Overall size:** ≈ 172 × 130 × 237 mm (width × depth × height).
 
 ### Interior
 
@@ -57,15 +57,14 @@ part has its own page with renders, dimensions, and CAD downloads:
 | [Hose nozzle](nozzle.md) | *Schlauch-Stutzen* | balloon nozzle mount (elbow + barbed fitting) |
 | [Balloon adapter](balloon-adapter.md) | *Ballon-Aufsatz* | barbed balloon-neck adapter mounted on top of the upper housing |
 | [Card-module housing](card-module.md) | *Kartenmodul-Gehäuse* | tray/shroud for the card slot and optical reader |
-| Display window | *Scheibe* | polycarbonate pane (Reely, cut to size) — **not printed** |
+| Display window | *Scheibe* | polycarbonate pane — **not printed** |
 
 The pump and valve mount inside the lower housing; the display window is a
 polycarbonate pane fitted over the 7-segment display.
 
 ## CAD files
 
-Neutral-format CAD exports are committed to the repository, so you don't need
-the original Creo/Pro-E files to print or machine the parts:
+Neutral-format CAD exports are committed to the repository:
 
 - **Full-assembly STEP:**
   [`full-assembly.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/full-assembly.stp)

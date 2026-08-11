@@ -51,8 +51,13 @@ r --target $AUFSATZ --name aufsatz --mode clay --views bottom --flip "${CLAY[@]}
 r --target $AUFSATZ --name aufsatz --mode cut --cut side "${CUT[@]}"
 r --target assembly --parts $AUFSATZ,$STUTZEN --name aufsatz-nozzle --mode cut --cut side "${CUT[@]}"
 
-# --- full assembly (got + gut + kartenmodul + adapter, shared Creo assembly coords) ---
-r --target assembly --name assembly --mode clay --views front,top,iso-045,iso-135 "${CLAY[@]}"
+# --- roof mount (housing + roof + glowing Knicklichter; STLs from export-roof-assembly.py) ---
+r --target assembly --parts $GOT,$DACH,knicklichter --glow knicklichter \
+    --name roof-assembly --mode clay --views front,iso-015 "${CLAY[@]}"
+
+# --- full assembly (got + gut + kartenmodul + adapter + dach + knicklichter, shared Creo assembly coords) ---
+r --target assembly --parts $GOT,$GUT,$KM,$AUFSATZ,$STUTZEN,$DACH,knicklichter --glow knicklichter \
+    --name assembly --mode clay --views front,top,iso-045,iso-135 "${CLAY[@]}"
 r --target assembly --name assembly --mode cut --cut front "${CUT[@]}"
 r --target assembly --name assembly --mode cut --cut side "${CUT[@]}"
 

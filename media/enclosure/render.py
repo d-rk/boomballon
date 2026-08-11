@@ -33,6 +33,9 @@ def parse_args():
     p.add_argument("--parts", default="",
                    help="comma-separated STL basenames to render as an assembly subset "
                         "(in shared Creo coords); overrides the default assembly part list")
+    p.add_argument("--glow", default="",
+                   help="comma-separated basenames from --parts rendered as softly "
+                        "glowing amber sticks (the Knicklichter) instead of clay")
     p.add_argument("--no-floor", dest="floor", action="store_false",
                    help="omit the floor plane and add an under-light, so iso-*-below "
                         "cameras can look up at the model's underside")
@@ -84,7 +87,7 @@ def part_views():
 def assembly_views():
     v = {"top": Vector((0, -0.12, 1)), "front": Vector((0, -1, 0.15)), "side": Vector((1, 0, 0.15))}
     el = math.radians(30)
-    for az in range(0, 360, 45):
+    for az in range(0, 360, 15):
         a = math.radians(az)
         c = math.cos(a) * math.cos(el); s = math.sin(a) * math.cos(el)
         v[f"iso-{az:03d}"] = Vector((c, s, math.sin(el)))          # looking down from above
@@ -103,12 +106,15 @@ def main():
     scene = bpy.context.scene
 
     # ---- import + orient ----
-    objs = []
+    translucent = set(args.glow.split(",")) if args.glow else set()
+    objs, trans_objs = [], []
     if is_asm:
         for b in parts:
             o = import_stl(b)
             apply_rotation(o, Euler((math.radians(90), 0, 0)))   # Y-up -> Z-up
             objs.append(o)
+            if b in translucent:
+                trans_objs.append(o)
     else:
         o = import_stl(args.target)
         mn, mx = world_bbox(o); d = mx - mn
@@ -156,10 +162,11 @@ def main():
             bpy.ops.object.modifier_apply(modifier="cut")
         bpy.data.objects.remove(cutter, do_unlink=True)
 
-    # ---- join for one material + render ----
-    with bpy.context.temp_override(active_object=objs[0], selected_editable_objects=objs):
+    # ---- join for one material + render (translucent parts stay separate) ----
+    clay_objs = [o for o in objs if o not in trans_objs]
+    with bpy.context.temp_override(active_object=clay_objs[0], selected_editable_objects=clay_objs):
         bpy.ops.object.join()
-    obj = objs[0]; obj.name = args.name
+    obj = clay_objs[0]; obj.name = args.name
 
     # ---- clay material (+ optional x-ray) ----
     mat = bpy.data.materials.new("clay"); mat.use_nodes = True
@@ -180,6 +187,19 @@ def main():
     obj.data.materials.clear(); obj.data.materials.append(mat)
     for poly in obj.data.polygons:
         poly.use_smooth = False
+
+    # ---- glowing amber sticks for --glow parts (Knicklichter) ----
+    if trans_objs:
+        gm = bpy.data.materials.new("glowstick"); gm.use_nodes = True
+        gb = gm.node_tree.nodes["Principled BSDF"]
+        gb.inputs["Base Color"].default_value = (1.0, 0.55, 0.15, 1.0)
+        gb.inputs["Roughness"].default_value = 0.4
+        gb.inputs["Emission Color"].default_value = (1.0, 0.52, 0.12, 1.0)
+        gb.inputs["Emission Strength"].default_value = 1.7
+        for o in trans_objs:
+            o.data.materials.clear(); o.data.materials.append(gm)
+            for poly in o.data.polygons:
+                poly.use_smooth = True
 
     # ---- floor, world, lights ----
     if args.floor:

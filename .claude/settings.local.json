@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/var/lib/flatpak/exports/bin/org.blender.Blender -b --factory-startup -P media/enclosure/_scratch/measure2.py)"
+    ]
+  }
+}

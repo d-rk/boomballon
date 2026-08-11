@@ -1,8 +1,10 @@
 # Lower Housing
 
 *Gehäuse Unterteil* — the lower body shell and base. It is the deep tub that
-**houses the pump and valve** and the 12 V wiring, with cutouts in its wall for
-the card slot and connectors. The [upper housing](upper-housing.md) caps it.
+**houses the pump and valve**, the [control board](../modules/control-board.md),
+and the wiring, with a wall cutout for the
+[card module](card-module.md) and round holes for the 12 V power connector and
+a power switch. The [upper housing](upper-housing.md) caps it.
 
 <div class="gallery" markdown="span">
 [![Lower housing — top (into the tub)](../../assets/img/enclosure/thumbs/gut-top.jpg){ loading=lazy }](../../assets/img/enclosure/gut-top.jpg){ .glightbox data-gallery="gut" data-title="Lower housing — top (into the tub)" }

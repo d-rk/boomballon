@@ -1,8 +1,11 @@
 # Upper Housing
 
 *Gehäuse Oberteil* — the upper body shell. Its outer face carries the **display
-window** cutout and the **balloon-nozzle passage**; it mates onto the
-[lower housing](lower-housing.md) and screws down at the four corner bosses.
+window** cutout and the passage for the [balloon adapter](balloon-adapter.md)
+and [hose nozzle](nozzle.md); it mates onto the [lower housing](lower-housing.md).
+The four holes at the corners take bendable Knicklichter — flexible glow-stick
+arm bands — that plug into the [roof](roof.md)'s hollow legs, holding it in
+place above the housing.
 
 <div class="gallery" markdown="span">
 [![Upper housing — top (outer face)](../../assets/img/enclosure/thumbs/got-top.jpg){ loading=lazy }](../../assets/img/enclosure/got-top.jpg){ .glightbox data-gallery="got" data-title="Upper housing — top (outer face)" }

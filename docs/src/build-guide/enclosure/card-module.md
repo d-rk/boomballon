@@ -18,7 +18,7 @@ in the wall.
 
 **Bounding box:** ≈ 90 × 126 × 30 mm.
 
-## Cutaway
+## Interior
 
 Sectioning the part reveals the two chambers, the dividing walls, and the drilled
 bridge that holds the five photoresistors either side of the card path.

@@ -6,9 +6,7 @@ headers are included root-relative, e.g. `#include <Cards/Card.h>`). The build
 system is [PlatformIO](https://platformio.org/), which pins the toolchain and
 Arduino core so a clean checkout builds identically everywhere. The canonical
 reference is
-[`firmware/README.md`](https://github.com/d-rk/boomballon/blob/main/firmware/README.md);
-this page summarizes it. If anything here disagrees with that README, the README
-wins.
+[`firmware/README.md`](https://github.com/d-rk/boomballon/blob/main/firmware/README.md).
 
 ## Prerequisites
 

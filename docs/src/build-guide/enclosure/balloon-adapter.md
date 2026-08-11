@@ -1,11 +1,9 @@
 # Balloon Adapter
 
-*Ballon-Aufsatz* — the barbed balloon-neck adapter that mounts on top of the
-[upper housing](upper-housing.md), centred over its balloon-nozzle passage. A
-round flange seats on the top face; the ridged spigot rises through the central
-hole in the [roof](roof.md), and the balloon's neck stretches over the barbs.
-Air from the pump reaches the balloon through the central bore. The octagonal
-mid-collar gives a wrench/finger grip for seating it.
+*Ballon-Aufsatz* — the balloon adapter that mounts on top of the
+[upper housing](upper-housing.md).
+The balloon is attached to the adapter and during game air is pumped through the adapter into the ballon.
+The ballon then inflates until it hits the spike in the [roof](roof.md).
 
 <div class="gallery" markdown="span">
 [![Balloon adapter — iso](../../assets/img/enclosure/thumbs/aufsatz-iso-045.jpg){ loading=lazy }](../../assets/img/enclosure/aufsatz-iso-045.jpg){ .glightbox data-gallery="aufsatz" data-title="Balloon adapter — iso" }
@@ -16,10 +14,10 @@ mid-collar gives a wrench/finger grip for seating it.
 
 **Bounding box:** ≈ ⌀32 × 25 mm (round flange diameter × height).
 
-## Cutaway
+## Interior
 
 A section down the centreline shows the through-bore: the wide seat at the top
-where the balloon neck sits, the barb ridges that grip it, and the counterbored
+where the balloon sits, the barb ridges that grip it, and the counterbored
 inlet under the flange. The second section adds the [hose nozzle](nozzle.md) in
 its assembled position, so the full air path is visible — from the balloon seat,
 down the adapter bore, through the nozzle elbow, and out to the barbed tubing
