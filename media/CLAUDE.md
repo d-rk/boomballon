@@ -12,8 +12,8 @@ otherwise dev tooling.
   inkscape + imagemagick (`magick`).
 - `flatten-svg-viewports.py` — normalizes nested `<svg>` viewports in logo
   sources; a nested viewport clips silently in browsers but not in Inkscape.
-- `logo/`, `gallery/`, `wiring/`, `docs/` — source assets for their respective
-  doc sections.
+- `logo/`, `gallery/`, `docs/` — source assets for their respective doc
+  sections.
 - `enclosure/` — Blender-driven 3D renders of the printed enclosure parts, see
   below.
 - `pcb/` — Fritzing → Gerber → tracespace pipeline for the PCB top/bottom view
