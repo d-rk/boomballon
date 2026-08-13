@@ -71,9 +71,9 @@ in the repo where available.
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|
 | Arduino Nano (ATmega328P) | 1 | Keywish Nano (footprint drawn for an Arduino Micro) | — |
-| TIP120 Darlington transistor | 2 | STM (Reichelt) | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/TIP120_TIP121_TIP122_TIP125_TIP126_TIP127%23STM.pdf) |
-| 1N4004 flyback diode | 2 | Fairchild | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/1N400x_FAI.pdf) |
-| 2.2 kΩ resistor (metal film) | 2 | Reichelt METALL 2,20K, transistor base | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/METALL%23YAG.pdf) |
+| TIP120 Darlington transistor | 2 | STM (Reichelt) | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/TIP120_TIP121_TIP122_TIP125_TIP126_TIP127%23STM.pdf) |
+| 1N4004 flyback diode | 2 | Fairchild | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/1N400x_FAI.pdf) |
+| 2.2 kΩ resistor (metal film) | 2 | Reichelt METALL 2,20K, transistor base | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/METALL%23YAG.pdf) |
 
 The board is also the wiring hub for the power-entry parts and the two 12 V
 loads it switches. These are **not** on the PCB — they mount in the enclosure
@@ -82,10 +82,10 @@ part of this module:
 
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|
-| DC socket (switched) | 1 | BKL 072342 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/072342.pdf) |
-| Toggle switch (on/off) | 1 | MS-165 series | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/MS-165_169.pdf) |
-| Membrane pump (inflate) | 1 | AIRPO D2028B (12 V) | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/AIRPO%20D2028B.pdf) |
-| Solenoid valve (deflate) | 1 | CEME 5000EN1,5P | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/Druckluft-Magnetventil%20CEME%205000EN1%2C5P.pdf) |
+| DC socket (switched) | 1 | BKL 072342 | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/072342.pdf) |
+| Toggle switch (on/off) | 1 | MS-165 series | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/MS-165_169.pdf) |
+| Membrane pump (inflate) | 1 | AIRPO D2028B (12 V) | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/AIRPO%20D2028B.pdf) |
+| Solenoid valve (deflate) | 1 | CEME 5000EN1,5P | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/Druckluft-Magnetventil%20CEME%205000EN1%2C5P.pdf) |
 
 ### Gallery
 
@@ -122,7 +122,7 @@ valve):
 </div>
 
 The design basis is the **TIP120 tutorial**, archived here as
-[`Motorsteuerung.pdf`](https://github.com/d-rk/boomballon/blob/main/hardware/control/Motorsteuerung.pdf).
+[`Motorsteuerung.pdf`](https://github.com/boomballoon/boomballoon/blob/main/hardware/control/Motorsteuerung.pdf).
 
 ## Connectors
 
@@ -137,7 +137,7 @@ Everything meets on this board:
 | Valve output (VA/VM) | CEME valve | 12 V, switched by D7 |
 
 Fritzing source:
-[`Steuermodul.fzz`](https://github.com/d-rk/boomballon/blob/main/hardware/control/Steuermodul.fzz).
+[`Steuermodul.fzz`](https://github.com/boomballoon/boomballoon/blob/main/hardware/control/Steuermodul.fzz).
 
 For the complete, authoritative signal map — including which analog and digital
 pins each connector carries — see the [wiring](../wiring.md).

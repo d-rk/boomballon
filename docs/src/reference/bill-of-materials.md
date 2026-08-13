@@ -3,9 +3,9 @@
 This table is the authoritative BOM for the electronics described in the
 [Build Guide overview](../build-guide/overview-bom.md). Part numbers and
 suppliers below were reconciled against the original order sheet
-([`hardware/bom/20170825_Bestellliste.xlsx`](https://github.com/d-rk/boomballon/blob/main/hardware/bom/20170825_Bestellliste.xlsx),
+([`hardware/bom/20170825_Bestellliste.xlsx`](https://github.com/boomballoon/boomballoon/blob/main/hardware/bom/20170825_Bestellliste.xlsx),
 supplier mostly Reichelt). Datasheets for the numbered parts live under
-[`hardware/datasheets/`](https://github.com/d-rk/boomballon/tree/main/hardware/datasheets).
+[`hardware/datasheets/`](https://github.com/boomballoon/boomballoon/tree/main/hardware/datasheets).
 
 | Component | Role | Qty | Part / supplier |
 |---|---|---|---|

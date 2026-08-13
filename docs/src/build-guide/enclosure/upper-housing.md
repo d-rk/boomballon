@@ -17,5 +17,5 @@ place above the housing.
 
 ## CAD & print files
 
-- STL: [`upper-housing.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/upper-housing.stl)
-- STEP: [`upper-housing.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/upper-housing.stp)
+- STL: [`upper-housing.stl`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/stl/upper-housing.stl)
+- STEP: [`upper-housing.stp`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/step/upper-housing.stp)

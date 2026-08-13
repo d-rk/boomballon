@@ -32,7 +32,7 @@ if [[ ! -x "$TRACESPACE" ]]; then
   exit 1
 fi
 
-tmpdir=$(mktemp -d /tmp/boomballon-pcb-render.XXXXXX)
+tmpdir=$(mktemp -d /tmp/boomballoon-pcb-render.XXXXXX)
 trap 'rm -rf "$tmpdir"' EXIT
 
 # source .fzz -> output basename (docs/src/assets/img/<name>-pcb-{top,bottom}.png)

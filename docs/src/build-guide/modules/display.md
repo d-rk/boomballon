@@ -45,10 +45,10 @@ in the repo where available. The eight segment resistors are the same 330 Ω SMD
 
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|
-| 7-segment 20 mm digit (common cathode) | 1 | SC08-11 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/SC08-11SRWA%28V6%29.pdf) |
-| 74HC595 shift register (SOIC-16, SMD) | 1 | SMD HC 595 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/smd_hc_595.pdf) |
-| 330 Ω resistor (SMD 1206) | 8 | Reichelt SMD 1206, segment resistors | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/SMD_1206.pdf) |
-| Piezo buzzer | 1 | EKULIT AL-60P12 | [PDF](https://github.com/d-rk/boomballon/blob/main/hardware/datasheets/155120AL-60P12.pdf) |
+| 7-segment 20 mm digit (common cathode) | 1 | SC08-11 | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/SC08-11SRWA%28V6%29.pdf) |
+| 74HC595 shift register (SOIC-16, SMD) | 1 | SMD HC 595 | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/smd_hc_595.pdf) |
+| 330 Ω resistor (SMD 1206) | 8 | Reichelt SMD 1206, segment resistors | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/SMD_1206.pdf) |
+| Piezo buzzer | 1 | EKULIT AL-60P12 | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/155120AL-60P12.pdf) |
 
 ### Gallery
 
@@ -63,7 +63,7 @@ Photos of the board, before and after assembly. Click any of them for a larger v
 </div>
 
 Fritzing source:
-[`Displaymodul.fzz`](https://github.com/d-rk/boomballon/blob/main/hardware/display/Displaymodul.fzz).
+[`Displaymodul.fzz`](https://github.com/boomballoon/boomballoon/blob/main/hardware/display/Displaymodul.fzz).
 
 ## Connector (6-pin)
 

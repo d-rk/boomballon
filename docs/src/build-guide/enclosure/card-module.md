@@ -36,5 +36,5 @@ bridge that holds the five photoresistors either side of the card path.
 
 ## CAD & print files
 
-- STL: [`card-module-housing.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/card-module-housing.stl)
-- STEP: [`card-module-housing.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/card-module-housing.stp)
+- STL: [`card-module-housing.stl`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/stl/card-module-housing.stl)
+- STEP: [`card-module-housing.stp`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/step/card-module-housing.stp)

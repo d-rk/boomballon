@@ -17,5 +17,5 @@ a power switch. The [upper housing](upper-housing.md) caps it.
 
 ## CAD & print files
 
-- STL: [`lower-housing.stl`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/stl/lower-housing.stl)
-- STEP: [`lower-housing.stp`](https://github.com/d-rk/boomballon/blob/main/hardware/enclosure/step/lower-housing.stp)
+- STL: [`lower-housing.stl`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/stl/lower-housing.stl)
+- STEP: [`lower-housing.stp`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/step/lower-housing.stp)

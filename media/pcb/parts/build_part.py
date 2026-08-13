@@ -200,7 +200,7 @@ def build_part(board_fzz: str, board_name: str, connectors: list, out_dir: str) 
     """board_name: e.g. "Lichtmodul". connectors: [(pin_name, raw_x, raw_y), ...].
     Returns the path to the written .fzpz."""
     module_id = f"BoomBalloon_{board_name}"
-    with tempfile.TemporaryDirectory(prefix=f"boomballon-part-{board_name}-") as work_dir:
+    with tempfile.TemporaryDirectory(prefix=f"boomballoon-part-{board_name}-") as work_dir:
         svgs = render_gerbers(board_fzz, work_dir)
 
         breadboard_file = f"{board_name}_breadboard.svg"

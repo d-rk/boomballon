@@ -1,5 +1,5 @@
 {
-  "name": "boomballon-pcb-renders",
+  "name": "boomballoon-pcb-renders",
   "private": true,
   "description": "Pinned tracespace CLI for generate.sh — renders Gerbers exported by Fritzing into realistic PCB view SVGs.",
   "devDependencies": {

@@ -12,7 +12,7 @@
 
 Players insert optically-coded punched cards into a reader; the firmware decodes each card and drives a 12 V pump (or a valve) to inflate or deflate a real balloon. A software model tracks the balloon's fill level as a simulated "volume" percentage. Cross 100 % on your turn and the balloon pops — you lose. The whole thing runs on an Arduino Nano (ATmega328P).
 
-**Docs site (once GitHub Pages is enabled):** https://d-rk.github.io/boomballon/
+**Docs site:** https://boomballoon.github.io/boomballoon/
 
 ## In 30 seconds
 
@@ -60,7 +60,7 @@ Firmware targets need [PlatformIO](https://platformio.org/) (`pio`) on your
 
 ## Publishing
 
-Docs are built and deployed to GitHub Pages automatically by [`.github/workflows/deploy-docs.yml`](.github/workflows/deploy-docs.yml) on every push to `main`. After this workflow lands on `main`, enable Pages once at **Settings → Pages → Build and deployment → Source: GitHub Actions**. The site then publishes at [https://d-rk.github.io/boomballon/](https://d-rk.github.io/boomballon/).
+Docs are built and deployed to GitHub Pages automatically by [`.github/workflows/deploy-docs.yml`](.github/workflows/deploy-docs.yml) on every push to `main`, publishing at [https://boomballoon.github.io/boomballoon/](https://boomballoon.github.io/boomballoon/).
 
 ## License
 
