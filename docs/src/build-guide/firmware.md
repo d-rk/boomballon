@@ -6,7 +6,7 @@ headers are included root-relative, e.g. `#include <Cards/Card.h>`). The build
 system is [PlatformIO](https://platformio.org/), which pins the toolchain and
 Arduino core so a clean checkout builds identically everywhere. The canonical
 reference is
-[`firmware/README.md`](https://github.com/boomballoon/boomballoon/blob/main/firmware/README.md).
+[`firmware/README.md`](https://github.com/boomballoon/boomballoon.github.io/blob/main/firmware/README.md).
 
 ## Prerequisites
 
@@ -91,5 +91,5 @@ Compile-time switches live in `src/Constants.h`:
 - [Wiring](wiring.md) — which pins the firmware drives.
 - [Firmware Architecture](../reference/firmware-architecture.md) — how the code
   is organized.
-- [`firmware/README.md`](https://github.com/boomballoon/boomballoon/blob/main/firmware/README.md)
+- [`firmware/README.md`](https://github.com/boomballoon/boomballoon.github.io/blob/main/firmware/README.md)
   — the canonical build reference.

@@ -35,5 +35,5 @@ bores.
 
 ## CAD & print files
 
-- STL: [`roof.stl`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/stl/roof.stl)
-- STEP: [`roof.stp`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/step/roof.stp)
+- STL: [`roof.stl`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/enclosure/stl/roof.stl)
+- STEP: [`roof.stp`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/enclosure/step/roof.stp)

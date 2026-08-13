@@ -15,5 +15,5 @@ hose fitting** on the other (for the pump/valve tubing). It mounts under the
 
 ## CAD & print files
 
-- STL: [`hose-nozzle.stl`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/stl/hose-nozzle.stl)
-- STEP: [`hose-nozzle.stp`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/step/hose-nozzle.stp)
+- STL: [`hose-nozzle.stl`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/enclosure/stl/hose-nozzle.stl)
+- STEP: [`hose-nozzle.stp`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/enclosure/step/hose-nozzle.stp)

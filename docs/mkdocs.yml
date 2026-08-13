@@ -1,8 +1,8 @@
 site_name: Boom Balloon
 site_description: An electronic balloon party game — firmware, hardware, and build guide.
-site_url: https://boomballoon.github.io/boomballoon/
-repo_url: https://github.com/boomballoon/boomballoon
-repo_name: boomballoon/boomballoon
+site_url: https://boomballoon.github.io/
+repo_url: https://github.com/boomballoon/boomballoon.github.io
+repo_name: boomballoon/boomballoon.github.io
 # Sources live in docs/src/; the built site goes to docs/site/ (a sibling).
 docs_dir: src
 site_dir: site

@@ -48,8 +48,8 @@ archived in the repo where available.
 
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|
-| 3 mm white LED | 5 | Reichelt LED EL 3-11250KW (Bürklin 67 S 4470) | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/204-15UTC-S400-X9-L_V2.pdf) |
-| 330 Ω resistor (SMD 1206) | 5 | Reichelt SMD 1206, LED series resistor | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/SMD_1206.pdf) |
+| 3 mm white LED | 5 | Reichelt LED EL 3-11250KW (Bürklin 67 S 4470) | [PDF](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/datasheets/204-15UTC-S400-X9-L_V2.pdf) |
+| 330 Ω resistor (SMD 1206) | 5 | Reichelt SMD 1206, LED series resistor | [PDF](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/datasheets/SMD_1206.pdf) |
 
 ### Gallery
 
@@ -61,7 +61,7 @@ Photos of the board, before and after assembly. Click any of them for a larger v
 </div>
 
 Fritzing source:
-[`Kartenleser_Lichtmodul.fzz`](https://github.com/boomballoon/boomballoon/blob/main/hardware/card-reader/Kartenleser_Lichtmodul.fzz).
+[`Kartenleser_Lichtmodul.fzz`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/card-reader/Kartenleser_Lichtmodul.fzz).
 
 ## Fotomodul (photo module)
 
@@ -105,8 +105,8 @@ SMD 1206 part as on the *Lichtmodul* — see the
 
 | Component | Qty | Part / supplier | Datasheet |
 |---|---|---|---|
-| Photoresistor (LDR) | 5 | Reichelt A 905014 (Conrad 145475-62) | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/A90xxxx%23PE.pdf) |
-| 330 Ω resistor (SMD 1206) | 5 | Reichelt SMD 1206, divider resistor | [PDF](https://github.com/boomballoon/boomballoon/blob/main/hardware/datasheets/SMD_1206.pdf) |
+| Photoresistor (LDR) | 5 | Reichelt A 905014 (Conrad 145475-62) | [PDF](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/datasheets/A90xxxx%23PE.pdf) |
+| 330 Ω resistor (SMD 1206) | 5 | Reichelt SMD 1206, divider resistor | [PDF](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/datasheets/SMD_1206.pdf) |
 
 ### Gallery
 
@@ -118,7 +118,7 @@ Photos of the board, before and after assembly. Click any of them for a larger v
 </div>
 
 Fritzing source:
-[`Kartenleser_Fotomodul.fzz`](https://github.com/boomballoon/boomballoon/blob/main/hardware/card-reader/Kartenleser_Fotomodul.fzz).
+[`Kartenleser_Fotomodul.fzz`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/card-reader/Kartenleser_Fotomodul.fzz).
 
 ### Fotomodul connector (7-pin)
 

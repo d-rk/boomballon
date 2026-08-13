@@ -67,14 +67,14 @@ polycarbonate pane fitted over the 7-segment display.
 Neutral-format CAD exports are committed to the repository:
 
 - **Full-assembly STEP:**
-  [`full-assembly.stp`](https://github.com/boomballoon/boomballoon/blob/main/hardware/enclosure/step/full-assembly.stp)
+  [`full-assembly.stp`](https://github.com/boomballoon/boomballoon.github.io/blob/main/hardware/enclosure/step/full-assembly.stp)
 - **STEP** (`.stp`, for CAD/CAM):
-  [`hardware/enclosure/step/`](https://github.com/boomballoon/boomballoon/tree/main/hardware/enclosure/step)
+  [`hardware/enclosure/step/`](https://github.com/boomballoon/boomballoon.github.io/tree/main/hardware/enclosure/step)
 - **STL** (`.stl`, for slicing/printing):
-  [`hardware/enclosure/stl/`](https://github.com/boomballoon/boomballoon/tree/main/hardware/enclosure/stl)
+  [`hardware/enclosure/stl/`](https://github.com/boomballoon/boomballoon.github.io/tree/main/hardware/enclosure/stl)
 
 !!! note "The renders are reproducible"
     Every render on these pages is generated from the STL models by
-    [`media/enclosure/render.py`](https://github.com/boomballoon/boomballoon/blob/main/media/enclosure/render.py);
-    [`render-all.sh`](https://github.com/boomballoon/boomballoon/blob/main/media/enclosure/render-all.sh)
+    [`media/enclosure/render.py`](https://github.com/boomballoon/boomballoon.github.io/blob/main/media/enclosure/render.py);
+    [`render-all.sh`](https://github.com/boomballoon/boomballoon.github.io/blob/main/media/enclosure/render-all.sh)
     regenerates the exact set. Requires Blender ≥ 4.2.
