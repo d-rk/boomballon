@@ -1,4 +1,4 @@
-# Wiring & Pin Map
+# Wiring
 
 This page is the **single source of truth** for how the Arduino Nano connects to
 everything else. Every other page links here rather than repeating pin

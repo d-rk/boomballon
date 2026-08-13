@@ -1,4 +1,4 @@
-# Firmware — Build & Flash
+# Firmware
 
 The firmware targets the Arduino Nano (ATmega328P). It is a small OOP C++
 source tree under `firmware/src/` (`Main.cpp` provides `setup()`/`loop()`;
