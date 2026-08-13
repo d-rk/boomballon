@@ -245,3 +245,29 @@
   line-height: 1.25;
   color: var(--md-default-fg-color--light);
 }
+
+/* Line-art diagrams (WireViz connector diagrams, hand-drawn schematics). The
+   SVGs are black wires and text on white boxes, so on the dark (slate) theme
+   they need a light panel behind them to stay legible — otherwise the
+   connecting wires and any transparent gaps sit on a dark page. The panel is
+   light in both themes for the same reason. */
+.wiring-diagram {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.wiring-diagram img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.wiring-diagram figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.25;
+  color: var(--md-default-fg-color--light);
+}

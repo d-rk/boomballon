@@ -82,6 +82,10 @@ docs-setup: ## Create the docs virtualenv (.venv-docs) and install requirements
 media: ## Regenerate PNG assets from the SVG sources (needs inkscape + imagemagick)
 	media/generate-pngs.sh
 
+.PHONY: pcb
+pcb: ## Regenerate PCB top/bottom view PNGs (needs the Fritzing flatpak + node + inkscape)
+	media/pcb/generate.sh
+
 .PHONY: clean
 clean: ## Remove firmware and docs build artifacts
 	rm -rf firmware/.pio docs/site

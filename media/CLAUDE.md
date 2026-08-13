@@ -16,6 +16,8 @@ otherwise dev tooling.
   doc sections.
 - `enclosure/` — Blender-driven 3D renders of the printed enclosure parts, see
   below.
+- `pcb/` — Fritzing → Gerber → tracespace pipeline for the PCB top/bottom view
+  PNGs, see below.
 - top-level `*.jpg` — build-log photos referenced directly from docs pages.
 
 ## enclosure/ — Blender render pipeline
@@ -51,3 +53,41 @@ the Blender GUI, not generated:
   `render.py --glow`) and `roof-assembly.stl` (housing + roof + sticks
   merged). Re-run this after every hand-tuning pass in Blender — it is not
   automatic.
+
+## pcb/ — Fritzing → Gerber → tracespace pipeline
+
+`generate.sh` regenerates `docs/src/assets/img/<board>-pcb-{top,bottom}.png`
+for all four boards (`hardware/control/Steuermodul.fzz`,
+`hardware/card-reader/Kartenleser_{Fotomodul,Lichtmodul}.fzz`,
+`hardware/display/Displaymodul.fzz`) directly from the Fritzing sources.
+
+The original images (committed pre-repo, source unknown but almost certainly
+a fab-house Gerber viewer — PCBWay's viewer page credits tracespace author
+Mike Cousins) have a realistic green-soldermask/gold-pad look that Fritzing's
+own PCB-view export doesn't reproduce. This pipeline gets much closer:
+
+1. Fritzing's `-gerber FOLDER` flag exports real Gerber + drill files from a
+   `.fzz` (confirmed working; Fritzing has no documented image export CLI,
+   but this batch-conversion flag exists). Run with `QT_QPA_PLATFORM=offscreen`
+   (baked into `generate.sh`'s default `$FRITZING`) so the Qt GUI never
+   flashes a window on screen — without it the command is still
+   non-interactive and exits on its own, it's just not silent about it.
+2. `@tracespace/cli` (pinned in `package.json`, MIT-licensed —
+   `npm install` once before first use) renders those Gerbers into
+   green/gold board SVGs.
+3. Inkscape rasterizes the top/bottom composite SVGs to PNG at a fixed
+   431 DPI (chosen to match the original control-board image's pixel
+   density; other boards land at a different pixel size than their
+   originals since those were apparently screenshotted at inconsistent
+   zoom levels — a fixed DPI across all four is the reproducible choice).
+
+Requires the Fritzing flatpak: `flatpak install --user flathub
+org.fritzing.Fritzing` (marked end-of-life upstream but functional). Its
+sandbox only sees `~/Documents` by default; `generate.sh` instead needs a
+narrow one-time override so it can read `hardware/` and write to `/tmp`:
+
+```
+flatpak override --user --filesystem="$(pwd)/hardware:ro" --filesystem=/tmp org.fritzing.Fritzing
+```
+
+Also requires Node (`npx`/`npm`) and Inkscape on PATH.

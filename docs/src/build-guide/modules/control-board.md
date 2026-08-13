@@ -62,17 +62,6 @@ To place the Nano on the board:
 - **Align flush with that USB end.** Every Nano pin then sits in the hole
   carrying its own name: `TX1`→`TX1` … `D12`→`D12` on one row, `VIN`→`VIN` …
   `D13`→`D13` on the other.
-- The **two holes at the far end of each row stay empty** — they are the
-  Micro's SPI pins (marked `MOSI`/`SS` and `SCK`/`MISO`, next to the `Motor`
-  transistor footprint), which this board does not route.
-- Nano `A6`/`A7` land in the holes marked `NC` — not connected on the Micro
-  and unused by the firmware, so this is harmless.
-
-!!! warning "Check the alignment before powering up"
-    An off-by-one placement toward the empty SPI end puts `5V` on the `RST`
-    hole. Before applying power, confirm the Nano's `5V` pin sits in the hole
-    marked `5V` and `D13` is in the corner hole next to the `Fotomodul`
-    header.
 
 ### Parts & datasheets
 
@@ -107,9 +96,9 @@ Photos of the board, before and after assembly. Click any of them for a larger v
 [![The assembled control board: the Arduino Nano in its footprint, the two TIP120 channels, and the Motor/valve, 12 V, Fotomodul and Displaymodul headers.](../../assets/img/gallery/thumbs/steuermodul-assembled.jpg){ loading=lazy }](../../assets/img/gallery/steuermodul-assembled.jpg){ .glightbox data-gallery="steuermodul" data-title="Steuermodul — assembled, with the Nano fitted" }
 </div>
 
-## Power switching: two TIP120 channels
+## 12V Power switching
 
-The Arduino cannot drive a 12 V pump or solenoid directly, so each load has a
+The Arduino cannot drive the 12 V pump or valve directly, so each load has a
 **TIP120 Darlington transistor** acting as a low-side switch. There are two
 identical channels:
 
@@ -118,23 +107,22 @@ identical channels:
 - **Valve channel** — output terminals **VA/VM** (*Ventil*, valve), drives the
   CEME 5000EN1,5P solenoid valve (deflate). Controlled by MCU pin **D7**.
 
-Each channel is the textbook TIP120 low-side driver:
+Each channel is the textbook TIP120 low-side driver: the MCU pin drives the
+base through a 2.2 kΩ resistor, the load sits between +12 V and the
+collector, the emitter goes to ground, and a flyback diode bridges the load
+(cathode to +12 V) to clamp the inductive kick when the transistor switches
+off. One channel looks like this (`Dx` is `D6` for the pump, `D7` for the
+valve):
 
-- a **2.2 kΩ base resistor** between the MCU pin and the transistor base,
-- the load (pump or valve coil) between +12 V and the transistor collector,
-- the emitter to ground, and
-- a **1N4004 flyback diode** across the coil (cathode to +12 V) to clamp the
-  inductive kick when the transistor turns off.
+<div class="wiring-diagram" markdown>
+<figure markdown="span">
+![TIP120 low-side switch schematic: Arduino pin through a 2.2 kΩ base resistor into the TIP120 base, the load between +12 V and the collector, a 1N4004 flyback diode across the load with its cathode toward +12 V, and the emitter to ground.](../../assets/img/circuits/tip120-low-side-switch.svg){ loading=lazy }
+<figcaption>One channel of the low-side switch — the pump and valve channels are identical, on D6/MA·MM and D7/VA·VM respectively</figcaption>
+</figure>
+</div>
 
-The design basis is the well-known **bildr TIP120 tutorial**, archived here as
-[`Motorsteuerung.pdf`](https://github.com/d-rk/boomballon/blob/main/hardware/control/Motorsteuerung.pdf)
-(*Motorsteuerung* = motor control).
-
-!!! danger "Don't omit the flyback diodes"
-    Both the pump and the valve are inductive. Without the **1N4004** clamp
-    diode across each coil, turning the transistor off produces a large voltage
-    spike that will eventually destroy the TIP120. One diode per channel,
-    oriented cathode toward +12 V.
+The design basis is the **TIP120 tutorial**, archived here as
+[`Motorsteuerung.pdf`](https://github.com/d-rk/boomballon/blob/main/hardware/control/Motorsteuerung.pdf).
 
 ## Connectors
 
