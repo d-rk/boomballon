@@ -25,7 +25,7 @@ each of the five positions reads as one **bit** — light (1) or dark (0) — an
 five bits together form an integer from **0 to 31**.
 
 The five photoresistors are wired to the Arduino's analog inputs **A0–A4** (see
-the [pin map](../build-guide/wiring-pinmap.md)). The firmware
+the [wiring](../build-guide/wiring.md)). The firmware
 (`Devices/CodeDetector`) reads all five with `analogRead()`, thresholds each into
 a bit, and assembles the result into a single value.
 

@@ -71,8 +71,8 @@ nav:
           - Hose Nozzle: build-guide/enclosure/nozzle.md
           - Balloon Adapter: build-guide/enclosure/balloon-adapter.md
           - Card-Module Housing: build-guide/enclosure/card-module.md
-      - Wiring & Pin Map: build-guide/wiring-pinmap.md
-      - Firmware — Build & Flash: build-guide/firmware-build.md
+      - Wiring: build-guide/wiring.md
+      - Firmware: build-guide/firmware.md
   - Reference:
       - Bill of Materials: reference/bill-of-materials.md
       - Firmware Architecture: reference/firmware-architecture.md

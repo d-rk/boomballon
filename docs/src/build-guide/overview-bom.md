@@ -22,7 +22,7 @@ inside a 3D-printed housing:
 Power comes from a single **12 V / 3 A** supply. The 12 V rail feeds the pump
 and valve; the Arduino derives the 5 V logic rail; the card-reader's *Fotomodul*
 runs at **3.3 V** for a stable analog reference. The exact pin assignments are
-on the [wiring & pin map](wiring-pinmap.md) page — the authoritative source for
+on the [wiring](wiring.md) page — the authoritative source for
 all connections.
 
 For how the software drives all this during play, see

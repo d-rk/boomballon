@@ -3,7 +3,7 @@
 This page is a developer's tour of the Boom Balloon firmware — how the source
 tree is organised, how the program starts, and how the pieces cooperate at run
 time. It is aimed at someone who wants to read or change the code. For how to
-compile and flash it, see [Firmware — Build & Flash](../build-guide/firmware-build.md);
+compile and flash it, see [Firmware](../build-guide/firmware.md);
 for the card encoding it depends on, see the
 [Optical Code System](optical-codes.md).
 
@@ -70,7 +70,7 @@ Game game;
 
 `setup()` also seeds the random-number generator from the floating analog pin
 `A5` (`randomSeed(analogRead(PIN_A5))`) — which is why the
-[pin map](../build-guide/wiring-pinmap.md) insists that `A5` stay unconnected.
+[wiring](../build-guide/wiring.md) insists that `A5` stay unconnected.
 
 The pin numbers, code values, and display glyphs all come from `Constants.h`,
 which also carries two compile-time switches described under

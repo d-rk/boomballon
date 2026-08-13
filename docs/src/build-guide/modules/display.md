@@ -82,4 +82,4 @@ digital pins as shown. The module runs at **5 V**:
 
 To update the digit, the firmware shifts 8 bits out on `DS`/`SHCP` (`D8`/`D10`),
 then pulses `STCP` (`D9`) to latch them to the outputs. For the complete signal
-map across all modules, see the [wiring & pin map](../wiring-pinmap.md).
+map across all modules, see the [wiring](../wiring.md).

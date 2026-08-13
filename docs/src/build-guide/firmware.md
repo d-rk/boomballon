@@ -88,7 +88,7 @@ Compile-time switches live in `src/Constants.h`:
 
 ## See also
 
-- [Wiring & pin map](wiring-pinmap.md) — which pins the firmware drives.
+- [Wiring](wiring.md) — which pins the firmware drives.
 - [Firmware Architecture](../reference/firmware-architecture.md) — how the code
   is organized.
 - [`firmware/README.md`](https://github.com/d-rk/boomballon/blob/main/firmware/README.md)

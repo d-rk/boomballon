@@ -137,12 +137,12 @@ reference:
 | 7 | A4 | card bit 4 |
 
 The `A0`–`A4` lines land on the Arduino's analog inputs. For the complete signal
-map across all modules, see the [wiring & pin map](../wiring-pinmap.md).
+map across all modules, see the [wiring](../wiring.md).
 
 ## Calibration
 
 Because photocell behaviour depends on the exact LEDs, ambient light, and card
 material, the firmware ships with a bring-up harness that prints raw analog
 values so you can pick thresholds. See
-[`DETECTOR_CALIBRATION`](../firmware-build.md#build-switches) on the
-firmware build page.
+[`DETECTOR_CALIBRATION`](../firmware.md#build-switches) on the
+firmware page.

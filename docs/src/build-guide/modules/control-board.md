@@ -140,4 +140,4 @@ Fritzing source:
 [`Steuermodul.fzz`](https://github.com/d-rk/boomballon/blob/main/hardware/control/Steuermodul.fzz).
 
 For the complete, authoritative signal map — including which analog and digital
-pins each connector carries — see the [wiring & pin map](../wiring-pinmap.md).
+pins each connector carries — see the [wiring](../wiring.md).
