@@ -95,11 +95,37 @@ Also requires Node (`npx`/`npm`) and Inkscape on PATH.
 ## pcb/parts/ — custom Fritzing parts + system wiring starter sketch
 
 `build_part.py` turns a board's Gerbers into a real, importable Fritzing part
-(`.fzpz`): reuses the tracespace-rendered PCB SVG as the breadboard/pcb-view graphic,
-tags connector pin/terminal markers at hand-verified real header positions, and
-packages per Fritzing's `.fzpz` zip convention (flat zip, `part.<moduleId>.fzp` +
-`svg.<view>.<file>` entries — verified against a real contributed Fritzing part, not
-guessed).
+(`.fzpz`), packaged per Fritzing's `.fzpz` zip convention (flat zip,
+`part.<moduleId>.fzp` + `svg.<view>.<file>` entries — verified against a real
+contributed Fritzing part, not guessed).
+
+**Breadboard-view graphic:** the curated PNG already used in the docs (e.g.
+`docs/src/assets/img/displaymodul-pcb-top.png`), embedded as a raster `<image>`,
+not the tracespace vector SVG. Fritzing's breadboard-view renderer doesn't respect
+that vector SVG's CSS-based (`currentColor` + `<style>` class) fill styling — parts
+built from it show up washed out (plain white pads, no green/gold) when actually
+dragged into a sketch in the real Fritzing GUI, even though the identical SVG
+renders correctly in Inkscape/Chromium. Confirmed this is specifically a breadboard-
+view-renderer issue, not a file-format one, by inspecting a real official Fritzing
+part with photographic artwork (`DRV8825_breakout`) — it embeds its image with a
+plain `href` attribute (not `xlink:href`), which `_tag_connectors_raster()` matches
+(both attributes are written, for compatibility). PCB-view and schematic-view still
+use the vector approach — untouched, not the focus, not reported as broken.
+
+An optional transparent overlay PNG (same pixel dimensions as the board PNG,
+dropped in `media/pcb/parts/overlays/<Board>_overlay.png`) composites on top —
+e.g. hand-drawn "lit" 7-segment digit artwork, since the real board photo only
+shows the bare unlit component footprint.
+
+**Headless validation gap:** Fritzing's `-svg` full-sketch batch exporter cannot
+render *any* raster-embedded part — confirmed by testing the same official
+`DRV8825_breakout` part, which also exports as an empty SVG. This is a general
+limitation of that specific export path (likely Qt's SVG re-serializer not
+supporting re-emitting `<image>` elements), not evidence the part is broken. For
+raster-based parts, validate with the structural check (`.fzp` well-formed, every
+`svgId` resolves) plus a direct visual render of the part's own breadboard SVG —
+you cannot use the "bundle into a throwaway sketch and check the `-svg` output"
+trick that works for vector parts (see Lichtmodul's original spike).
 
 `generate_lichtmodul.py` / `generate_displaymodul.py` / `generate_fotomodul.py` each
 call `build_part()` with a hand-verified connector list for that board (pin name +

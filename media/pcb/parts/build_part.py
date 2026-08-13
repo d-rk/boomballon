@@ -1,9 +1,17 @@
+import base64
 import os
 import re
 import shutil
+import struct
 import subprocess
 import tempfile
 import zipfile
+
+# Matches media/pcb/generate.sh's DPI constant -- the docs PCB PNGs (e.g.
+# docs/src/assets/img/displaymodul-pcb-top.png) were rasterized from the same
+# tracespace SVGs at this pixel density, so connector coordinates convert
+# cleanly between the two.
+DOCS_PNG_DPI = 431
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 TRACESPACE = os.path.join(REPO_ROOT, "media", "pcb", "node_modules", ".bin", "tracespace")
@@ -46,6 +54,82 @@ def _read_group_translate_y(svg_text: str) -> float:
     if not m:
         raise ValueError("expected a translate(0,H) scale(1,-1) group transform")
     return float(m.group(1))
+
+
+def _read_viewbox(svg_text: str) -> tuple:
+    m = re.search(r'viewBox="([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)"', svg_text)
+    if not m:
+        raise ValueError("expected a viewBox attribute")
+    return tuple(float(g) for g in m.groups())  # (min_x, min_y, width, height)
+
+
+def _png_size(png_path: str) -> tuple:
+    """Read (width, height) straight from the PNG IHDR chunk -- no Pillow
+    dependency needed for just two integers."""
+    with open(png_path, "rb") as f:
+        header = f.read(24)
+    if header[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError(f"{png_path} is not a PNG file")
+    width, height = struct.unpack(">II", header[16:24])
+    return width, height
+
+
+def _tag_connectors_raster(board_png: str, overlay_png: str, connectors: list,
+                            reference_svg_path: str, out_path: str) -> None:
+    """Build the breadboard SVG from real raster PNGs (the same ones used in
+    the docs) instead of the tracespace vector SVG. Fritzing's breadboard-view
+    renderer doesn't respect the vector SVG's CSS-based fill/opacity styling
+    (confirmed: parts built from it show up washed out -- plain white pads,
+    no green/gold -- when actually placed in Fritzing, even though the same
+    SVG renders correctly in Inkscape/Chromium). Embedding flat PNGs sidesteps
+    that entirely, at the cost of not being vector-scalable."""
+    svg_text = open(reference_svg_path).read()
+    h = _read_group_translate_y(svg_text)
+    vb_min_x, vb_min_y, _vb_w, _vb_h = _read_viewbox(svg_text)
+
+    png_w, png_h = _png_size(board_png)
+    scale = DOCS_PNG_DPI / 1000.0  # raw SVG units are thousandths of an inch
+
+    def to_png_space(raw_x, raw_y):
+        local_x, local_y = raw_x, h - raw_y
+        return (local_x - vb_min_x) * scale, (local_y - vb_min_y) * scale
+
+    board_b64 = base64.b64encode(open(board_png, "rb").read()).decode("ascii")
+    images = [
+        f'<image x="0" y="0" width="{png_w}" height="{png_h}" '
+        f'href="data:image/png;base64,{board_b64}" xlink:href="data:image/png;base64,{board_b64}"/>'
+    ]
+    if overlay_png:
+        overlay_w, overlay_h = _png_size(overlay_png)
+        if (overlay_w, overlay_h) != (png_w, png_h):
+            raise ValueError(
+                f"overlay {overlay_png} is {overlay_w}x{overlay_h}, "
+                f"expected {png_w}x{png_h} to match {board_png}"
+            )
+        overlay_b64 = base64.b64encode(open(overlay_png, "rb").read()).decode("ascii")
+        images.append(
+            f'<image x="0" y="0" width="{png_w}" height="{png_h}" '
+            f'href="data:image/png;base64,{overlay_b64}" xlink:href="data:image/png;base64,{overlay_b64}"/>'
+        )
+
+    markers = []
+    for i, (_name, raw_x, raw_y) in enumerate(connectors):
+        px, py = to_png_space(raw_x, raw_y)
+        markers.append(
+            f'<rect id="connector{i}pin" x="{px - 7}" y="{py - 7}" '
+            f'width="14" height="14" fill="none"/>'
+            f'<rect id="connector{i}terminal" x="{px - 3}" y="{py - 3}" '
+            f'width="6" height="6" fill="none"/>'
+        )
+
+    svg = (
+        f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
+        f'width="{png_w / DOCS_PNG_DPI}in" height="{png_h / DOCS_PNG_DPI}in" '
+        f'viewBox="0 0 {png_w} {png_h}">'
+        f'{"".join(markers)}<g id="breadboard">{"".join(images)}</g></svg>'
+    )
+    with open(out_path, "w") as f:
+        f.write(svg)
 
 
 def _tag_connectors(svg_path: str, connectors: list, out_path: str) -> None:
@@ -196,8 +280,20 @@ def _package_fzpz(module_id: str, fzp_text: str, breadboard_svg: str, schematic_
         z.writestr(f"svg.icon.{icon_file}", open(icon_svg).read())
 
 
-def build_part(board_fzz: str, board_name: str, connectors: list, out_dir: str) -> str:
+def build_part(board_fzz: str, board_name: str, connectors: list, out_dir: str,
+               board_png: str = None, overlay_png: str = None) -> str:
     """board_name: e.g. "Lichtmodul". connectors: [(pin_name, raw_x, raw_y), ...].
+
+    By default the breadboard-view graphic is the tracespace vector SVG. Pass
+    board_png (e.g. docs/src/assets/img/displaymodul-pcb-top.png) to use that
+    raster image instead -- Fritzing's breadboard-view renderer doesn't
+    respect the vector SVG's CSS-based styling and shows it washed out, but a
+    plain embedded PNG renders identically everywhere. overlay_png (optional,
+    only used together with board_png) is composited on top at the same
+    position/scale -- for hand-drawn artwork like a lit 7-segment digit; it
+    must be the exact same pixel dimensions as board_png, with transparency
+    everywhere it isn't adding detail.
+
     Returns the path to the written .fzpz."""
     module_id = f"BoomBalloon_{board_name}"
     with tempfile.TemporaryDirectory(prefix=f"boomballoon-part-{board_name}-") as work_dir:
@@ -212,7 +308,10 @@ def build_part(board_fzz: str, board_name: str, connectors: list, out_dir: str) 
         schematic_out = os.path.join(work_dir, schematic_file)
         pcb_out = os.path.join(work_dir, pcb_file)
 
-        _tag_connectors(svgs["top"], connectors, breadboard_out)
+        if board_png:
+            _tag_connectors_raster(board_png, overlay_png, connectors, svgs["top"], breadboard_out)
+        else:
+            _tag_connectors(svgs["top"], connectors, breadboard_out)
         _tag_connectors_pcb(svgs["top"], connectors, pcb_out)
         _make_schematic_svg(connectors, schematic_out)
         # Icon view: reuse the breadboard graphic, Fritzing scales it down itself.

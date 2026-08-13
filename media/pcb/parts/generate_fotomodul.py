@@ -23,6 +23,10 @@ if __name__ == "__main__":
     # each header's silkscreen outline box (docs/src/assets/img/fotomodul-pcb-top.png):
     # FM's chamfer is at its leftmost pin (x=99.1); LM's chamfer is at its
     # rightmost pin (x=394.4).
+    # Breadboard graphic: the curated docs PNG, not the tracespace vector SVG
+    # -- see media/CLAUDE.md for why (Fritzing's breadboard-view renderer
+    # doesn't respect the vector SVG's CSS-based styling).
+    overlay_path = os.path.join(os.path.dirname(__file__), "overlays", "Fotomodul_overlay.png")
     out = build_part(
         board_fzz=os.path.join(REPO_ROOT, "hardware", "card-reader", "Kartenleser_Fotomodul.fzz"),
         board_name="Fotomodul",
@@ -40,5 +44,7 @@ if __name__ == "__main__":
             ("LM2", 294.4, 97.2),
         ],
         out_dir=os.path.join(REPO_ROOT, "hardware", "fritzing-parts"),
+        board_png=os.path.join(REPO_ROOT, "docs", "src", "assets", "img", "fotomodul-pcb-top.png"),
+        overlay_png=overlay_path if os.path.exists(overlay_path) else None,
     )
     print(f"Wrote {out}")
