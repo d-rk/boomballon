@@ -13,12 +13,8 @@ reference is
 Install PlatformIO Core:
 
 ```bash
-pip install platformio        # or: pipx install platformio
+pip install platformio
 ```
-
-(Or the PlatformIO IDE extension for VS Code — it uses the same
-`platformio.ini`.) The first build downloads the `atmelavr` platform and AVR
-toolchain automatically.
 
 ## Build
 
@@ -57,11 +53,6 @@ PlatformIO auto-detects the serial port; force it with
 ```bash
 pio device monitor            # 9600 baud, matching Serial.begin(9600)
 ```
-
-Serial `printf` logging is always on. The format strings are kept in flash
-(via a `printf` → `printf_P(PSTR(...))` macro in `Constants.h`), so on the
-ATmega328P logging costs essentially no RAM — only ~16 bytes over a
-hypothetical silent build — and it doesn't need a build switch.
 
 ## Build switches
 

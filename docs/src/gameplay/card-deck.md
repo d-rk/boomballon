@@ -1,10 +1,10 @@
 # The Card Deck
 
-This page is the **authoritative catalog** of the Boom Balloon deck. Every card's German name, English gloss, printed face value, optical code, firmware effect, and deck count is listed here, cross-verified against the firmware and the design spreadsheets. Other documents that need the deck (including `cards/README.md` in the repository) point back to this page.
+This page is the **authoritative catalog** of the Boom Balloon deck. Every card's German name, English gloss, optical code, effect, and deck count is listed here; printed face values are shown in the card captions above.
 
 ## The cards
 
-The full deck, card by card. Printed face values are shown in the captions; see [the catalog](#the-catalog) below for each card's optical code and firmware effect.
+The full deck, card by card. Printed face values are shown in the captions; see [the catalog](#the-catalog) below for each card's optical code and effect.
 
 ### Effect cards
 
@@ -88,16 +88,16 @@ The full deck, card by card. Printed face values are shown in the captions; see 
 </figure>
 </div>
 
-### Other cards
+### Others
 
 <div class="card-grid" markdown>
 <figure markdown="span">
 ![Card back](../assets/img/cards/rueckseite.png){ loading=lazy }
-<figcaption>Rückseite (card back)</figcaption>
+<figcaption>card back side</figcaption>
 </figure>
 <figure markdown="span">
 ![Spielerkarte](../assets/img/cards/spielerkarte.png){ loading=lazy }
-<figcaption>Spielerkarte</figcaption>
+<figcaption>player card back side</figcaption>
 </figure>
 <figure markdown="span">
 ![Moduswechsel](../assets/img/cards/moduswechsel.png){ loading=lazy }
@@ -113,27 +113,24 @@ Every card is a printed rectangle with a machine-readable hole pattern:
 - **Holes:** 3 mm in diameter, spaced 10 mm apart.
 - **Code:** 5 hole positions, so each card carries a **5-bit optical code** (a hole present or absent at each position). The card reader scans this pattern as the card slides in. See the [Optical Code System](../reference/optical-codes.md) reference for the bit layout and mirror-handling rules.
 
-!!! note "Face value is thematic, not literal"
-    The number printed on a card (its **face value**) is part of the game's theme and story. It is **not** the same as the internal **firmware effect** — the actual change applied to the modelled balloon volume. Always treat the firmware effect column below as the source of truth for what a card does.
-
 ## The catalog
 
-| German name | English gloss | Face value | Code | Firmware effect | Count |
-|---|---|---|---|---|---|
-| Hochdruckgebiet 10 | High-pressure zone (deflate) | 10 | 1 | `VolumeCard(-15,200)` ~−15% | 6 |
-| Hochdruckgebiet 20 | High-pressure zone | 20 | 2 | `VolumeCard(-25,200)` ~−25% | 6 |
-| Kurswechsel 30 ↓ | Change of course (down) | −30 | 3 | `ChangeDirectionCard(-25,200)` deflate + reverse | 4 |
-| Engelsbote 30 | Angel's messenger | −30 | 4 | `AngelCard(-25,50)` delayed relief next round | 3 |
-| Blockierung | Blocking / miss round | — | 5 | `MissRoundCard()` skip a card (50%) | 2 |
-| Tiefdruckgebiet 10 | Low-pressure zone (inflate) | +10 | 6 | `VolumeCard(30,200)` ~+30% | 6 |
-| Tiefdruckgebiet 20 | Low-pressure zone | +20 | 7 | `VolumeCard(40,200)` ~+40% | 6 |
-| Kurswechsel 30 ↑ | Change of course (up) | +30 | 9 | `ChangeDirectionCard(40,200)` inflate + reverse | 4 |
-| Teufelsbote 30 | Devil's messenger | +30 | 10 | `DevilCard(40,50)` malicious inflate (50%) | 3 |
-| Weltuntergang | Apocalypse | — | 11 | `SuddenDeathCard()` repeatedly fills to max | 2 |
-| Zwiegespalten 50 | Torn / fifty-fifty | ±50 | 13 | `FiftyFiftyCard(100)` random ±50% | 3 |
-| Berg und Tal 10 | Up hill and down | 10/10 | 14 | `UpDownCard(35,200)` oscillate | 3 |
-| Yin Yang | Yin & Yang | — | 27 | `PushToLimitCard(255)` push to 99% | 1 |
-| 1–5 Spieler | Player 1–5 | — | 15/17/19/21/23 | player-select / target card | 1 each |
+| German name | English gloss | Code | Effect | Count |
+|---|---|---|---|---|
+| Hochdruckgebiet 10 | High-pressure zone (deflate) | 1 | Deflates the balloon by 10 units. | 6 |
+| Hochdruckgebiet 20 | High-pressure zone | 2 | Deflates the balloon by 20 units. | 6 |
+| Kurswechsel 30 ↓ | Change of course (down) | 3 | Deflates the balloon by 30 units and reverses the direction of play. | 4 |
+| Engelsbote 30 | Angel's messenger | 4 | Deflates the balloon by 30 units, but only at the start of the next round. | 3 |
+| Blockierung | Blocking / miss round | 5 | The targeted player has a coin-flip chance of missing their turn. | 2 |
+| Tiefdruckgebiet 10 | Low-pressure zone (inflate) | 6 | Inflates the balloon by 10 units. | 6 |
+| Tiefdruckgebiet 20 | Low-pressure zone | 7 | Inflates the balloon by 20 units. | 6 |
+| Kurswechsel 30 ↑ | Change of course (up) | 9 | Inflates the balloon by 30 units and reverses the direction of play. | 4 |
+| Teufelsbote 30 | Devil's messenger | 10 | A coin-flip chance of a sudden, dangerous inflate of 30 units. | 3 |
+| Weltuntergang | Apocalypse | 11 | Repeatedly inflates the balloon toward its bursting point. | 2 |
+| Zwiegespalten 50 | Torn / fifty-fifty | 13 | A coin flip decides whether the balloon inflates or deflates by 50 units. | 3 |
+| Berg und Tal 10 | Up hill and down | 14 | Repeatedly inflates and deflates the balloon by 10 units. | 3 |
+| Yin Yang | Yin & Yang | 27 | Inflates the balloon almost all the way to its bursting point. | 1 |
+| 1–5 Spieler | Player 1–5 | 15/17/19/21/23 | Picks a player as a target, or sets the game size at startup. | 1 each |
 
 ## Deck total and the player cards
 
@@ -145,3 +142,6 @@ The player cards, **`1 Spieler`…`5 Spieler`**, do two jobs:
 - The **`2 Spieler`…`5 Spieler`** cards additionally **choose the game size** when inserted at startup (see [Rules → Setting up a game](rules.md#setting-up-a-game)).
 
 The **Yin Yang** card is a rare single wildcard that pushes the modelled volume all the way to the limit.
+
+!!! info "The Moduswechsel card"
+    The **Moduswechsel** ("mode change") card shown under [Others](#others) is not wired to any optical code and has no effect in the shipped firmware — inserting it does nothing. It's the leftover artwork for an unbuilt **game-mode selector**, originally meant to let players cycle through four play modes before starting a round. That feature was specced but never implemented; see [Firmware Architecture → The unbuilt mode system](../reference/firmware-architecture.md#the-unbuilt-mode-system) for the full history, including how code 27 ended up going to the **Yin Yang** card's one-shot `PushToLimitCard` instead.

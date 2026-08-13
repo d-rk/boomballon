@@ -30,12 +30,17 @@ The tree lives under `firmware/src/`:
 The `Mock/` subtree lets the game run with **missing hardware**: build with
 `-D MOCK_CODE_DETECTOR` and/or `-D MOCK_OUTPUT_DEVICE` and `Main.cpp` swaps that
 device for a serial-driven stand-in (type codes in, watch the balloon volume
-print out). Each is independent. See
-[Design Notes](design-notes.md#the-mock-devices) for how it works.
+print out). Each is independent. See [Mock devices](#mock-devices) below for
+how it works.
 
-There is also a `Devices/` trio (`Button`, `Led`, `SoundDetector`) that is
-**not part of the running game** — see
-[Design Notes & Roadmap](design-notes.md) for what they were for.
+There is also a `Devices/` trio that is **not part of the running game**:
+`Button` and `Led` are unused general-purpose drivers (Boom Balloon has no
+gameplay buttons — the only input is the card reader), and `SoundDetector` is
+the fossil of an abandoned **closed-loop** idea: detect the actual *pop* of the
+balloon (or its pressure via sound) and react to it, instead of the modelled
+volume described in [How It Works](../how-it-works.md#the-balloon-volume-model).
+It was never wired into the game — nothing in `Main.cpp` or `Game.cpp`
+constructs or references it.
 
 ## Startup and object ownership
 
@@ -209,5 +214,66 @@ flash (`printf_P`/`PSTR`), so it costs almost no RAM.
 There is also an `AUTOSTART_GAME` switch that skips the player-count selection
 and jumps straight into a 2-player game — a convenience for testing.
 
-For the honest list of what in this tree is experimental, unused, or left for
-later, continue to [Design Notes & Roadmap](design-notes.md).
+## Mock devices
+
+The `Mock/` subtree is a **desk-testing path**: run the game with missing
+hardware. Each device is mocked independently by its own build flag, so you can
+stand in for one and keep the other real, or mock both:
+
+- **`CodeDetectorMock`** (build with `-D MOCK_CODE_DETECTOR`) replaces
+  `CodeDetector`. Instead of reading the five photoresistors, it reads a card
+  code you type into the serial console — a number followed by `<enter>`
+  "inserts" that card, an empty line "pulls it out" again. It subclasses
+  `CodeDetector` and overrides `readCode()`.
+- **`OutputDeviceMock`** (build with `-D MOCK_OUTPUT_DEVICE`) replaces
+  `OutputDevice`. Instead of driving the 12 V pump and valve, it prints the
+  balloon volume to serial after each inflate or deflate, as a percentage and a
+  little ASCII bar. It keeps the real volume model (fill/deflate timing) and
+  only swaps out the physical pin writes.
+
+Either flag can be set on the command line or uncommented in `Constants.h`.
+
+To make the output mock possible without duplicating the volume model,
+`OutputDevice` exposes three protected virtual hooks — `writeMotor()`,
+`writeValve()`, and `afterApply()` — that the real device implements as pin
+writes and a no-op, and the mock overrides to suppress hardware and report
+volume.
+
+Because the mocks talk over serial, a build with either mock also gets a 2.5 s
+startup delay so the serial link settles before the opening prompt prints
+(`printf` logging is always on). Combine them with `-D AUTOSTART_GAME` to boot
+straight into a 2-player game and watch the balloon fill on the console.
+
+## The unbuilt mode system
+
+There was a design for a **game-mode selector** built around the **Yin Yang**
+card (optical code **27**) that was specced but never implemented. The idea,
+captured in the design note *Anforderungen Moduswechsel* ("mode-change
+requirements"), was that the Yin Yang card would cycle through four play modes:
+you insert the card repeatedly *before* committing a player card, each insertion
+advances the selected mode (shown on the display), and you pull the card out once
+the mode you want is selected.
+
+The four intended modes were:
+
+| Mode (German) | English gloss | Display glyph | Behaviour |
+|---|---|---|---|
+| Standard | Standard | `S` | Normal game, no extras. |
+| Himmel | "Heaven" | circle | Every third round, deflate a **random** player's balloon a little. |
+| Hölle | "Hell" | minus | Every third round, inflate a **random** player's balloon a little. |
+| Provokation | "Provocation" | `P` | Start the game with the balloon already partly filled. |
+
+!!! note "What actually shipped for code 27"
+    The mode system was never built. In the shipped firmware, optical code **27**
+    is instead wired to a single card behaviour — **`PushToLimitCard(255)`**,
+    which inflates the balloon to **99 %** in one go (see
+    [The Card Deck](../gameplay/card-deck.md)). So the Yin Yang card exists and is
+    playable, but as a one-shot "push to the limit" wildcard rather than as the
+    four-way mode selector its design note envisioned.
+
+The design note itself is explicit that these were early ideas ("*these are just
+ideas for now*"), so nothing here was a broken promise — it is simply a feature
+that stopped at the design stage.
+
+**Source:** the original German design note is archived alongside this page as
+[`anforderungen-moduswechsel.txt`](anforderungen-moduswechsel.txt).
