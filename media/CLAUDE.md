@@ -91,3 +91,40 @@ flatpak override --user --filesystem="$(pwd)/hardware:ro" --filesystem=/tmp org.
 ```
 
 Also requires Node (`npx`/`npm`) and Inkscape on PATH.
+
+## pcb/parts/ — custom Fritzing parts + system wiring starter sketch
+
+`build_part.py` turns a board's Gerbers into a real, importable Fritzing part
+(`.fzpz`): reuses the tracespace-rendered PCB SVG as the breadboard/pcb-view graphic,
+tags connector pin/terminal markers at hand-verified real header positions, and
+packages per Fritzing's `.fzpz` zip convention (flat zip, `part.<moduleId>.fzp` +
+`svg.<view>.<file>` entries — verified against a real contributed Fritzing part, not
+guessed).
+
+`generate_lichtmodul.py` / `generate_displaymodul.py` / `generate_fotomodul.py` each
+call `build_part()` with a hand-verified connector list for that board (pin name +
+raw Gerber drill coordinates). **These coordinates are not auto-detected** — pin-1
+identity in particular needs a human or Claude to cross-check the copper/soldermask
+pad shape (square = pin 1, where present — worked for Lichtmodul's `LM` header) or,
+where no pad asymmetry exists (Displaymodul, Fotomodul), the real assembled-board
+photos in `docs/src/assets/img/gallery/` and the silkscreen chamfer on each header's
+outline box. Re-verify by rendering the output breadboard SVG to PNG (with a
+temporary visible stroke on the `connectorNpin`/`connectorNterminal` rects, since
+they ship with `fill="none"` and no stroke — invisible by design, matching Fritzing's
+own convention) and confirming the markers land on the real holes before trusting a
+build.
+
+Known gap: Fotomodul's real, assembled boards have a 6-pin `Connector` pass-through
+(for the Displaymodul cable) that isn't a component in the source `.fzz` — see
+`hardware/fritzing-parts/README.md`.
+
+`assemble_starter_sketch.py` builds `hardware/system-wiring/BoomBalloon-Wiring.fzz`:
+copies `Steuermodul.fzz` wholesale (its internal wiring graph is never touched) and
+appends new standalone, unconnected instances of the 3 custom parts + a generic power
+jack (`SparkFun-Connectors-POWER_JACK-PTH`, a Fritzing core part). No wires — that's
+drawn by hand in Fritzing afterward.
+
+Unlike `pcb/generate.sh`, this is **not** a blind one-command pipeline: connector
+coordinates are verified data, checked in, not re-derived from scratch on every run.
+If a board's header layout ever changes, re-run the relevant `generate_<board>.py`
+after re-verifying its coordinates the same way.
