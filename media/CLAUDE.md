@@ -115,7 +115,11 @@ use the vector approach — untouched, not the focus, not reported as broken.
 An optional transparent overlay PNG (same pixel dimensions as the board PNG,
 dropped in `media/pcb/parts/overlays/<Board>_overlay.png`) composites on top —
 e.g. hand-drawn "lit" 7-segment digit artwork, since the real board photo only
-shows the bare unlit component footprint.
+shows the bare unlit component footprint. Dirk has supplied overlays for all
+four boards (realistic LED/photoresistor/buzzer/lit-digit artwork over the
+bare-PCB photos) — they're picked up automatically by each `generate_<board>.py`
+whenever present, so re-running one after the overlay file changes is enough
+to refresh it.
 
 **Headless validation gap:** Fritzing's `-svg` full-sketch batch exporter cannot
 render *any* raster-embedded part — confirmed by testing the same official
@@ -127,9 +131,10 @@ raster-based parts, validate with the structural check (`.fzp` well-formed, ever
 you cannot use the "bundle into a throwaway sketch and check the `-svg` output"
 trick that works for vector parts (see Lichtmodul's original spike).
 
-`generate_lichtmodul.py` / `generate_displaymodul.py` / `generate_fotomodul.py` each
-call `build_part()` with a hand-verified connector list for that board (pin name +
-raw Gerber drill coordinates). **These coordinates are not auto-detected** — pin-1
+`generate_lichtmodul.py` / `generate_displaymodul.py` / `generate_fotomodul.py` /
+`generate_steuermodul.py` each call `build_part()` with a hand-verified connector
+list for that board (pin name + raw Gerber drill coordinates). **These coordinates
+are not auto-detected** — pin-1
 identity in particular needs a human or Claude to cross-check the copper/soldermask
 pad shape (square = pin 1, where present — worked for Lichtmodul's `LM` header) or,
 where no pad asymmetry exists (Displaymodul, Fotomodul), the real assembled-board
@@ -143,6 +148,22 @@ build.
 Known gap: Fotomodul's real, assembled boards have a 6-pin `Connector` pass-through
 (for the Displaymodul cable) that isn't a component in the source `.fzz` — see
 `hardware/fritzing-parts/README.md`.
+
+**Steuermodul.fzpz** is the bare control board only — deliberately no baked-in
+Arduino. Its 19 connectors are the board's 5 real external groups (`VA`/`MA` and
+`VM`/`MM` — each is one physical 2-pin connector pairing a valve wire with a
+motor wire, not two matched pairs, confirmed from the silkscreen, not assumed;
+`Vcc12V`; `Fotomodul` 7-pin; `Displaymodul` 6-pin), identified by rendering all
+95 drilled holes as a labeled debug overlay and reading real coordinates off it
+(`media/pcb/parts/generate_steuermodul.py`'s own comments have the full
+reasoning, including which pin-1 markers were chamfers vs which were assumed).
+The Arduino Micro footprint in the middle of the board image is intentionally
+left without any connectors of its own — since the breadboard graphic is at the
+same true physical scale (DPI) as every other part here, and the real PCB's
+Arduino footprint was manufactured to that same real Arduino Micro's pin
+spacing, dragging Fritzing's own stock Arduino Micro part on top and lining it
+up by eye should fit it exactly, no custom connectors needed for that part of
+the board.
 
 `assemble_starter_sketch.py` builds `hardware/system-wiring/BoomBalloon-Wiring.fzz`:
 copies `Steuermodul.fzz` wholesale (its internal wiring graph is never touched) and

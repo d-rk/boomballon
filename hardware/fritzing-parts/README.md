@@ -11,11 +11,25 @@ graphic is the real photorealistic PCB render; its connector pins are placed at 
 real header positions, labeled with the same pin names used in
 `docs/src/build-guide/wiring.md`.
 
-Steuermodul is not here -- it's reused directly from `hardware/control/Steuermodul.fzz`,
-which already has full real detail (Arduino + TIP120s) in its own breadboard view.
+`Steuermodul.fzpz` is the bare control board -- no Arduino baked in on purpose. Drag
+Fritzing's own stock "Arduino Micro" part on top and position it by eye: the board
+image is at the same true physical scale as every other part here, and the real PCB's
+Arduino footprint was manufactured to fit a real Arduino Micro, so it should line up
+exactly. (`hardware/control/Steuermodul.fzz` is still the one with the Arduino and the
+TIP120 driver circuit already placed and wired, if you want that level of detail
+instead -- see `hardware/system-wiring/BoomBalloon-Wiring.fzz`, which reuses it wholesale.)
 
 See `hardware/system-wiring/BoomBalloon-Wiring.fzz` for a starter sketch with everything
 already placed.
+
+## Adding hand-drawn artwork
+
+Each board's breadboard-view graphic is the real bare-PCB photo, which doesn't show
+what a populated component actually looks like (an LED, a lit 7-segment digit, etc.).
+Drop a transparent PNG named `<Board>_overlay.png` into `media/pcb/parts/overlays/`
+(same pixel dimensions as the board's PNG in `docs/src/assets/img/`) and re-run
+`generate_<board>.py` -- it's composited on top automatically. All four boards
+currently have overlays.
 
 ## Known gap: Fotomodul's "Connector" pass-through
 
