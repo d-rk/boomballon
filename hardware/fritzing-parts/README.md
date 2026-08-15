@@ -31,14 +31,14 @@ Drop a transparent PNG named `<Board>_overlay.png` into `media/pcb/parts/overlay
 `generate_<board>.py` -- it's composited on top automatically. All four boards
 currently have overlays.
 
-## Known gap: Fotomodul's "Connector" pass-through
+## Fotomodul's "Connector" pass-through
 
-`Fotomodul.fzpz` has 9 connectors (`FM` 7-pin + `LM` 2-pin) but is missing the 6-pin
-`Connector` pass-through for the Displaymodul cable that `docs/src/build-guide/modules/card-reader.md`
+`Fotomodul.fzpz` has 15 connectors: `FM` 7-pin, `LM` 2-pin, and `Connector` 6-pin --
+the pass-through for the Displaymodul cable that `docs/src/build-guide/modules/card-reader.md`
 documents and that's visibly present on the real assembled boards
-(`docs/src/assets/img/gallery/fotomodul-assembled.jpg`). It isn't a component in
-`hardware/card-reader/Kartenleser_Fotomodul.fzz` -- confirmed by listing every part
-instance in that sketch -- so there's no Gerber data to place it from. The Fritzing
-source and the as-built boards have drifted apart for this one connector. If it matters
-for the wiring diagram, it'll need to be added by hand in Fritzing (or the source sketch
-updated first).
+(`docs/src/assets/img/gallery/fotomodul-assembled.jpg`). This used to be a known gap
+(the component was missing from `hardware/card-reader/Kartenleser_Fotomodul.fzz`, so
+there was no Gerber data to place it from) -- fixed 2026-08-14 when the source sketch
+was corrected to include it. `Connector`'s 6 pins carry the same signals in the same
+order as Displaymodul's own header (a straight pass-through), per
+`docs/src/build-guide/modules/display.md`.

@@ -121,6 +121,24 @@ bare-PCB photos) — they're picked up automatically by each `generate_<board>.p
 whenever present, so re-running one after the overlay file changes is enough
 to refresh it.
 
+**Keeping `.fzpz` size down:** icon view is a small (`ICON_MAX_DIM`, currently
+200px on the longer side) dedicated thumbnail composited by Inkscape and
+re-encoded through `optipng`, not a full-resolution copy of the breadboard
+graphic — Fritzing only ever shows icon view at parts-bin thumbnail size, so
+embedding it at full board resolution used to double every part's size for no
+visible benefit (cut every board's `.fzpz` by 40-49%, except Steuermodul,
+whose PCB-view vector SVG — untouched — now dominates its size instead).
+`board_png`/`overlay_png` are also re-encoded through `optipng` before being
+embedded in the breadboard view (lossless, ~10-25% smaller); the committed
+source PNGs in `docs/src/assets/img/` and `overlays/` are left untouched.
+`optipng` is a best-effort dependency — `build_part.py` silently skips it if
+not on PATH, so its absence costs size, not correctness. PCB-view's vector SVG
+is the largest remaining piece for big boards (e.g. Steuermodul) but is not
+optimized: a `scour` pass tried during this investigation stripped the
+CSS classes the tracespace SVG's soldermask/silkscreen styling depends on
+(confirmed visually — the board rendered black), so shrinking it needs a
+more careful, precision-only pass, not a generic SVG optimizer's defaults.
+
 **Headless validation gap:** Fritzing's `-svg` full-sketch batch exporter cannot
 render *any* raster-embedded part — confirmed by testing the same official
 `DRV8825_breakout` part, which also exports as an empty SVG. This is a general

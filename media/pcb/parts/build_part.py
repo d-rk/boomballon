@@ -13,6 +13,12 @@ import zipfile
 # cleanly between the two.
 DOCS_PNG_DPI = 431
 
+# Icon view is only ever shown as a small parts-bin thumbnail in Fritzing, so
+# it's rendered at this size (px, on the longer side) instead of reusing the
+# full-resolution breadboard graphic -- that used to double the size of every
+# .fzpz for a thumbnail nobody sees at more than ~50px.
+ICON_MAX_DIM = 200
+
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 TRACESPACE = os.path.join(REPO_ROOT, "media", "pcb", "node_modules", ".bin", "tracespace")
 FRITZING_CMD = [
@@ -74,15 +80,31 @@ def _png_size(png_path: str) -> tuple:
     return width, height
 
 
+def _optipng(path: str) -> None:
+    """Best-effort lossless PNG re-compression before embedding -- shells out
+    to optipng if it's on PATH, silently no-ops otherwise. This is a size
+    optimization only (pixels are untouched), never a correctness dependency,
+    so a machine without optipng still produces a valid, just slightly
+    larger, .fzpz."""
+    if shutil.which("optipng") is None:
+        return
+    subprocess.run(["optipng", "-o4", "-quiet", path],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
 def _tag_connectors_raster(board_png: str, overlay_png: str, connectors: list,
-                            reference_svg_path: str, out_path: str) -> None:
+                            reference_svg_path: str, out_path: str, work_dir: str) -> None:
     """Build the breadboard SVG from real raster PNGs (the same ones used in
     the docs) instead of the tracespace vector SVG. Fritzing's breadboard-view
     renderer doesn't respect the vector SVG's CSS-based fill/opacity styling
     (confirmed: parts built from it show up washed out -- plain white pads,
     no green/gold -- when actually placed in Fritzing, even though the same
     SVG renders correctly in Inkscape/Chromium). Embedding flat PNGs sidesteps
-    that entirely, at the cost of not being vector-scalable."""
+    that entirely, at the cost of not being vector-scalable.
+
+    board_png/overlay_png are re-encoded through optipng into work_dir before
+    embedding -- shrinks the base64 payload without touching the committed
+    source PNGs (those stay full quality for docs use)."""
     svg_text = open(reference_svg_path).read()
     h = _read_group_translate_y(svg_text)
     vb_min_x, vb_min_y, _vb_w, _vb_h = _read_viewbox(svg_text)
@@ -94,7 +116,11 @@ def _tag_connectors_raster(board_png: str, overlay_png: str, connectors: list,
         local_x, local_y = raw_x, h - raw_y
         return (local_x - vb_min_x) * scale, (local_y - vb_min_y) * scale
 
-    board_b64 = base64.b64encode(open(board_png, "rb").read()).decode("ascii")
+    board_png_opt = os.path.join(work_dir, "_optim_" + os.path.basename(board_png))
+    shutil.copy(board_png, board_png_opt)
+    _optipng(board_png_opt)
+
+    board_b64 = base64.b64encode(open(board_png_opt, "rb").read()).decode("ascii")
     images = [
         f'<image x="0" y="0" width="{png_w}" height="{png_h}" '
         f'href="data:image/png;base64,{board_b64}" xlink:href="data:image/png;base64,{board_b64}"/>'
@@ -106,7 +132,10 @@ def _tag_connectors_raster(board_png: str, overlay_png: str, connectors: list,
                 f"overlay {overlay_png} is {overlay_w}x{overlay_h}, "
                 f"expected {png_w}x{png_h} to match {board_png}"
             )
-        overlay_b64 = base64.b64encode(open(overlay_png, "rb").read()).decode("ascii")
+        overlay_png_opt = os.path.join(work_dir, "_optim_" + os.path.basename(overlay_png))
+        shutil.copy(overlay_png, overlay_png_opt)
+        _optipng(overlay_png_opt)
+        overlay_b64 = base64.b64encode(open(overlay_png_opt, "rb").read()).decode("ascii")
         images.append(
             f'<image x="0" y="0" width="{png_w}" height="{png_h}" '
             f'href="data:image/png;base64,{overlay_b64}" xlink:href="data:image/png;base64,{overlay_b64}"/>'
@@ -127,6 +156,48 @@ def _tag_connectors_raster(board_png: str, overlay_png: str, connectors: list,
         f'width="{png_w / DOCS_PNG_DPI}in" height="{png_h / DOCS_PNG_DPI}in" '
         f'viewBox="0 0 {png_w} {png_h}">'
         f'{"".join(markers)}<g id="breadboard">{"".join(images)}</g></svg>'
+    )
+    with open(out_path, "w") as f:
+        f.write(svg)
+
+
+def _make_icon_raster(board_png: str, overlay_png: str, work_dir: str, out_path: str) -> None:
+    """Build a small standalone icon SVG for the parts-bin thumbnail --
+    composites board_png + overlay_png (if given) and downscales to
+    ICON_MAX_DIM via Inkscape (which rasterizes the layered <image> elements
+    as part of exporting), then optipngs and embeds that small PNG. No
+    connector markers needed here, unlike the breadboard view -- Fritzing
+    never uses icon view for pin placement."""
+    png_w, png_h = _png_size(board_png)
+
+    images = [f'<image x="0" y="0" width="{png_w}" height="{png_h}" href="{board_png}"/>']
+    if overlay_png:
+        images.append(f'<image x="0" y="0" width="{png_w}" height="{png_h}" href="{overlay_png}"/>')
+    source_svg = os.path.join(work_dir, "_icon_source.svg")
+    with open(source_svg, "w") as f:
+        f.write(
+            f'<svg xmlns="http://www.w3.org/2000/svg" '
+            f'width="{png_w}" height="{png_h}" viewBox="0 0 {png_w} {png_h}">'
+            f'{"".join(images)}</svg>'
+        )
+
+    icon_png = os.path.join(work_dir, "_icon.png")
+    dim_flag = "--export-width" if png_w >= png_h else "--export-height"
+    subprocess.run(
+        ["inkscape", "--export-type=png", f"{dim_flag}={ICON_MAX_DIM}",
+         f"--export-filename={icon_png}", source_svg],
+        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    _optipng(icon_png)
+
+    icon_w, icon_h = _png_size(icon_png)
+    icon_b64 = base64.b64encode(open(icon_png, "rb").read()).decode("ascii")
+    svg = (
+        f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
+        f'width="{icon_w / DOCS_PNG_DPI}in" height="{icon_h / DOCS_PNG_DPI}in" '
+        f'viewBox="0 0 {icon_w} {icon_h}">'
+        f'<g id="icon"><image x="0" y="0" width="{icon_w}" height="{icon_h}" '
+        f'href="data:image/png;base64,{icon_b64}" xlink:href="data:image/png;base64,{icon_b64}"/></g></svg>'
     )
     with open(out_path, "w") as f:
         f.write(svg)
@@ -309,13 +380,18 @@ def build_part(board_fzz: str, board_name: str, connectors: list, out_dir: str,
         pcb_out = os.path.join(work_dir, pcb_file)
 
         if board_png:
-            _tag_connectors_raster(board_png, overlay_png, connectors, svgs["top"], breadboard_out)
+            _tag_connectors_raster(board_png, overlay_png, connectors, svgs["top"], breadboard_out, work_dir)
         else:
             _tag_connectors(svgs["top"], connectors, breadboard_out)
         _tag_connectors_pcb(svgs["top"], connectors, pcb_out)
         _make_schematic_svg(connectors, schematic_out)
-        # Icon view: reuse the breadboard graphic, Fritzing scales it down itself.
-        shutil.copy(breadboard_out, os.path.join(work_dir, icon_file))
+        # Icon view: a small dedicated thumbnail, not a full-res copy of the
+        # breadboard graphic -- see _make_icon_raster's docstring for why.
+        icon_out = os.path.join(work_dir, icon_file)
+        if board_png:
+            _make_icon_raster(board_png, overlay_png, work_dir, icon_out)
+        else:
+            shutil.copy(breadboard_out, icon_out)
 
         fzp_text = _make_fzp(module_id, board_name, connectors,
                               breadboard_file, schematic_file, pcb_file, icon_file)

@@ -1,8 +1,9 @@
 # Wiring
 
-This page is the **single source of truth** for how the Arduino Nano connects to
-everything else. Every other page links here rather than repeating pin
-assignments — if a connection is ever in doubt, this table wins.
+This page describes how the Arduino Nano on the control board connects to
+everything else.
+
+![Breadboard-view wiring diagram: Displaymodul and Lichtmodul on the left feeding into Fotomodul, which connects to the Steuermodul/Arduino; the pump and valve motors, rotary switch, and power jack on the right.](../assets/img/wiring-breadboard.png){ loading=lazy }
 
 ## Master pin map
 
