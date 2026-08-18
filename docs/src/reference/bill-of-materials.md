@@ -29,20 +29,3 @@ supplier mostly Reichelt). Datasheets for the numbered parts live under
 | Headers / stacking strips | Inter-module connectors | — | MPE-Garry / STAPELLEISTE (Reichelt) |
 | Polycarbonate window | Display pane | 1 | Reely (Conrad 229802) |
 | 3D-printed housing | Enclosure | 1 set | see [Enclosure](../build-guide/enclosure/index.md) |
-
-!!! note "All 18 resistors above are the same 330 Ω part"
-    The photocell dividers, the *Lichtmodul* LED resistors, and the display's
-    segment resistors are one and the same 330 Ω SMD 1206 value, so they come
-    off a single reel. `hardware/card-reader/Artikelnummern.txt` names a 10 kΩ
-    part (Bürklin 28 E497) for the dividers, but the assembled boards, the
-    Fritzing sketch, and the order sheet all agree on 330 Ω — see the
-    [card reader page](../build-guide/modules/card-reader.md#fotomodul-photo-module).
-
-## Cost
-
-Across the three prototype build sets, aggregate spend was on the order of
-**~€577**. The dominant cost was never the electronics (which total only a few
-tens of euros per unit) but the **enclosure**: the 3D-printed housing quotes
-from i.materialise and Rapid Object ran to hundreds of euros per set and
-ultimately cost-blocked a polished production housing. See the
-[Enclosure](../build-guide/enclosure/index.md) page for that history.
