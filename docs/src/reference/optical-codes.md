@@ -1,10 +1,9 @@
 # Optical Code System
 
-This page is the **single source of truth** for how Boom Balloon encodes and
-reads its cards. Every card carries a 5-bit optical code, and both the printed
-deck and the firmware agree on the scheme documented here. Other documents that
-touch the encoding — including `cards/README.md` in the repository — point back to
-this page. For what each code *means* (which card, which effect), see the deck
+Every card carries a 5-bit optical code encoded in a set of holes.
+The electronics turn the holes into an analog signal which the firmware then reads.
+
+For what each code *means* (which card, which effect), see the deck
 catalog in [The Card Deck](../gameplay/card-deck.md); for the code that
 implements the reader, see [Firmware Architecture](firmware-architecture.md).
 
@@ -29,32 +28,35 @@ the [wiring](../build-guide/wiring.md)). The firmware
 (`Devices/CodeDetector`) reads all five with `analogRead()`, thresholds each into
 a bit, and assembles the result into a single value.
 
-## Bit weights
+## Bit positions
 
-Each hole position has a fixed place value. In firmware terms, `A0`–`A4` form
-bits 0–4 of the value; on the cards the hole positions are labelled **B, D, F, H,
-J**, with these weights:
+The five analog pins together form a binary representation of an integer:
+pin `A`*i* is bit *i* of the code, so its value is `2^i`. The order comes
+straight from the firmware's pin array (`Main.cpp`: `CodeDetector(PIN_A0,
+PIN_A1, PIN_A2, PIN_A3, PIN_A4)`), where `A0` fills bit 0 and `A4` fills bit 4:
 
-| Hole | B | D | F | H | J |
+| Pin | A0 | A1 | A2 | A3 | A4 |
 |---|---|---|---|---|---|
-| Weight | 16 | 8 | 4 | 2 | 1 |
+| Bit | 0 | 1 | 2 | 3 | 4 |
+| Value (2^bit) | 1 | 2 | 4 | 8 | 16 |
 
-A code is just the sum of the weights of the positions that are **open (holed)**.
+A code is the binary number formed by reading each **open (holed)** position
+as a `1` and each solid position as a `0`.
 
-!!! example "Worked example — the Player 1 card"
-    The `1 Spieler` (Player 1) card has the pattern `01111`:
+!!! example "example — the Player 1 card"
+    The `1 Spieler` (Player 1) card has the pattern `01111` (bit 4 down to bit 0):
 
-    | B (16) | D (8) | F (4) | H (2) | J (1) |
+    | A4 (bit 4) | A3 (bit 3) | A2 (bit 2) | A1 (bit 1) | A0 (bit 0) |
     |---|---|---|---|---|
     | 0 | 1 | 1 | 1 | 1 |
 
-    Value = 8 + 4 + 2 + 1 = **15**.
+    Binary `01111` = 8 + 4 + 2 + 1 = **15**.
 
 ## Mirror invariance
 
 A card is a physical rectangle, and nothing stops a player from pushing it in
 **rotated 180°**. When that happens the reader sees the hole pattern
-**bit-reversed** — the code read from the flipped card is the mirror image of the
+**bit-reversed**. the code read from the flipped card is the mirror image of the
 code read from the upright card.
 
 The firmware makes reading **orientation-independent** by canonicalising every
@@ -63,31 +65,29 @@ code: it computes the bit-reversal of the detected value and always stores the
 canonical code, and the deck is designed so that no two *different* cards collide
 under this rule.
 
-```cpp
-// CodeDetector::setActiveCode — reverse the 5 bits, keep the smaller value
-activeCodeMirrored = 0;
-for (uint8_t i = 0; i < 5; i++)
-    activeCodeMirrored |= ((code >> i) & 1) << (5 - i - 1);
-activeCode = (code < activeCodeMirrored) ? code : activeCodeMirrored;
-```
 
-The codes that are **not** palindromic pair up as follows. Either member of a
-pair is read as the **canonical** (smaller) value on the left:
+The codes that are **not** palindromic pair up as follows. Bits are written
+`A4 A3 A2 A1 A0`, so the mirror's bit string is just the canonical's read
+backwards:
 
-| Canonical code | Mirror | Canonical code | Mirror |
+| Canonical code | Canonical bits | Mirror bits | Mirror code |
 |---|---|---|---|
-| 1 | 16 | 11 | 26 |
-| 2 | 8 | 13 | 22 |
-| 3 | 24 | 15 | 30 |
-| 5 | 20 | 19 | 25 |
-| 6 | 12 | 23 | 29 |
-| 7 | 28 | | |
-| 9 | 18 | | |
+| 1 | `00001` | `10000` | 16 |
+| 2 | `00010` | `01000` | 8 |
+| 3 | `00011` | `11000` | 24 |
+| 5 | `00101` | `10100` | 20 |
+| 6 | `00110` | `01100` | 12 |
+| 7 | `00111` | `11100` | 28 |
+| 9 | `01001` | `10010` | 18 |
+| 11 | `01011` | `11010` | 26 |
+| 13 | `01101` | `10110` | 22 |
+| 15 | `01111` | `11110` | 30 |
+| 19 | `10011` | `11001` | 25 |
+| 23 | `10111` | `11101` | 29 |
 
 Codes that read the same upside-down (the palindromes `0`, `4`, `10`, `14`,
 `17`, `21`, `27`, `31`, …) are their own mirror and need no pairing — they are
-read identically whichever way round the card goes in. Notably `27` (Yin Yang)
-is one of these.
+read identically whichever way round the card goes in.
 
 ## Thresholding, calibration, and debounce
 
@@ -131,7 +131,7 @@ normalised value alongside the decoded bits and the resulting code. Each line ha
 three columns: the five normalised values for `A0`–`A4`, the thresholded bits in
 the same `A0`-first order, and finally `activeCode = mirror` (the canonical code
 and its 180° mirror). For example, inserting the **Player 1 card** (code **15**,
-holes `01111` from the worked example above) reads as:
+holes `01111` from the example above) reads as:
 
 ```
  98  95  97  92   8  |  1 1 1 1 0   |  15 = 30

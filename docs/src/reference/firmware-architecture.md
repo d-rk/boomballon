@@ -1,20 +1,20 @@
 # Firmware Architecture
 
-This page is a developer's tour of the Boom Balloon firmware — how the source
-tree is organised, how the program starts, and how the pieces cooperate at run
-time. It is aimed at someone who wants to read or change the code. For how to
+This page describes how the firmware source is organised, how the program starts,
+and how the pieces cooperate at run
+time. For how to
 compile and flash it, see [Firmware](../build-guide/firmware.md);
 for the card encoding it depends on, see the
 [Optical Code System](optical-codes.md).
 
-The firmware is **plain object-oriented C++11**, not an `.ino` sketch. It targets
+The firmware is **plain object-oriented C++11**. It targets
 the **Arduino Nano (ATmega328P)** — a small 8-bit AVR with 2 KB of RAM — which
 shapes many of the design choices below (no STL, manual memory accounting, no
 threads).
 
 ## Source layout
 
-The tree lives under `firmware/src/`:
+The source code for the firmware lives under `firmware/src/`:
 
 | Area | Files | Role |
 |---|---|---|
@@ -34,13 +34,11 @@ print out). Each is independent. See [Mock devices](#mock-devices) below for
 how it works.
 
 There is also a `Devices/` trio that is **not part of the running game**:
-`Button` and `Led` are unused general-purpose drivers (Boom Balloon has no
-gameplay buttons — the only input is the card reader), and `SoundDetector` is
-the fossil of an abandoned **closed-loop** idea: detect the actual *pop* of the
-balloon (or its pressure via sound) and react to it, instead of the modelled
+`Button`, `Led` and `SoundDetector` are now unused general-purpose drivers
+ used during development. `SoundDetector` was used in experiment to detect the
+ actual *pop* of the balloon and react to it, instead of the modelled
 volume described in [How It Works](../how-it-works.md#the-balloon-volume-model).
-It was never wired into the game — nothing in `Main.cpp` or `Game.cpp`
-constructs or references it.
+It was discarded for the final game.
 
 ## Startup and object ownership
 
@@ -73,8 +71,10 @@ Game game;
 [wiring](../build-guide/wiring.md) insists that `A5` stay unconnected.
 
 The pin numbers, code values, and display glyphs all come from `Constants.h`,
-which also carries two compile-time switches described under
-[Build modes](#build-modes-and-logging).
+which also carries four compile-time switches: `DETECTOR_CALIBRATION` and
+`AUTOSTART_GAME`, described under [Build modes](#build-modes-and-logging), and
+`MOCK_CODE_DETECTOR`/`MOCK_OUTPUT_DEVICE`, described under
+[Mock devices](#mock-devices).
 
 ## Cooperative multitasking
 
